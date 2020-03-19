@@ -1,2 +1,2 @@
-# SO-Projecto
-Projeto SO
+# SO-Proyecto
+Proyeto SO
