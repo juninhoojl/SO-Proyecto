@@ -1,5 +1,5 @@
 # BASE de dados generica y tabelas para casi todos os juegos simples que pude imaginar
-
+#prueba
 DROP DATABASE IF EXISTS GameSO;
 CREATE DATABASE GameSO;
 USE GameSO;
