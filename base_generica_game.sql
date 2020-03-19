@@ -26,6 +26,8 @@ CREATE TABLE Relaciona(
 	Score INTEGER NOT NULL DEFAULT 0,
 	FOREIGN KEY (Player) REFERENCES Player(Username),
 	FOREIGN KEY (Game) REFERENCES Game(ID)
+	Ativo BIT DEFAULT 1
+
 )AUTO_INCREMENT = 1;
 
 #INSERT INTO Player (Username, Password) VALUES ('Jose', '1qaz2wsx');
