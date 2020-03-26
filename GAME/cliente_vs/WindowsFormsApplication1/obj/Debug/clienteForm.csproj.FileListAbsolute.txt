@@ -108,3 +108,17 @@ Y:\Documents\Sistemes-Operatius\ejercicio_L1_13\cliente_vs\WindowsFormsApplicati
 Y:\Documents\Sistemes-Operatius\ejercicio_L1_13\cliente_vs\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.application
 Y:\Documents\Sistemes-Operatius\ejercicio_L1_13\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe.manifest
 Y:\Documents\Sistemes-Operatius\ejercicio_L1_13\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.application
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.manifest
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.application
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.cache
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe.manifest
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.application
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\clienteForm.csprojResolveAssemblyReference.cache
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.register.resources
+C:\Users\eduar\Documents\GitHub\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.main.resources
