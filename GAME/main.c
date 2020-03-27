@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include "smd5.h"
 #include "basedados.h"
 #include "servidor.h"
+
 
 int logado = 0; // 0 = nao
 
