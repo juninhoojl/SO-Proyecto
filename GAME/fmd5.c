@@ -5,15 +5,15 @@ char *string = "teste";
 unsigned char * smd5();
 
 
-int main0(){
+int main(){
 	
 	int i=0;
 	
 	unsigned char *result;
-	result = malloc(sizeof(unsigned char)*MD5_DIGEST_LENGTH);
+	//result = malloc(sizeof(unsigned char)*MD5_DIGEST_LENGTH);
 	//unsigned char result[MD5_DIGEST_LENGTH];
 	
-	*result=smd5();
+	result=smd5();
 
 	for(i = 0; i < MD5_DIGEST_LENGTH; i++){
 		printf("%02x", result[i]);
@@ -42,12 +42,8 @@ unsigned char * smd5(){
 	
 	printf("\n");
 	
-	return *result;
+	return result;
 }
 	
-	
-
-	
-
-	
+ 
 	
