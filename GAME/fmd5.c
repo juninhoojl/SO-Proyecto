@@ -18,13 +18,15 @@ int main(){
 	for(i = 0; i < MD5_DIGEST_LENGTH; i++){
 		printf("%02x", result[i]);
 	}
-
+	
+	free(result);
 
 	
 	return 1;
 }
 
-
+	
+	
 unsigned char * smd5(){
 
 	
