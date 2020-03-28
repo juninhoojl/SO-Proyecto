@@ -5,6 +5,7 @@
 
 #include "basedados.h"
 #include "servidor.h"
+#include "fmd5.h"
 
 int logado = 0; // 0 = nao
 

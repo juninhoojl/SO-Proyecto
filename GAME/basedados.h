@@ -1,6 +1,3 @@
-#ifndef basedados_h
-#define basedados_h
-
 #include <stdio.h>
 #include <mysql.h>
 #include <string.h>
@@ -43,5 +40,3 @@ int ativa_user(char user[], char senha[], MYSQL *conn);
 
 int user_ativo(char user[], MYSQL *conn);
 
-
-#endif

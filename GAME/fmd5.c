@@ -1,16 +1,9 @@
-#include <stdio.h>
-#include <mysql.h>
-#include <string.h>
-//#include <unistd.h>
-//#include <stdlib.h>
-
-#include <openssl/md5.h>
+#include "fmd5.h"
 
 char *string = "teste";
 
-unsigned char * smd5();
 
-int main(){
+int main0(){
 	
 	int i=0;
 	
@@ -27,13 +20,10 @@ int main(){
 		free(result);
 	}
 	
-
 	
 	
 	return 1;
 }
-
-	
 
 	
 unsigned char * smd5(){
@@ -55,6 +45,8 @@ unsigned char * smd5(){
 	return resultado;
 }
 	
+	
+
 	
 
 	
