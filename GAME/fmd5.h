@@ -7,6 +7,6 @@
 
 unsigned char * smd5();
 
-
+int maina();
 
 

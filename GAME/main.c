@@ -7,10 +7,15 @@
 #include "servidor.h"
 #include "fmd5.h"
 
+
+// Para compilar
+// gcc main.c -std=c99  `mysql_config --cflags --libs` -lm fmd5.c basedados.c servidor.c  -lcrypto -o main.bin
+
+
 int logado = 0; // 0 = nao
 
 int main(int argc, char *argv[]){
-
+	maina();
 	int sock_conn, sock_listen, ret;
 	struct sockaddr_in serv_adr;
 	char peticion[512];

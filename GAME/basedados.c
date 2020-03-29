@@ -1,12 +1,10 @@
 #include "basedados.h"
-
 int ativa_user(char user[], char senha[], MYSQL *conn){
 	
 	char query[80];
 	int err;
 	MYSQL_RES *resultado;
 	MYSQL_ROW row;
-	
 	
 	// Se pode se autenticar pode se remover
 	
@@ -151,13 +149,10 @@ int insere_user(char user[], char senha[], MYSQL *conn){
 		printf("Usuario ja existe\n");
 		return 1;
 	}else{
-		
-	
 		strcpy (query, "INSERT INTO Player (Username, Password) VALUES ('");
 		strcat (query, user);
 		strcat (query, "','");
 		strcat (query, senha); 
-		
 		strcat (query, "'");
 		strcat (query, ");");
 		printf("query = %s\n", query);

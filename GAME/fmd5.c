@@ -1,11 +1,10 @@
-#include "fmd5.h"
+ #include "fmd5.h"
 
 char *string = "teste";
 
-unsigned char * smd5();
 
-
-int main(){
+// 
+int maina(){
 	
 	int i=0;
 	
@@ -24,12 +23,10 @@ int main(){
 	
 	return 1;
 }
+	
 
-	
-	
 unsigned char * smd5(){
 
-	
 	int i;
 	
 	unsigned char *result;

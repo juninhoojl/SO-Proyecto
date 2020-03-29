@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "servidor.h"
-#include "smd5.h"
+#include "fmd5.h"
 
 // Intoducir dados en base ya creada
 #define SERVIDOR "localhost"
