@@ -7,7 +7,6 @@ USE GameSO;
 CREATE TABLE Player(
 	Username VARCHAR(25) NOT NULL PRIMARY KEY,
 	Password CHAR(32) NOT NULL,
-	#Password VARCHAR(25) NOT NULL,
 	Ativo TINYINT(1) DEFAULT 1
 );
 
