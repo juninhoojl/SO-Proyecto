@@ -108,3 +108,9 @@ Y:\Documents\Sistemes-Operatius\ejercicio_L1_13\cliente_vs\WindowsFormsApplicati
 Y:\Documents\Sistemes-Operatius\ejercicio_L1_13\cliente_vs\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.application
 Y:\Documents\Sistemes-Operatius\ejercicio_L1_13\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe.manifest
 Y:\Documents\Sistemes-Operatius\ejercicio_L1_13\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.application
+\\Mac\Home\Documents\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\clienteForm.csprojAssemblyReference.cache
+\\Mac\Home\Documents\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+\\Mac\Home\Documents\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+\\Mac\Home\Documents\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.cache
+\\Mac\Home\Documents\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+\\Mac\Home\Documents\SO-Proyecto\GAME\cliente_vs\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
