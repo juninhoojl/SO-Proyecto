@@ -7,15 +7,23 @@
 #include "servidor.h"
 #include "fmd5.h"
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
-// Para compilar
-// gcc main.c -std=c99  `mysql_config --cflags --libs` -lm fmd5.c basedados.c servidor.c  -lcrypto -o main.bin
+// /media/psf/Home/Documents/SO-Proyecto/GAME
 
+// Para compilar terminal
+// gcc main.c -std=c99 `mysql_config --cflags --libs` -lm fmd5.c basedados.c servidor.c  -lcrypto -o main.bin
+// Para compilar Zinjal (em main.c Run-> COnfigure -> Extra arguments for compiler:
+// -std=c99 `mysql_config --cflags --libs` -lm fmd5.c basedados.c servidor.c -lcrypto
 
 int logado = 0; // 0 = nao
 
 int main(int argc, char *argv[]){
-	maina();
+	
+	maina(); // Testando md5
+	
 	int sock_conn, sock_listen, ret;
 	struct sockaddr_in serv_adr;
 	char peticion[512];
@@ -33,6 +41,7 @@ int main(int argc, char *argv[]){
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
 	// Associamos o socket que criamos com porta e tipo de dados
 	serv_adr.sin_port = htons(PORTA);
+	
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0)
 		printf ("Erro ao fazer bind");
 	
@@ -88,10 +97,12 @@ int main(int argc, char *argv[]){
 	
 	*/
 	
-	
 	insere_user("juninhos1","1qaz2wsx",conn);
 	
 	insere_user("jose","asdfghjk",conn);
+	
+	insere_user("hash","e7d80ffeefa212b7c5c55700e4f7193e",conn);
+	
 	loga_user("jose","asdfghjk",conn);
 	
 	desativa_user("jose","asdfghjk",conn);

@@ -17,7 +17,7 @@
 #define QTDMIN 2
 #define CHARSNOME 25
 #define TAMUSERNAME CHARSNOME+1
-#define PORTA 9001
+#define PORTA 9000
 
 
 int insere_Player(char nome_arq[], MYSQL *conn);
@@ -41,4 +41,17 @@ int desativa_user(char user[], char senha[], MYSQL *conn);
 int ativa_user(char user[], char senha[], MYSQL *conn);
 
 int user_ativo(char user[], MYSQL *conn);
+
+// Funcao real para remover
+// (remove tudo que esta relacionado)
+int remove_user(char user[], char senha[], MYSQL *conn);
+
+
+
+
+
+
+
+
+
 
