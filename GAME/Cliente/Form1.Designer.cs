@@ -55,8 +55,9 @@
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(153, 23);
             this.buttonLogin.TabIndex = 2;
-            this.buttonLogin.Text = "button1";
+            this.buttonLogin.Text = "Login";
             this.buttonLogin.UseVisualStyleBackColor = true;
+            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
             // groupLogin
             // 

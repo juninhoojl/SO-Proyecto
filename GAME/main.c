@@ -171,27 +171,29 @@ int main(int argc, char *argv[]){
 				printf ("Codigo: %d, Nome: %s\n", codigo, nombre);
 			}
 			
-			if (codigo ==0){ //petici?n de desconexi?n
+			if(codigo ==0){ //petici?n de desconexi?n
+				
 				logado=0;
 				terminar=1;
-			}else if (codigo ==1){ //piden la longitd del nombre
-				sprintf (respuesta,"%d",(int)strlen (nombre));
-			}else if (codigo ==2){
-				// quieren saber si el nombre es bonito
-				if((nombre[0]=='M') || (nombre[0]=='S')){
-					strcpy (respuesta,"SIM");
-				}else{
-					strcpy (respuesta,"NAO");
-				}
-			}else if (codigo==3){ //quiere saber si es alto
-			
+				
+			}else if (codigo==1){ // Solicita login
+				
+				printf("SOlicitou login");
+				char senha[20];
 				p = strtok( NULL, "/");
-				float altura =  atof (p);
-				if (altura > 1.70){
-					sprintf (respuesta, "%s eh alto",nombre);
+				int situacao=0;
+				strcpy (senha, p);
+				
+				situacao=loga_user(nombre,senha,conn);
+				if (situacao == 1){
+					logado=1;
+					sprintf (respuesta, "1%s",nombre); // Login correto
+				}else if (situacao == 3){
+					sprintf (respuesta, "2%s",nombre); // Credenciais errados
 				}else{
-					sprintf (respuesta, "%s eh baixo",nombre);
+					sprintf (respuesta, "3%s",nombre); // Erro ao logar
 				}
+				
 			}else if (codigo==4){// Busca usuario
 				
 				if (existe_user(nombre,conn) == 1){
@@ -259,24 +261,6 @@ int main(int argc, char *argv[]){
 					sprintf (respuesta, "Erro ao reativar %s",nombre);
 				}
 				
-				
-			}else if (codigo==8){ // Solicita login
-				
-				char senha[20];
-				p = strtok( NULL, "/");
-				int situacao=0;
-				strcpy (senha, p);
-				
-				situacao=loga_user(nombre,senha,conn);
-				
-				if (situacao == 1){
-					logado=1;
-					sprintf (respuesta, "%s logado com sucesso",nombre);
-				}else if (situacao == 3){
-					sprintf (respuesta, "%s nao pode logar",nombre);
-				}else{
-					sprintf (respuesta, "Erro ao fazer login %s",nombre);
-				}
 				
 			}
 			
