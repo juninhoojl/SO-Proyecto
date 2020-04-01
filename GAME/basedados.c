@@ -318,21 +318,19 @@ int loga_user(char user[], char senha[], MYSQL *conn){
 		
 		if (err!=0) {
 			printf ("Error ao consultar usuario na base %u %s\n", mysql_errno(conn), mysql_error(conn));
-			exit (1); 
+			return 2;
 		}
 		
 		resultado = mysql_store_result(conn);
 		row = mysql_fetch_row(resultado);
 		
 		if(atoi(row[0]) == 1){ // Login ok
-			
 			printf("Usuario e senha corretos\n");
 			return 1;
 			
 		}else{ // Nao pode logar
-			
 			printf("Usuario e/ou senha incorretos\n");
-			
+			return 3;
 		}
 		
 	}else{

@@ -172,6 +172,7 @@ int main(int argc, char *argv[]){
 			}
 			
 			if (codigo ==0){ //petici?n de desconexi?n
+				logado=0;
 				terminar=1;
 			}else if (codigo ==1){ //piden la longitd del nombre
 				sprintf (respuesta,"%d",(int)strlen (nombre));
@@ -259,11 +260,27 @@ int main(int argc, char *argv[]){
 				}
 				
 				
+			}else if (codigo==8){ // Solicita login
+				
+				char senha[20];
+				p = strtok( NULL, "/");
+				int situacao=0;
+				strcpy (senha, p);
+				
+				situacao=loga_user(nombre,senha,conn);
+				
+				if (situacao == 1){
+					logado=1;
+					sprintf (respuesta, "%s logado com sucesso",nombre);
+				}else if (situacao == 3){
+					sprintf (respuesta, "%s nao pode logar",nombre);
+				}else{
+					sprintf (respuesta, "Erro ao fazer login %s",nombre);
+				}
+				
 			}
 			
 			if(codigo !=0){ // Desconectar
-			
-				
 				printf ("Resposta: %s\n", respuesta);
 				// Enviamos a resposta
 				write (sock_conn,respuesta, strlen(respuesta));
