@@ -15,14 +15,18 @@ namespace Cliente
     public partial class Form1 : Form
     {
         int logado = 0;
+
         Socket server;
         public Form1()
         {
             
             InitializeComponent();
             Load += new EventHandler(Form1_Load);
+            
         }
-        
+
+   
+
         // Conecta ao carregar
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -42,12 +46,18 @@ namespace Cliente
             }
             catch (SocketException)
             {
+
+                dynamic result = MessageBox.Show("No he podido conectar con el servidor\n\t Cierrar aplicacion?", "GameSO", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
                 // Se nao foi possivel
-                MessageBox.Show("No he podido conectar con el servidor");
                 return;
             }
 
         }
+
 
         // Login
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -87,7 +97,7 @@ namespace Cliente
         }
 
 
-
+        
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
