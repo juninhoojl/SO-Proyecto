@@ -1,3 +1,7 @@
+#ifndef _BASEDADOS_H_
+#define _BASEDADOS_H_
+
+
 #include <stdio.h>
 #include <mysql.h>
 #include <string.h>
@@ -47,6 +51,7 @@ int user_ativo(char user[], MYSQL *conn);
 int remove_user(char user[], char senha[], MYSQL *conn);
 
 
+#endif
 
 
 
