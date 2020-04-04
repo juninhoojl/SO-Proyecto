@@ -29,7 +29,7 @@ CREATE TABLE Relaciona(
 		ON DELETE CASCADE ON UPDATE CASCADE
 )AUTO_INCREMENT = 1;
 
-INSERT INTO Player (Username, Password) VALUES ('jose', 'asdfghjk');
+INSERT INTO Player (Username, Password) VALUES ('jose', MD5('asdfghjk');
 INSERT INTO Player (Username, Password) VALUES ('luiz', 'senha123');
 
 INSERT INTO Game () VALUES ();

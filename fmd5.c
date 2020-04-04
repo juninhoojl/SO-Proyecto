@@ -11,7 +11,7 @@ int maina(){
 	
 	int i=0;
 	
-	char string[]= "teste";
+	char string[]= "asdfghjk";
 	
 	unsigned char *result;
 
@@ -49,4 +49,3 @@ unsigned char * smd5(char * palavra){
 }
 	
  
-	
