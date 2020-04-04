@@ -1,4 +1,5 @@
 #include "basedados.h"
+
 int ativa_user(char user[], char senha[], MYSQL *conn){
 	
 	char query[80];

@@ -1,7 +1,6 @@
 #ifndef _BASEDADOS_H_
 #define _BASEDADOS_H_
 
-
 #include <stdio.h>
 #include <mysql.h>
 #include <string.h>

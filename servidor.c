@@ -1,11 +1,10 @@
 #include "servidor.h"
 
+
 void *AtenderCliente (void *args_void)
 {
 	
 	struct thread_args *args = args_void;
-	
-	
 	int sock_conn;
 	int * s;
 	
@@ -14,28 +13,36 @@ void *AtenderCliente (void *args_void)
 	//s = (int*) args->a;
 	sock_conn = args->a;
 	
-	//struct thread_args *args = args_void;
-	/* The thread cannot return a pointer to a local variable */
-	//struct thread_result *res = malloc(sizeof *res);
-	
-	
-	//res->y = args->a * args->b;
-	
-	
-	//int sock_conn = (*socket);
-	
-	//int socket_conn = * (int *) socket;
-	
 	char peticion[512];
 	char respuesta[512];
 	int ret;
 	
-	
+	int logado=0;
 	int terminar =0;
+	int situacao=0;
+	
+	
+	MYSQL *conn;
+	conn=mysql_init(NULL);
+	
+	if(conn==NULL){
+		printf("Error ao criar conexao: %u %s\n",mysql_errno(conn), mysql_error(conn));
+		exit (1);
+	}
+	
+	conn=mysql_real_connect(conn,SERVIDOR,USUARIO,SENHA,BASE,0, NULL, 0);
+	
+	if(conn==NULL){
+		printf("Erro ao iniciar conexao: %u%s\n",mysql_errno(conn),mysql_error(conn));
+		exit (1);
+	}
+	
+	
 	// Entramos en un bucle para atender todas las peticiones de este cliente
 	//hasta que se desconecte
 	while (terminar ==0)
 	{
+		
 		// Ahora recibimos la petici?n
 		ret=read(sock_conn,peticion, sizeof(peticion));
 		printf ("Recibido\n");
@@ -56,41 +63,112 @@ void *AtenderCliente (void *args_void)
 		if (codigo !=0)
 		{
 			p = strtok( NULL, "/");
-			
 			strcpy (nombre, p);
 			// Ya tenemos el nombre
-			printf ("Codigo: %d, Nombre: %s\n", codigo, nombre);
+			printf ("Codigo: %d, Nome: %s\n", codigo, nombre);
 		}
 		
-		if (codigo ==0) //petici?n de desconexi?n
+		if(codigo ==0){ //petici?n de desconexi?n
+			
+			logado=0;
 			terminar=1;
-		else if (codigo ==1) //piden la longitd del nombre
-			sprintf (respuesta,"%d", (int)strlen(nombre));
-		else if (codigo ==2)
-			// quieren saber si el nombre es bonito
-			if((nombre[0]=='M') || (nombre[0]=='S'))
-			strcpy (respuesta,"SI");
-			else
-				strcpy (respuesta,"NO");
-			else //quiere saber si es alto
-			{
-				p = strtok( NULL, "/");
-				float altura =  atof (p);
-				if (altura > 1.70)
-					sprintf (respuesta, "%s: eres alto",nombre);
-				else
-					sprintf (respuesta, "%s: eresbajo",nombre);
+			
+		}else if (codigo==1){ // Solicita login
+			
+			printf("SOlicitou login");
+			char senha[20];
+			p = strtok( NULL, "/");
+			int situacao=0;
+			strcpy (senha, p);
+			
+			situacao=loga_user(nombre,senha,conn);
+			if (situacao == 1){
+				logado=1;
+				sprintf (respuesta, "1%s",nombre); // Login correto
+			}else if (situacao == 3){
+				sprintf (respuesta, "2%s",nombre); // Credenciais errados
+			}else{
+				sprintf (respuesta, "3%s",nombre); // Erro ao logar
 			}
 			
-			if (codigo !=0)
-			{
+		}else if (codigo==4){// Busca usuario
+			
+			if (existe_user(nombre,conn) == 1){
 				
-				printf ("Respuesta: %s\n", respuesta);
-				// Enviamos respuesta
-				write (sock_conn,respuesta, strlen(respuesta));
+				if(user_ativo(nombre,conn) == 1){
+					sprintf (respuesta, "%s existe",nombre);
+					
+				}else{
+					sprintf (respuesta, "%s existe (mas esta desativado)",nombre);
+				}
+				
+			}else{
+				sprintf (respuesta, "%s nao existe",nombre);
 			}
+			
+			
+		}else if (codigo==5){ // insere USUARIO
+			
+			char senha[20];
+			p = strtok( NULL, "/");
+			strcpy (senha, p);
+			
+			situacao=insere_user(nombre,senha,conn);
+			
+			if (situacao == 0){
+				sprintf (respuesta, "%s inserido com sucesso",nombre);
+			}else if (situacao == 1){
+				sprintf (respuesta, "%s ja existe",nombre);
+			}else{
+				sprintf (respuesta, "%s nao pode ser inserido",nombre);
+			}
+			
+		}else if (codigo==6){ // remove USUARIO
+			
+			char senha[20];
+			p = strtok( NULL, "/");
+			int situacao=0;
+			strcpy (senha, p);
+			
+			situacao = desativa_user(nombre,senha,conn);
+			
+			if (situacao == 0){
+				sprintf (respuesta, "%s desativado com sucesso",nombre);
+			}else if (situacao == 2){
+				sprintf (respuesta, "%s nao pode ser desativado",nombre);
+			}else{
+				sprintf (respuesta, "Erro ao desativar %s",nombre);
+			}
+			
+			
+		}else if (codigo==7){ // recupera USUARIO
+			
+			char senha[20];
+			p = strtok( NULL, "/");
+			int situacao=0;
+			strcpy (senha, p);
+			
+			situacao = ativa_user(nombre,senha,conn);
+			
+			if (situacao == 0){
+				sprintf (respuesta, "%s ativado com sucesso",nombre);
+			}else if (situacao == 2){
+				sprintf (respuesta, "%s nao pode ser reativado",nombre);
+			}else{
+				sprintf (respuesta, "Erro ao reativar %s",nombre);
+			}
+			
+			
+		}
+		
+		if(codigo !=0){ // Desconectar
+			printf ("Resposta: %s\n", respuesta);
+			// Enviamos a resposta
+			write (sock_conn,respuesta, strlen(respuesta));
+		}
 	}
 	// Se acabo el servicio para este cliente
 	close(sock_conn); 
+	mysql_close (conn);
 	
 }

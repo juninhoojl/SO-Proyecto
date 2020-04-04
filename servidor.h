@@ -1,6 +1,8 @@
 #ifndef _SERVIDOR_H_
 #define _SERVIDOR_H_
 
+#include "basedados.h"
+
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -9,7 +11,8 @@
 #include <netinet/in.h>
 #include <stdio.h>
 #include <pthread.h>
-#include "basedados.h"
+
+
 
 
 struct thread_args
