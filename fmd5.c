@@ -1,17 +1,20 @@
  #include "fmd5.h"
 
-
-
-// 
+// Retorna um ponteiro para uma string de unsigned char
+// Lembrar de desalocar depois de usar
 int maina(){
+	
+
+	//result = malloc(sizeof(unsigned char)*MD5_DIGEST_LENGTH);
+	//unsigned char result[MD5_DIGEST_LENGTH];
+	
 	
 	int i=0;
 	
 	char string[]= "teste";
 	
 	unsigned char *result;
-	//result = malloc(sizeof(unsigned char)*MD5_DIGEST_LENGTH);
-	//unsigned char result[MD5_DIGEST_LENGTH];
+
 	
 	result=smd5(string);
 
@@ -21,7 +24,6 @@ int maina(){
 	
 	free(result);
 
-	
 	return 1;
 }
 	

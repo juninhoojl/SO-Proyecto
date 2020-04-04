@@ -96,8 +96,20 @@ void *AtenderCliente (void *args_void)
 			char senha[20];
 			p = strtok( NULL, "/");
 			strcpy(senha, p);
+			int i = 0;
 			
-			situacao=insere_user(nombre,senha,conn);
+			//char string[]= "teste";
+			
+			unsigned char *result;
+			
+			
+			result=smd5(senha);
+			
+			for(i = 0; i < MD5_DIGEST_LENGTH; i++){
+				printf("%02x", result[i]);
+			}
+			
+			situacao=insere_user(nombre,result,conn);
 			
 			if(situacao == 1){
 				sprintf(respuesta,"1%s",nombre); // Inserido correto
@@ -106,6 +118,10 @@ void *AtenderCliente (void *args_void)
 			}else{
 				sprintf(respuesta,"3%s",nombre); // Erro ao inserir
 			}
+			
+			
+			free(result);
+			
 		}
 		
 		if(codigo !=0){ // Desconectar

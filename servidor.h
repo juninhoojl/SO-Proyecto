@@ -2,6 +2,7 @@
 #define _SERVIDOR_H_
 
 #include "basedados.h"
+#include "fmd5.h"
 
 #include <string.h>
 #include <unistd.h>
