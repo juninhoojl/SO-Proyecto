@@ -9,7 +9,7 @@
 #include <openssl/md5.h>
 
 
-unsigned char * smd5();
+unsigned char * smd5(char * palavra);
 
 int maina();
 
