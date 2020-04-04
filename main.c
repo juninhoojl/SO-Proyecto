@@ -47,11 +47,13 @@ int main(int argc, char *argv[]){
 	
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0){
 		printf ("Erro ao fazer bind");
+		exit(1);
 	}
 	
 	// Ate 5 podem estar na fila esperando pelo servidor
 	if (listen(sock_listen, 5) < 0){
 		printf("Erro na escuta");
+		exit(1);
 	}
 	
 

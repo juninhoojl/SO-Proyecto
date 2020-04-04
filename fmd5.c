@@ -18,9 +18,9 @@ int maina(){
 	
 	result=smd5(string);
 
-	for(i = 0; i < MD5_DIGEST_LENGTH; i++){
-		printf("%02x", result[i]);
-	}
+/*	for(i = 0; i < MD5_DIGEST_LENGTH; i++){*/
+/*		printf("%02x", result[i]);*/
+/*	}*/
 	
 	free(result);
 
@@ -41,6 +41,7 @@ unsigned char * smd5(char * palavra){
 	for(i = 0; i < MD5_DIGEST_LENGTH; i++){
 		printf("%02x", result[i]);
 	}
+	
 	
 	printf("\n");
 	

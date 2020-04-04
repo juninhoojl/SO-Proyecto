@@ -10,6 +10,8 @@ void *AtenderCliente (void *args_void)
 	
 	printf("Numero = %lf\n", args->b);
 	
+	int i = 0; // laco mostra digest
+	
 	//s = (int*) args->a;
 	sock_conn = args->a;
 	
@@ -81,7 +83,17 @@ void *AtenderCliente (void *args_void)
 			int situacao=0;
 			strcpy (senha, p);
 			
-			situacao=loga_user(nombre,senha,conn);
+			unsigned char *result;
+			
+			
+			result=smd5(senha);
+			
+			for(i = 0; i < MD5_DIGEST_LENGTH; i++){
+				printf("%02x", result[i]);
+			}
+			
+			
+			situacao=loga_user(nombre,result,conn);
 			if (situacao == 1){
 				logado=1;
 				sprintf (respuesta, "1%s",nombre); // Login correto
@@ -96,7 +108,7 @@ void *AtenderCliente (void *args_void)
 			char senha[20];
 			p = strtok( NULL, "/");
 			strcpy(senha, p);
-			int i = 0;
+			
 			
 			//char string[]= "teste";
 			
