@@ -68,7 +68,7 @@ void *AtenderCliente (void *args_void)
 			printf ("Codigo: %d, Nome: %s\n", codigo, nombre);
 		}
 		
-		if(codigo ==0){ //petici?n de desconexi?n
+		if(codigo ==0){ // Solicita sair
 			
 			logado=0;
 			terminar=1;
@@ -91,74 +91,21 @@ void *AtenderCliente (void *args_void)
 				sprintf (respuesta, "3%s",nombre); // Erro ao logar
 			}
 			
-		}else if (codigo==4){// Busca usuario
-			
-			if (existe_user(nombre,conn) == 1){
-				
-				if(user_ativo(nombre,conn) == 1){
-					sprintf (respuesta, "%s existe",nombre);
-					
-				}else{
-					sprintf (respuesta, "%s existe (mas esta desativado)",nombre);
-				}
-				
-			}else{
-				sprintf (respuesta, "%s nao existe",nombre);
-			}
-			
-			
 		}else if (codigo==5){ // insere USUARIO
 			
 			char senha[20];
 			p = strtok( NULL, "/");
-			strcpy (senha, p);
+			strcpy(senha, p);
 			
 			situacao=insere_user(nombre,senha,conn);
 			
-			if (situacao == 0){
-				sprintf (respuesta, "%s inserido com sucesso",nombre);
-			}else if (situacao == 1){
-				sprintf (respuesta, "%s ja existe",nombre);
+			if(situacao == 1){
+				sprintf(respuesta,"1%s",nombre); // Inserido correto
+			}else if(situacao == 2){
+				sprintf(respuesta,"2%s",nombre); // Usuario ja existe
 			}else{
-				sprintf (respuesta, "%s nao pode ser inserido",nombre);
+				sprintf(respuesta,"3%s",nombre); // Erro ao inserir
 			}
-			
-		}else if (codigo==6){ // remove USUARIO
-			
-			char senha[20];
-			p = strtok( NULL, "/");
-			int situacao=0;
-			strcpy (senha, p);
-			
-			situacao = desativa_user(nombre,senha,conn);
-			
-			if (situacao == 0){
-				sprintf (respuesta, "%s desativado com sucesso",nombre);
-			}else if (situacao == 2){
-				sprintf (respuesta, "%s nao pode ser desativado",nombre);
-			}else{
-				sprintf (respuesta, "Erro ao desativar %s",nombre);
-			}
-			
-			
-		}else if (codigo==7){ // recupera USUARIO
-			
-			char senha[20];
-			p = strtok( NULL, "/");
-			int situacao=0;
-			strcpy (senha, p);
-			
-			situacao = ativa_user(nombre,senha,conn);
-			
-			if (situacao == 0){
-				sprintf (respuesta, "%s ativado com sucesso",nombre);
-			}else if (situacao == 2){
-				sprintf (respuesta, "%s nao pode ser reativado",nombre);
-			}else{
-				sprintf (respuesta, "Erro ao reativar %s",nombre);
-			}
-			
-			
 		}
 		
 		if(codigo !=0){ // Desconectar

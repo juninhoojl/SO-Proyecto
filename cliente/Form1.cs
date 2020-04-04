@@ -14,7 +14,7 @@ namespace Cliente
 {
     public partial class Form1 : Form
     {
-        int logado = 0;
+        // int logado = 0;
 
         Socket server;
         public Form1()
@@ -59,7 +59,46 @@ namespace Cliente
         }
 
 
-        // Login
+        // 1- Registrado corretamente
+        // 2- Usuario ja existe
+        // 3- erro ao registrar
+        private void buttonRegistra_Click(object sender, EventArgs e)
+        {
+
+            // Mensagem Login
+            string mensaje = "5/" + textUser.Text + "/" + textPassword.Text;
+
+            // Enviamos ao servidor a mensagem
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+
+            //Recibimos la respuesta del servidor
+            byte[] msg2 = new byte[80];
+            server.Receive(msg2);
+
+            mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+            if (String.Compare(mensaje, "1"+textUser.Text) == 0)
+            {
+                MessageBox.Show("Registrado com sucesso");
+                this.BackColor = Color.Orange;
+
+            }
+            else if (String.Compare(mensaje, "2"+textUser.Text) == 0)
+            {
+                MessageBox.Show("Usuario ja existe");
+            }
+            else
+            {
+                MessageBox.Show("Erro ao registrar usuario");
+            }
+
+        }
+
+
+        // 1- Logado corretamente
+        // 2- Credenciais incorretas
+        // 3- Erro ao logar
         private void buttonLogin_Click(object sender, EventArgs e)
         {
 
@@ -77,15 +116,14 @@ namespace Cliente
             // Toda a linha de mensagem
             mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
 
-            // Se pode logar 1 - sim 2 - credenciais incorretas 3- erro ao logar
-            if (String.Compare(mensaje, "1"+textUser.Text) == 0)
+            if (String.Compare(mensaje, "1" + textUser.Text) == 0)
             {
                 MessageBox.Show("Logado com sucesso");
-                logado = 1;
+                // logado = 1;
                 this.BackColor = Color.Orange;
 
             }
-            else if (String.Compare(mensaje, "2"+textUser.Text) == 0)
+            else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
             {
                 MessageBox.Show("Usuario ou senha incorretos");
             }
@@ -97,7 +135,6 @@ namespace Cliente
         }
 
 
-        
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {

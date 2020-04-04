@@ -1,80 +1,84 @@
 #include "basedados.h"
 
-int ativa_user(char user[], char senha[], MYSQL *conn){
+int insere_user(char user[], char senha[], MYSQL *conn){
 	
-	char query[80];
+	char query[100];
 	int err;
-	MYSQL_RES *resultado;
-	MYSQL_ROW row;
 	
-	// Se pode se autenticar pode se remover
-	
-	if(loga_user(user,senha,conn)){
+	// Se nao existe
+	if(!existe_user(user,conn)){
 		
-		printf("Pode ser reativad\n");
-		
-		strcpy (query, "UPDATE Player SET Ativo=1 WHERE Username='");
+		strcpy (query, "INSERT INTO Player (Username, Password) VALUES ('");
 		strcat (query, user);
-		strcat (query, "';");
-		
+		strcat (query, "','");
+		strcat (query, senha); 
+		strcat (query, "'");
+		strcat (query, ");");
 		printf("query = %s\n", query);
-		
 		err = mysql_query(conn, query);
 		
 		if (err!=0){
-			printf ("Error ao reativar usuario na base %u %s\n", mysql_errno(conn), mysql_error(conn));
+			printf ("Error ao introduzir dados na base %u %s\n", mysql_errno(conn), mysql_error(conn));
+			return 3;
+			
+		}else{
+			printf("Usuario inserido com sucesso\n");
 			return 1;
 		}
 		
 	}else{
 		
-		printf("Nao pode ser reativado");
-		// Nao pode 
+		printf("Usuario ja existe\n");
 		return 2;
 	}
-	
 	
 	return 0;
 }
 	
 	
+int loga_user(char user[], char senha[], MYSQL *conn){
 	
-int user_ativo(char user[], MYSQL *conn){
-	
-	char query[80];
+	char query[100];
 	int err;
 	MYSQL_RES *resultado;
 	MYSQL_ROW row;
-	char valor;
-	
-	// Somente se existe
 	
 	if(existe_user(user,conn)){
 		
-		strcpy (query, "SELECT Ativo FROM Player WHERE Username = '");
+		// SELECT EXISTS(SELECT * FROM Player WHERE Username = 'jose' AND Password = 'asdfghjk');
+		
+		strcpy (query, "SELECT EXISTS(SELECT * FROM Player WHERE Username = '");
 		strcat (query, user);
-		strcat (query, "';");
+		strcat (query, "' AND Password = '");
+		strcat (query, senha);
+		strcat (query, "');");
 		
 		err = mysql_query(conn, query);
 		
 		if (err!=0) {
 			printf ("Error ao consultar usuario na base %u %s\n", mysql_errno(conn), mysql_error(conn));
-			exit (1); 
+			return 2;
 		}
 		
 		resultado = mysql_store_result(conn);
 		row = mysql_fetch_row(resultado);
 		
+		if(atoi(row[0]) == 1){ // Login ok
+			printf("Usuario e senha corretos\n");
+			return 1;
+			
+		}else{ // Nao pode logar
+			printf("Usuario e/ou senha incorretos\n");
+			return 3;
+		}
 		
 	}else{
-		//Retorna 2 se nao exite
-		return 2;
+		printf("Usuario nao existe\n");
 	}
 	
-	
-	return atoi(row[0]);
+	return 0;
 }
-		
+	
 int existe_user(char user[], MYSQL *conn){
 	
 	char query[80];
@@ -101,75 +105,6 @@ int existe_user(char user[], MYSQL *conn){
 	return atoi(row[0]);
 }
 	
-int desativa_user(char user[], char senha[], MYSQL *conn){
-	
-	char query[80];
-	int err;
-	MYSQL_RES *resultado;
-	MYSQL_ROW row;
-	
-	// Se pode se autenticar pode se remover
-	
-	if(loga_user(user,senha,conn)){
-		
-		printf("Pode ser deletado\n");
-		
-		strcpy (query, "UPDATE Player SET Ativo=0 WHERE Username='");
-		strcat (query, user);
-		strcat (query, "';");
-		
-		printf("query = %s\n", query);
-		
-		err = mysql_query(conn, query);
-		
-		if (err!=0){
-			printf ("Error ao remover usuario na base %u %s\n", mysql_errno(conn), mysql_error(conn));
-			return 1;
-		}
-		
-	}else{
-		
-		printf("Nao pode ser deletado");
-		// Nao pode 
-		return 2;
-	}
-	
-	
-	return 0;
-}
-
-int insere_user(char user[], char senha[], MYSQL *conn){
-	
-	// Conferir se existe USUARIO
-	// se nao nao insere
-	char query[80];
-	int err;
-	
-	if(existe_user(user,conn)){
-		
-		printf("Usuario ja existe\n");
-		return 1;
-	}else{
-		strcpy (query, "INSERT INTO Player (Username, Password) VALUES ('");
-		strcat (query, user);
-		strcat (query, "','");
-		strcat (query, senha); 
-		strcat (query, "'");
-		strcat (query, ");");
-		printf("query = %s\n", query);
-		err = mysql_query(conn, query);
-		
-		if (err!=0){
-			printf ("Error ao introduzir dados na base %u %s\n", mysql_errno(conn), mysql_error(conn));
-			return 2;
-		}else{
-			
-			printf("Usuario inserido com sucesso\n");
-		}
-	}
-	return 0;
-}
-
 	
 int altera_Pontuacao(MYSQL *conn, unsigned int id_game, char player[], int alt_score){
 	
@@ -297,49 +232,7 @@ unsigned int cria_Game(MYSQL *conn, char players[QTDMAX][TAMUSERNAME], int qtd){
 	return id_game;
 }
 	
-	
-int loga_user(char user[], char senha[], MYSQL *conn){
-	
-	char query[80];
-	int err;
-	MYSQL_RES *resultado;
-	MYSQL_ROW row;
-	
-	if(existe_user(user,conn)){
-		
-		// SELECT EXISTS(SELECT * FROM Player WHERE Username = 'jose' AND Password = 'asdfghjk');
-		
-		strcpy (query, "SELECT EXISTS(SELECT * FROM Player WHERE Username = '");
-		strcat (query, user);
-		strcat (query, "' AND Password = '");
-		strcat (query, senha);
-		strcat (query, "');");
-		
-		err = mysql_query(conn, query);
-		
-		if (err!=0) {
-			printf ("Error ao consultar usuario na base %u %s\n", mysql_errno(conn), mysql_error(conn));
-			return 2;
-		}
-		
-		resultado = mysql_store_result(conn);
-		row = mysql_fetch_row(resultado);
-		
-		if(atoi(row[0]) == 1){ // Login ok
-			printf("Usuario e senha corretos\n");
-			return 1;
-			
-		}else{ // Nao pode logar
-			printf("Usuario e/ou senha incorretos\n");
-			return 3;
-		}
-		
-	}else{
-		printf("Usuario nao existe\n");
-	}
-	
-	return 0;
-}
+
 	
 int insere_Player(char nome_arq[], MYSQL *conn){
 	

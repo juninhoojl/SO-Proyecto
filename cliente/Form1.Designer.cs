@@ -28,19 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textUser = new System.Windows.Forms.TextBox();
             this.textPassword = new System.Windows.Forms.TextBox();
             this.buttonLogin = new System.Windows.Forms.Button();
+            this.textUser = new System.Windows.Forms.TextBox();
+            this.buttonRegistra = new System.Windows.Forms.Button();
             this.groupLogin = new System.Windows.Forms.GroupBox();
             this.groupLogin.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // textUser
-            // 
-            this.textUser.Location = new System.Drawing.Point(6, 19);
-            this.textUser.Name = "textUser";
-            this.textUser.Size = new System.Drawing.Size(153, 20);
-            this.textUser.TabIndex = 0;
             // 
             // textPassword
             // 
@@ -59,14 +53,32 @@
             this.buttonLogin.UseVisualStyleBackColor = true;
             this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
+            // textUser
+            // 
+            this.textUser.Location = new System.Drawing.Point(6, 19);
+            this.textUser.Name = "textUser";
+            this.textUser.Size = new System.Drawing.Size(153, 20);
+            this.textUser.TabIndex = 0;
+            // 
+            // buttonRegistra
+            // 
+            this.buttonRegistra.Location = new System.Drawing.Point(6, 100);
+            this.buttonRegistra.Name = "buttonRegistra";
+            this.buttonRegistra.Size = new System.Drawing.Size(153, 23);
+            this.buttonRegistra.TabIndex = 3;
+            this.buttonRegistra.Text = "Registra";
+            this.buttonRegistra.UseVisualStyleBackColor = true;
+            this.buttonRegistra.Click += new System.EventHandler(this.buttonRegistra_Click);
+            // 
             // groupLogin
             // 
+            this.groupLogin.Controls.Add(this.buttonRegistra);
             this.groupLogin.Controls.Add(this.textUser);
             this.groupLogin.Controls.Add(this.buttonLogin);
             this.groupLogin.Controls.Add(this.textPassword);
             this.groupLogin.Location = new System.Drawing.Point(12, 12);
             this.groupLogin.Name = "groupLogin";
-            this.groupLogin.Size = new System.Drawing.Size(168, 106);
+            this.groupLogin.Size = new System.Drawing.Size(168, 138);
             this.groupLogin.TabIndex = 3;
             this.groupLogin.TabStop = false;
             this.groupLogin.Enter += new System.EventHandler(this.groupBox1_Enter);
@@ -87,9 +99,10 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textUser;
         private System.Windows.Forms.TextBox textPassword;
         private System.Windows.Forms.Button buttonLogin;
+        private System.Windows.Forms.TextBox textUser;
+        private System.Windows.Forms.Button buttonRegistra;
         private System.Windows.Forms.GroupBox groupLogin;
     }
 }

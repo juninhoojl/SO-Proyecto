@@ -1,9 +1,3 @@
-
-
-#include "basedados.h"
-#include "servidor.h"
-#include "fmd5.h"
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,11 +5,17 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <mysql.h>
+
+#include "basedados.h"
+#include "servidor.h"
+#include "fmd5.h"
 
 // /media/psf/Home/Documents/SO-Proyecto/GAME
 
 // Para compilar terminal
 // gcc main.c -std=c99 `mysql_config --cflags --libs` -lm fmd5.c basedados.c servidor.c  -lcrypto -o main.bin
+
 // Para compilar Zinjal (em main.c Run-> COnfigure -> Extra arguments for compiler:
 // -std=c99 `mysql_config --cflags --libs` -lm fmd5.c basedados.c servidor.c -lcrypto
 
@@ -24,17 +24,16 @@ int logado = 0; // 0 = nao
 int main(int argc, char *argv[]){
 	
 	maina(); // Testando md5
+	
 	MYSQL *conn;
 	conn=mysql_init(NULL);
+	
 	int sock_conn, sock_listen;
 	struct sockaddr_in serv_adr;
-	//char peticion[512];
-	//char respuesta[512];
-	
+
 	// Socket que vai esperar por alguma conexao, de escuta
 	if ((sock_listen = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		printf("Error ao criar socket");
-	// Fem el bind al port
 	}
 	
 	memset(&serv_adr, 0, sizeof(SERVIDOR));
@@ -42,6 +41,7 @@ int main(int argc, char *argv[]){
 	
 	// Estamos escutando de qualquer endereco ip
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
+	
 	// Associamos o socket que criamos com porta e tipo de dados
 	serv_adr.sin_port = htons(PORTA);
 	
@@ -49,9 +49,8 @@ int main(int argc, char *argv[]){
 		printf ("Erro ao fazer bind");
 	}
 	
-	// A fila de xonecoes nao pode ser maior que 3
-	// Ate 3 podem estar na fila esperando pelo servidor
-	if (listen(sock_listen, 3) < 0){
+	// Ate 5 podem estar na fila esperando pelo servidor
+	if (listen(sock_listen, 5) < 0){
 		printf("Erro na escuta");
 	}
 	
@@ -144,10 +143,6 @@ int main(int argc, char *argv[]){
 		//int terminar =0;
 		// Atender esse cliente ate que se desconecte
 		int situacao = 0;
-		
-		
-		
-		
 		// COMECA AQUIIIIIIIIIIIIIIIIIIIII
 		
 		printf ("Escuchando\n");
@@ -168,14 +163,5 @@ int main(int argc, char *argv[]){
 		pthread_create (&thread, NULL, AtenderCliente,&in);
 		i=i+1;
 		
-		// TERMINA AQUIIIIIIIIIIIIIIIIIIIII
-		
-		
-		
-		
-		
-				// O servico acabou para esse cliente
-		/*		close(sock_conn); */
-		/*		mysql_close (conn);*/
 	}
 }

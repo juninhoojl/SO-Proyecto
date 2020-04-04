@@ -16,3 +16,12 @@
 \\Mac\Home\Documents\SO-Proyecto\GAME\Cliente\obj\Debug\Cliente.exe
 \\Mac\Home\Documents\SO-Proyecto\GAME\Cliente\obj\Debug\Cliente.pdb
 \\Mac\Home\Documents\SO-Proyecto\GAME\Cliente\obj\Debug\Cliente.csprojAssemblyReference.cache
+\\Mac\Home\Documents\SO-Proyecto\cliente\bin\Debug\Cliente.exe.config
+\\Mac\Home\Documents\SO-Proyecto\cliente\bin\Debug\Cliente.exe
+\\Mac\Home\Documents\SO-Proyecto\cliente\bin\Debug\Cliente.pdb
+\\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.csprojAssemblyReference.cache
+\\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.Form1.resources
+\\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.Properties.Resources.resources
+\\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.csproj.GenerateResource.cache
+\\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.exe
+\\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.pdb
