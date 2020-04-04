@@ -1,6 +1,6 @@
 #include "servidor.h"
 
-void *AtenderCliente (void *socket)
+void *AtenderCliente(void *socket)
 {
 	int sock_conn;
 	int *s;

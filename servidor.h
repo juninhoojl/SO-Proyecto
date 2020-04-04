@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
+#include "basedados.h"
 
 
-void *AtenderCliente (void *socket);
+void *AtenderCliente(void *socket);
