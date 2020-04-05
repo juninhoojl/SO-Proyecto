@@ -1,9 +1,6 @@
  #include "fmd5.h"
 
-// Retorna um ponteiro para uma string de unsigned char
-// Lembrar de desalocar depois de usar
-int main(){
-
+int maina(){
 
 	char *result = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
 	
@@ -22,7 +19,7 @@ void fconv(char *dst,unsigned char *src,size_t src_len){
 	*dst = '\0';
 }
 
-
+// Recebe a palavra e depois espaco de memoria para converter
 char * smd5(char * palavra, char * digest){
 	
 	unsigned char *result;
@@ -31,6 +28,7 @@ char * smd5(char * palavra, char * digest){
 	fconv(digest,result,2*sizeof(result));
 	free(result);
 	return digest;
+	
 }
 
 
