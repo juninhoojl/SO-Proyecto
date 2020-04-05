@@ -10,20 +10,20 @@
 #include "basedados.h"
 #include "servidor.h"
 #include "fmd5.h"
-
+#include "lista.h"
 // /media/psf/Home/Documents/SO-Proyecto/GAME
 
 // Para compilar terminal
-// gcc main.c -std=c99 `mysql_config --cflags --libs` -lm fmd5.c basedados.c servidor.c  -lcrypto -o main.bin
+// gcc main.c -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c lista.c -lcrypto -lm -o main.bin
 
 // Para compilar Zinjal (em main.c Run-> COnfigure -> Extra arguments for compiler:
-// -std=c99 `mysql_config --cflags --libs` -lm fmd5.c basedados.c servidor.c -lcrypto
+// -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c lista.c -lcrypto -lm 
 
 int logado = 0;
 
 int main(int argc, char *argv[]){
 	
-	//maina(); // Testando md5
+	maina(); // Testando lista
 	
 	MYSQL *conn;
 	conn=mysql_init(NULL);
