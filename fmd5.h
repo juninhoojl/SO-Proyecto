@@ -9,8 +9,8 @@
 #include <openssl/md5.h>
 
 
-unsigned char * smd5(char * palavra);
-char* hashfunc (char* word1);
+char * smd5(char * palavra, char * digest);
+
 int maina();
 
 
