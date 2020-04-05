@@ -1,18 +1,5 @@
  #include "fmd5.h"
 
-int maina(){
-
-	char *result = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
-	
-	result = smd5("asdfghjk",result);
-
-	printf("%s\n",result);
-	
-	free(result);
-
-	return 0;
-}
-
 void fconv(char *dst,unsigned char *src,size_t src_len){
 	while (src_len--) 
 		dst += sprintf(dst,"%02x",*src++);

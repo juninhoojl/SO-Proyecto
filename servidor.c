@@ -42,6 +42,12 @@ void *AtenderCliente (void *args_void)
 	
 	// Entramos en un bucle para atender todas las peticiones de este cliente
 	//hasta que se desconecte
+	
+	// So vai reatribuir senha se fizer logout ideia
+	
+	
+	
+	
 	while (terminar ==0)
 	{
 		
@@ -83,17 +89,15 @@ void *AtenderCliente (void *args_void)
 			int situacao=0;
 			strcpy(senha, p);
 			
-/*			unsigned char *result;*/
+			char *asenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
 			
+			asenha = smd5(senha,asenha);
 			
-/*			result=smd5(senha);*/
+			printf("%s\n",asenha);
 			
-/*			for(i = 0; i < MD5_DIGEST_LENGTH; i++){*/
-/*				printf("%02x", result[i]);*/
-/*			}*/
+
+			situacao=loga_user(nombre,asenha,conn);
 			
-			
-			situacao=loga_user(nombre,senha,conn);
 			if (situacao == 1){
 				logado=1;
 				sprintf (respuesta, "1%s",nombre); // Login correto
@@ -103,25 +107,23 @@ void *AtenderCliente (void *args_void)
 				sprintf (respuesta, "3%s",nombre); // Erro ao logar
 			}
 			
+			free(asenha);
+			
+			
 		}else if (codigo==5){ // insere USUARIO
 			
 			char senha[20];
 			p = strtok( NULL, "/");
 			strcpy(senha, p);
 			
+			char *hsenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
 			
-			//char string[]= "teste";
+			hsenha = smd5(senha,hsenha);
 			
-/*			unsigned char *result;*/
+			printf("%s\n",hsenha);
 			
 			
-/*			result=smd5(senha);*/
-			
-/*			for(i = 0; i < MD5_DIGEST_LENGTH; i++){*/
-/*				printf("%02x", result[i]);*/
-/*			}*/
-			
-			situacao=insere_user(nombre,senha,conn);
+			situacao=insere_user(nombre,hsenha,conn);
 			
 			if(situacao == 1){
 				sprintf(respuesta,"1%s",nombre); // Inserido correto
@@ -132,7 +134,7 @@ void *AtenderCliente (void *args_void)
 			}
 			
 			
-			// free(result);
+			free(hsenha);
 			
 		}
 		

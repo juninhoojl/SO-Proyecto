@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <mysql.h>
+//#include <mysql.h>
 
 #include "basedados.h"
 #include "servidor.h"
@@ -19,11 +19,11 @@
 // Para compilar Zinjal (em main.c Run-> COnfigure -> Extra arguments for compiler:
 // -std=c99 `mysql_config --cflags --libs` -lm fmd5.c basedados.c servidor.c -lcrypto
 
-int logado = 0; // 0 = nao
+int logado = 0;
 
 int main(int argc, char *argv[]){
 	
-	maina(); // Testando md5
+	//maina(); // Testando md5
 	
 	MYSQL *conn;
 	conn=mysql_init(NULL);
@@ -56,90 +56,16 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	
-
-	
-	//int i;
-	
-	//char players[QTDMAX][TAMUSERNAME] = {"jose", "juninhoojl", "luiz"};
-	
-	//int qtdp = 3;
-	
-	//int i=0;
-	
-	//unsigned int id_jogo=0;
-	
-	
-	// Ler lista de pessoas para um mesmo jogo
-	// Cria jogo
-	// Pega o id e adiciona na lista
-	
-	
-
-	
-	/*	INSERT INTO Game (Duracion,Vencedor) VALUES (33,1);*/
-	/*	INSERT INTO Game (Duracion,Vencedor) VALUES (30,2);*/
-	
-	/*	INSERT INTO Relaciona (IDg,IDp) VALUES (1,1);*/
-	/*	INSERT INTO Relaciona (IDg,IDp) VALUES (1,2);*/
-	
-	//int err;
-	
-	
-	
-	
-	/*
-	for(i=0;i<qtdp;i++){
-	printf("Player %d = %s\n",i,players[i]);
-	}
-	
-	*/
-	
-/*	insere_user("juninhos1","1qaz2wsx",conn);*/
-	
-/*	insere_user("jose","asdfghjk",conn);*/
-	
-/*	insere_user("hash","e7d80ffeefa212b7c5c55700e4f7193e",conn);*/
-	
-/*	loga_user("jose","asdfghjk",conn);*/
-	
-/*	desativa_user("jose","asdfghjk",conn);*/
-	
-/*	printf("ATIVO = %d", user_ativo("juninhos1",conn));*/
-	
-/*	ativa_user("jose","asdfghjk",conn);*/
-	
-	// Descomentar para inserir jugadores
-	//insere_Player(PLAYERFILE, conn);
-	
-	//id_jogo=cria_Game(conn, players, qtdp);
-	
-	//altera_Pontuacao(conn, 1, players[0], 10);
-	
-	//qtdp=3;
-	
-	// Descomentar para criar juego
-	//
-	//printf("IdJogo = %u\n",id_jogo); 
-	
-	/*	for(i=0;i<qtdp;i++){*/
-	/*		printf("Player %d = %s\n",i,players[i]);*/
-	/*	}*/
-	
-	// Agora ja relaciona jogadores da lista usando id do game
-
 	
 	int i;
 	int sockets[100];
 	pthread_t thread;
 	i=0;
-	
-	//struct thread_args in = { .a = 10, .b = 3.141592653 };
+
 	
 	struct thread_args in;
 	in.b=10;
 	
-	
-	// Laco infinito
 	for (;;){
 		
 		//int terminar =0;

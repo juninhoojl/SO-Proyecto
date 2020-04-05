@@ -32,8 +32,6 @@ unsigned int cria_Game(MYSQL *conn, char players[QTDMAX][TAMUSERNAME], int qtd);
 int altera_Pontuacao(MYSQL *conn, unsigned int id_game, char player[], int alt_score);
 
 
-
-
 int existe_user(char user[], MYSQL *conn);
 
 

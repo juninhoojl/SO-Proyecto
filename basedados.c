@@ -2,7 +2,7 @@
 
 int insere_user(char user[], char senha[], MYSQL *conn){
 	
-	char query[100];
+	char query[200];
 	int err;
 	
 	// Se nao existe
@@ -38,7 +38,7 @@ int insere_user(char user[], char senha[], MYSQL *conn){
 	
 int loga_user(char user[], char senha[], MYSQL *conn){
 	
-	char query[100];
+	char query[200];
 	int err;
 	MYSQL_RES *resultado;
 	MYSQL_ROW row;
@@ -81,7 +81,7 @@ int loga_user(char user[], char senha[], MYSQL *conn){
 	
 int existe_user(char user[], MYSQL *conn){
 	
-	char query[80];
+	char query[200];
 	int err;
 	MYSQL_RES *resultado;
 	MYSQL_ROW row;
