@@ -68,10 +68,40 @@ namespace Cliente
                 dynamic result = MessageBox.Show("Seguro que quieres\n\t borrar usuario?", "GameSO", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes) // Somente se quiser deletar
                 {
-                    
+
+                    string mensaje = "3/" + textUser.Text + "/" + textPassword.Text;
+
+                    // Enviamos ao servidor a mensagem
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                    //Recibimos la respuesta del servidor
+                    byte[] msg2 = new byte[80];
+                    server.Receive(msg2);
+
+                    // Toda a linha de mensagem
+                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+                    if (String.Compare(mensaje, "1" + textUser.Text) == 0)
+                    {
+                        MessageBox.Show("Excluido com sucesso");
+                        Global.logado = 0;
+                        textUser.Enabled = true;
+                        textPassword.Enabled = true;
+                        buttonRegistra.Text = "Registrar";
+                        buttonLogin.Text = "Login";
+                        this.BackColor = Color.Purple;
+
+                    }
+                    else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
+                    {
+                        MessageBox.Show("Erro ao excluir usuario");
+                    }
+                    else // Eh impossivel chegar nesse caso
+                    {
+                        MessageBox.Show("Credenciais incorretas");
+                    }
                 }
-
-
             }
             else { 
 

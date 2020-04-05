@@ -30,7 +30,7 @@ CREATE TABLE Relaciona(
 )AUTO_INCREMENT = 1;
 
 INSERT INTO Player (Username, Password) VALUES ('user', MD5('senha123'));
-INSERT INTO Player (Username, Password) VALUES ('user2', MD5('senha123');
+INSERT INTO Player (Username, Password) VALUES ('user2', MD5('senha123'));
 
 INSERT INTO Game () VALUES ();
 

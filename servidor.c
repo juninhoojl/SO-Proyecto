@@ -121,6 +121,21 @@ void *AtenderCliente (void *args_void)
 			logado=0;
 			sprintf(respuesta, "0%s",nombre); // Login correto
 			
+		}else if(codigo==3){ // Solicita excluir USUARIO
+
+			// Somente se estiver logado
+			if(logado){
+				situacao=remove_user(nombre,conn);
+				if(situacao == 1){
+					sprintf(respuesta,"1%s",nombre); // Deletado corretamente
+					logado=0;
+				}else if(situacao == 2){
+					sprintf(respuesta,"2%s",nombre); // Erro ao excluir
+				}
+			}else{ // Praticamente impossivel de cair nesse caso
+				sprintf(respuesta,"3%s",nombre); // Erro ao excluir
+			}
+			
 		}else if (codigo==5){ // insere USUARIO
 			
 			char senha[20];

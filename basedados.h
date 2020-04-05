@@ -31,9 +31,7 @@ unsigned int cria_Game(MYSQL *conn, char players[QTDMAX][TAMUSERNAME], int qtd);
 // Funcao para alterar pontuacao de um usuario especifico
 int altera_Pontuacao(MYSQL *conn, unsigned int id_game, char player[], int alt_score);
 
-
 int existe_user(char user[], MYSQL *conn);
-
 
 int loga_user(char user[], char senha[], MYSQL *conn);
 // Operacoes usuario
@@ -42,7 +40,7 @@ int insere_user(char user[], char senha[], MYSQL *conn);
 
 // Funcao real para remover
 // (remove tudo que esta relacionado)
-int remove_user(char user[], char senha[], MYSQL *conn);
+int remove_user(char user[], MYSQL *conn);
 
 
 #endif

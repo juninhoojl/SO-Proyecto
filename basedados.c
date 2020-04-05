@@ -34,7 +34,29 @@ int insere_user(char user[], char senha[], MYSQL *conn){
 	
 	return 0;
 }
+
 	
+int remove_user(char user[], MYSQL *conn){
+	
+	char query[200];
+	int err;
+	
+	// Nem precisa conferir porque ja esta logado
+	strcpy (query, "DELETE FROM Player WHERE Username='");
+	strcat (query, user);
+	strcat (query, "';");
+	
+	err = mysql_query(conn, query);
+	
+	if (err!=0){
+		printf ("Error ao consultar usuario na base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		return 2;
+	}else{
+		printf("Usuario excluido com sucesso\n");
+		return 1;
+	}
+	
+}
 	
 int loga_user(char user[], char senha[], MYSQL *conn){
 	
@@ -55,7 +77,7 @@ int loga_user(char user[], char senha[], MYSQL *conn){
 		
 		err = mysql_query(conn, query);
 		
-		if (err!=0) {
+		if (err!=0){
 			printf ("Error ao consultar usuario na base %u %s\n", mysql_errno(conn), mysql_error(conn));
 			return 2;
 		}
