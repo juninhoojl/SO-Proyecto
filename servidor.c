@@ -95,7 +95,6 @@ void *AtenderCliente (void *args_void)
 			
 			printf("%s\n",asenha);
 			
-
 			situacao=loga_user(nombre,asenha,conn);
 			
 			if (situacao == 1){
@@ -103,12 +102,24 @@ void *AtenderCliente (void *args_void)
 				sprintf (respuesta, "1%s",nombre); // Login correto
 			}else if (situacao == 3){
 				sprintf (respuesta, "2%s",nombre); // Credenciais errados
+			}else if (situacao == 0){
+				sprintf (respuesta, "0%s",nombre); // Erro ao logar
 			}else{
+				
 				sprintf (respuesta, "3%s",nombre); // Erro ao logar
 			}
 			
 			free(asenha);
 			
+		}else if(codigo==2){ // Solicita deslogar
+			printf("SOlicitou deslogar");
+			char senha[20];
+			p = strtok( NULL, "/");
+			int situacao=0;
+			strcpy(senha, p);
+			
+			logado=0;
+			sprintf(respuesta, "0%s",nombre); // Login correto
 			
 		}else if (codigo==5){ // insere USUARIO
 			

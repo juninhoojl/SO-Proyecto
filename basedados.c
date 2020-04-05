@@ -74,6 +74,7 @@ int loga_user(char user[], char senha[], MYSQL *conn){
 		
 	}else{
 		printf("Usuario nao existe\n");
+		
 	}
 	
 	return 0;
