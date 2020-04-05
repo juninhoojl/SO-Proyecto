@@ -10,7 +10,7 @@
 
 
 unsigned char * smd5(char * palavra);
-
+char* hashfunc (char* word1);
 int maina();
 
 
