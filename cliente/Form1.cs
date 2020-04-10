@@ -32,6 +32,8 @@ namespace Cliente
             IPAddress direc = IPAddress.Parse("10.211.55.9");
             IPEndPoint ipep = new IPEndPoint(direc, 9002);
 
+            buttonConectados.Enabled = false;
+
             //Creamos el socket 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
@@ -90,6 +92,7 @@ namespace Cliente
                         Global.logado = 0;
                         textUser.Enabled = true;
                         textPassword.Enabled = true;
+                        buttonConectados.Enabled = false;
                         buttonRegistra.Text = "Registrar";
                         buttonLogin.Text = "Login";
                         this.BackColor = Color.Purple;
@@ -166,6 +169,7 @@ namespace Cliente
                     Global.logado = 0;
                     textUser.Enabled = true;
                     textPassword.Enabled = true;
+                    buttonConectados.Enabled = false;
                     buttonLogin.Text = "Login";
                     buttonRegistra.Text = "Registrar";
                     this.BackColor = Color.Blue;
@@ -200,6 +204,7 @@ namespace Cliente
                     textUser.Enabled = false;
                     textPassword.Enabled = false;
                     this.BackColor = Color.Orange;
+                    buttonConectados.Enabled = true;
                     buttonRegistra.Text = "Deletar";
                     buttonLogin.Text = "Logout";
                 }
