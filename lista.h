@@ -19,7 +19,7 @@ typedef struct Node {
 
 int maina();
 
-void insere(node ** cabeca, int socket, char name[MAXNOME]);
+void insere(node ** cabeca, int socket, char name[MAXNOME], int * tam);
 
 void mostra(struct Node * no);
 
@@ -27,9 +27,9 @@ node * busca(struct Node * no, char name[MAXNOME]);
 
 int getsocket(struct Node * no, char name[MAXNOME]);
 
-void elimina(node ** cabeca, char name[MAXNOME]);
+void elimina(node ** cabeca, char name[MAXNOME],int * tam);
 
-void conectados(struct Node * no, char lconectados[]);
+void conectados(struct Node * no, char lconectados[],int * tam);
 
 void listasockets(struct Node * no, char lconectados[], char lsockets[], int qtd);
 

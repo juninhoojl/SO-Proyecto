@@ -1,10 +1,10 @@
 #include "lista.h"
 
-int tam=0;
+//int tam=0;
 
-void insere(node ** cabeca, int socket, char name[MAXNOME]){
+void insere(node ** cabeca, int socket, char name[MAXNOME], int * tam){
 	
-	if(tam>=MAXELE){
+	if(*tam>=MAXELE){
 		printf("Tamanho maximo de %d elementos atingido!\n",MAXELE);
 		return;
 	}
@@ -29,7 +29,8 @@ void insere(node ** cabeca, int socket, char name[MAXNOME]){
 	
 	// Move a cabeca para o novo
 	(*cabeca) = novo;
-	tam++;
+	
+	*tam+=1;
 }
 	
 	// Mostra o conteudo dos nos
@@ -85,7 +86,7 @@ int getsocket(struct Node * no, char name[MAXNOME]){
 	return 0;
 }
 	
-void elimina(node ** cabeca, char name[MAXNOME]){
+void elimina(node ** cabeca, char name[MAXNOME],int * tam){
 	
 	node * no;
 	
@@ -114,23 +115,23 @@ void elimina(node ** cabeca, char name[MAXNOME]){
 		}
 		
 		free(no);
-		tam--;
+		tam-=1;
 		
 	}else{
 		printf("Nao encontrado\n");
 	}
 }
 	
-void conectados(struct Node * no, char lconectados[]){
+void conectados(struct Node * no, char lconectados[], int * tam){
 	
 	if (!no){
-		sprintf(lconectados, "%d/",tam);
+		sprintf(lconectados, "%d/",*tam);
 		printf("\nLista vazia\n");
 		return;
 	}
 	
 	//Lista = "3/jose/luiz/correa"
-	sprintf(lconectados, "%d",tam);
+	sprintf(lconectados, "%d",*tam);
 	while (no != NULL){
 		// Adiciona aqui
 		sprintf(lconectados, "%s/%s",lconectados,no->username);
@@ -164,11 +165,11 @@ int maina(){
 	// Inicia lista
 	node * cabeca = NULL;
 	node * test = NULL;
+	int tamanho = 0;
 	
-	
-	insere(&cabeca, 1, "jose");
-	insere(&cabeca, 2, "luiz");
-	insere(&cabeca, 3, "correa");
+	insere(&cabeca, 11, "jose",&tamanho);
+	insere(&cabeca, 22, "luiz",&tamanho);
+	insere(&cabeca, 33, "correa",&tamanho);
 	
 	printf("\n#########################\n");
 	printf("Depois de inserir\n");
@@ -188,7 +189,7 @@ int maina(){
 	printf("\n#########################\n");
 	printf("String conectados\n");
 	char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
-	conectados(cabeca, novo);
+	conectados(cabeca, novo,&tamanho);
 	printf("\n%s\n",novo);
 	free(novo);
 	
@@ -208,10 +209,11 @@ int maina(){
 	printf("\n#########################\n");
 	printf("Buscando socket\n");
 	printf("Socket = %d\n",getsocket(cabeca, "juninheo"));
+	printf("Socket = %d\n",getsocket(cabeca, "correa"));
 	
 	printf("\n#########################\n");
 	printf("Removendo\n");
-	elimina(&cabeca, "luiz");
+	elimina(&cabeca, "luiz",&tamanho);
 	mostra(cabeca);
 	
 	printf("\n\n\n");
