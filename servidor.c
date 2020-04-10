@@ -135,6 +135,20 @@ void *AtenderCliente (void *args_void){
 				sprintf(respuesta,"3%s",nombre); // Erro ao excluir
 			}
 			
+		}else if(codigo==4){ // Solicita ver usuarios conectados
+			
+			
+			printf("\n#########################\n");
+			printf("String conectados\n");
+			char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
+			conectados(lista, novo);
+			printf("\n%s\n",novo);
+			// Lista conectados
+			sprintf(respuesta,"%s",novo); // Inserido correto
+			free(novo);
+			
+			
+			
 		}else if (codigo==5){ // insere USUARIO
 			
 			char senha[20];

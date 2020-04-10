@@ -33,6 +33,7 @@
             this.textUser = new System.Windows.Forms.TextBox();
             this.buttonRegistra = new System.Windows.Forms.Button();
             this.groupLogin = new System.Windows.Forms.GroupBox();
+            this.buttonConectados = new System.Windows.Forms.Button();
             this.groupLogin.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,11 +84,22 @@
             this.groupLogin.TabStop = false;
             this.groupLogin.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // buttonConectados
+            // 
+            this.buttonConectados.Location = new System.Drawing.Point(187, 22);
+            this.buttonConectados.Name = "buttonConectados";
+            this.buttonConectados.Size = new System.Drawing.Size(75, 23);
+            this.buttonConectados.TabIndex = 4;
+            this.buttonConectados.Text = "Conectados";
+            this.buttonConectados.UseVisualStyleBackColor = true;
+            this.buttonConectados.Click += new System.EventHandler(this.buttonConectados_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1090, 659);
+            this.Controls.Add(this.buttonConectados);
             this.Controls.Add(this.groupLogin);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -104,6 +116,7 @@
         private System.Windows.Forms.TextBox textUser;
         private System.Windows.Forms.Button buttonRegistra;
         private System.Windows.Forms.GroupBox groupLogin;
+        private System.Windows.Forms.Button buttonConectados;
     }
 }
 

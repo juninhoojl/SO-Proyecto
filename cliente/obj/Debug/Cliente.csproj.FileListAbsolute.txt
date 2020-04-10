@@ -24,4 +24,4 @@
 \\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.csproj.GenerateResource.cache
 \\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.exe
 \\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.pdb
-\\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.Global.resources
+\\Mac\Home\Documents\SO-Proyecto\cliente\obj\Debug\Cliente.Form1.resources

@@ -13,11 +13,7 @@ using System.Net.Sockets;
 namespace Cliente
 {
 
-    public static class Global
-    {
-        public static string texto = "Hello";
-        public static int logado = 0;
-    }
+
 
     public partial class Form1 : Form
     {
@@ -55,6 +51,12 @@ namespace Cliente
                 // Se nao foi possivel
                 return;
             }
+        }
+
+        public static class Global
+        {
+            public static string texto = "Hello";
+            public static int logado = 0;
         }
 
         // 1- Registrado corretamente
@@ -223,5 +225,30 @@ namespace Cliente
 
         }
 
+        private void buttonConectados_Click(object sender, EventArgs e)
+        {
+
+            {
+                // Mensagem Login
+                string mensaje = "4/" + textUser.Text + "/" + textPassword.Text;
+
+                // Enviamos ao servidor a mensagem
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
+
+                //Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+
+                // Toda a linha de mensagem
+                //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                // Toda a linha de mensagem
+                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+                MessageBox.Show("Conectados:"+ mensaje);
+
+            }
+
+        }
     }
 }
