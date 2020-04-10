@@ -2,7 +2,9 @@
 
 int tam=0;
 
-void insere(node ** cabeca, int socket, char name[MAXNOME]){
+void insere(head * cabeca, int socket, char name[MAXNOME]){
+	
+	printf("Tamanho = %d\n",cabeca->taman);
 	
 	if(tam>=MAXELE){
 		printf("Tamanho maximo de %d elementos atingido!\n",MAXELE);
@@ -16,34 +18,75 @@ void insere(node ** cabeca, int socket, char name[MAXNOME]){
 		exit(1);
 	}
 	
+	
 	novo->socket = socket;
 	strcpy(novo->username, name);
 	
-	novo->prox = (*cabeca);
+	//novo->prox = (*cabeca);
+	novo->prox = *cabeca->plista;
+
 	novo->ante = NULL;
 	
+	
+	
 	// Muda o anterior do no principal
-	if ((*cabeca) != NULL){
-		(*cabeca)->ante = novo;
+	
+/*	if ((*cabeca) != NULL){*/
+/*		(*cabeca)->ante = novo;*/
+/*	}*/
+	
+	if ((*cabeca->plista) != NULL){
+		(*cabeca->plista)->ante = novo;
 	}
 	
+	
 	// Move a cabeca para o novo
-	(*cabeca) = novo;
-	tam++;
+	
+/*	(*cabeca) = novo;*/
+	(*cabeca->plista) = novo; 
+	
+	novo->prox = *cabeca->plista;
+	
+	cabeca->taman++;
+/*	tam++;*/
 }
 	
 	// Mostra o conteudo dos nos
-void mostra(struct Node * no){
+void mostra(head * cabeca){
 	
-	if (!no){
+	// Seria o ** ja
+	
+	// Ja eh o valor do plista que eh um ponteiro
+	printf("Ponteiro = %p\n",cabeca->plista);
+	
+	if (!(cabeca)->plista){
 		printf("Lista vazia\n");
 		return;
 	}
 	
-	while (no != NULL){
-		printf("%s -> %d\n", no->username, no->socket);
-		no = no->prox;
-	}
+	/*	if (!no){*/
+	/*		printf("Lista vazia\n");*/
+	/*		return;*/
+	/*	}*/
+	
+	
+	//node ** teste = (cabeca)->plista;
+	//printf(" Valor = %d",(*(cabeca)->plista)->socket);
+	//printf(" Nome = %s",(*(cabeca)->plista)->username);
+	
+	printf("%s -> %d\n",(*(cabeca)->plista)->username,(*(cabeca)->plista)->socket);
+	
+	
+	
+/*	while (no != NULL){*/
+/*		printf("%s -> %d\n", no->username, no->socket);*/
+/*		no = no->prox;*/
+/*	}*/
+
+/*	while (no != NULL){*/
+/*		printf("%s -> %d\n", no->username, no->socket);*/
+/*		no = no->prox;*/
+/*	}*/
 
 }
 	
@@ -171,55 +214,64 @@ int main(){
 	
 	printf("Tamanho=%d\n",cablista.taman);
 	node ** teste = cablista.plista;
-	insere(teste, 50, "EU");
-	insere(&cabeca, 1, "jose");
-	insere(&cabeca, 2, "luiz");
-	insere(&cabeca, 3, "correa");
+	insere(&cablista, 50, "Juninho");
 	
-	printf("\n#########################\n");
-	printf("Depois de inserir\n");
-	mostra(cabeca);
-
-	printf("\n#########################\n");
-	printf("Buscando usuario\n");
-	test=busca(cabeca,"jose");
+	printf("Tamanho=%d\n",cablista.taman);
 	
-	if(test != NULL){
-		printf("\nUser %s -> Socket: %d\n", test->username, test->socket);
-	}else{
-		printf("Nao encontrado\n");
-	}
-	
-	printf("\n#########################\n");
-	printf("String conectados\n");
-	char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
-	conectados(cabeca, novo);
-	printf("\n%s\n",novo);
-	free(novo);
-	
-	
-	printf("\n#########################\n");
-	printf("String sockets\n");
-	
-	char nome_cliente[] =  "correa,jose";
-	// Numeros de ate 2 digitos
-	char * lista_sockets = (char *)malloc(2*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
-	
-	listasockets(cabeca, nome_cliente, lista_sockets, 2);
-	
-	printf("\n%s\n",lista_sockets);
-	free(lista_sockets);
-	
-	printf("\n#########################\n");
-	printf("Buscando socket\n");
-	printf("Socket = %d\n",getsocket(cabeca, "juninheo"));
-	
-	printf("\n#########################\n");
-	printf("Removendo\n");
-	elimina(&cabeca, "luiz");
-	mostra(cabeca);
-	
-	printf("\n\n\n");
+	mostra(&cablista);
 	return 0;
+	
+/*	insere(&cabeca, 1, "jose");*/
+/*	insere(&cabeca, 2, "luiz");*/
+/*	insere(&cabeca, 3, "correa");*/
+	
+	
+/*	printf("\n#########################\n");*/
+/*	printf("Depois de inserir\n");*/
+/*	mostra(cabeca);*/
+	
+/*	mostra(*teste);*/
+
+/*	printf("\n#########################\n");*/
+/*	printf("Buscando usuario\n");*/
+/*	test=busca(cabeca,"jose");*/
+	
+/*	if(test != NULL){*/
+/*		printf("\nUser %s -> Socket: %d\n", test->username, test->socket);*/
+/*	}else{*/
+/*		printf("Nao encontrado\n");*/
+/*	}*/
+	
+/*	printf("\n#########################\n");*/
+/*	printf("String conectados\n");*/
+/*	char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));*/
+/*	conectados(cabeca, novo);*/
+/*	printf("\n%s\n",novo);*/
+/*	free(novo);*/
+	
+	
+/*	printf("\n#########################\n");*/
+/*	printf("String sockets\n");*/
+	
+/*	char nome_cliente[] =  "correa,jose";*/
+	// Numeros de ate 2 digitos
+/*	char * lista_sockets = (char *)malloc(2*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));*/
+	
+/*	listasockets(cabeca, nome_cliente, lista_sockets, 2);*/
+	
+/*	printf("\n%s\n",lista_sockets);*/
+/*	free(lista_sockets);*/
+	
+/*	printf("\n#########################\n");*/
+/*	printf("Buscando socket\n");*/
+/*	printf("Socket = %d\n",getsocket(cabeca, "juninheo"));*/
+	
+/*	printf("\n#########################\n");*/
+/*	printf("Removendo\n");*/
+/*	elimina(&cabeca, "luiz");*/
+/*	mostra(cabeca);*/
+	
+/*	printf("\n\n\n");*/
+/*	return 0;*/
 }
 	

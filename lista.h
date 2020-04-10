@@ -26,9 +26,9 @@ typedef struct Head {
 
 int maina();
 
-void insere(node ** cabeca, int socket, char name[MAXNOME]);
+void insere(head * cabeca, int socket, char name[MAXNOME]);
 
-void mostra(struct Node * no);
+void mostra(head * cabeca);
 
 node * busca(struct Node * no, char name[MAXNOME]);
 
