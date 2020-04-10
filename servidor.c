@@ -1,20 +1,23 @@
 #include "servidor.h"
 
-
 void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
-	int sock_conn;
-	int * s;
+	//int sock_conn;
+	int suser = args->a;
+	
+	// Ja copia valores para ter aqui
+	node * lista = args->lista;
 
 	// Mostra
-	mostra(args->lista);
-	sock_conn = args->a;
+	// mostra(args->lista);
+	mostra(lista);
+	//sock_conn = 
 	
 	// int i = 0; // laco mostra digest
 	
 	//s = (int*) args->a;
-	sock_conn = args->a;
+	//sock_conn = args->a;
 	
 	// Mostra
 	
@@ -61,7 +64,7 @@ void *AtenderCliente (void *args_void){
 	{
 		
 		// Ahora recibimos la petici?n
-		ret=read(sock_conn,peticion, sizeof(peticion));
+		ret=read(suser, peticion, sizeof(peticion));
 		printf ("Recibido\n");
 		
 		// Tenemos que a?adirle la marca de fin de string 
@@ -106,22 +109,27 @@ void *AtenderCliente (void *args_void){
 			
 			situacao=loga_user(nombre,asenha,conn);
 			
-			if (situacao == 1){
+			if (situacao == 1){ // Login correto
 				logado=1;
-				insere(&args->lista, args->a, nombre);
+				
+				// 
+				//insere(&args->lista, args->a, nombre);
+				insere(&lista, suser, nombre);
+				
 				printf("Mostra aqui\n");
 				
 				// Mostra
-				mostra(args->lista);
+				mostra(lista);
+				//mostra(args->lista);
 				
-				sprintf (respuesta, "1%s",nombre); // Login correto
-			}else if (situacao == 3){
-				sprintf (respuesta, "2%s",nombre); // Credenciais errados
-			}else if (situacao == 0){
-				sprintf (respuesta, "0%s",nombre); // Erro ao logar
-			}else{
+				sprintf (respuesta, "1%s",nombre); 
+			}else if (situacao == 3){  // Credenciais errados
+				sprintf (respuesta, "2%s",nombre);
+			}else if (situacao == 0){ // Erro ao logar
+				sprintf (respuesta, "0%s",nombre);
+			}else{ // Erro ao logar
 				
-				sprintf (respuesta, "3%s",nombre); // Erro ao logar
+				sprintf (respuesta, "3%s",nombre);
 			}
 			
 			free(asenha);
@@ -182,11 +190,11 @@ void *AtenderCliente (void *args_void){
 		if(codigo !=0){ // Desconectar
 			printf ("Resposta: %s\n", respuesta);
 			// Enviamos a resposta
-			write (sock_conn,respuesta, strlen(respuesta));
+			write (suser,respuesta, strlen(respuesta));
 		}
 	}
 	// Se acabo el servicio para este cliente
-	close(sock_conn); 
+	close(suser); 
 	mysql_close (conn);
 	
 }
