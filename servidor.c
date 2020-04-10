@@ -1,29 +1,17 @@
 #include "servidor.h"
 
 
-void *AtenderCliente (void *args_void)
-{
+void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
 	int sock_conn;
 	int * s;
-	printf("Mostra aqui\n");
-	
-	// Mostra
-	mostra(args->lista);
-	
-	// Insere aqui
-	
-	//printf("Numero = %lf\n", args->b);
-	printf("Insere aqui");
 
-	
-	printf("Mostra aqui\n");
-	
 	// Mostra
 	mostra(args->lista);
+	sock_conn = args->a;
 	
-	int i = 0; // laco mostra digest
+	// int i = 0; // laco mostra digest
 	
 	//s = (int*) args->a;
 	sock_conn = args->a;

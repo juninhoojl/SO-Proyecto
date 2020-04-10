@@ -65,56 +65,26 @@ int main(int argc, char *argv[]){
 	pthread_t thread;
 	
 	struct thread_args in;
-	in.b=10;
+	in.b=10.0; // Numero qualquer
+	in.lista=NULL; // Lista
 	
-	// node * cabeca = NULL;
-	
-	
-	// in.lista tem o ** de lista
-	in.lista=NULL;
-	
-	//printf("Endereco Cabeca (lista) --> %p\n",in.lista);
-	
-	node * novo = NULL;
-	insere(&in.lista, 1, "jose");
-	//novo = *in.lista;
-	
-	
-	insere(&in.lista, 2, "luiz");
-	//insere(&in.lista, 3, "correa");
-	
-	//mostra(in.lista);
-	
-	//printf("Cabeca --> %p\n",cabeca);
-	//printf("Endereco Cabeca --> %p\n",&novo);
-	
-
-
-	
-	for(;;){
-		
+	while(1){
 		//int terminar =0;
 		// Atender esse cliente ate que se desconecte
 		int situacao = 0;
 		// COMECA AQUIIIIIIIIIIIIIIIIIIIII
-		
-		printf ("Escuchando\n");
+		printf("Escuchando\n");
 		
 		sock_conn = accept(sock_listen, NULL, NULL);
-		printf ("He recibido conexion\n");
-		
-		//sockets[i] =sock_conn;
+		printf("He recibido conexion\n");
 		
 		// passa somente um inteiro
-		
 		in.a=sock_conn;
 		
 		//sock_conn es el socket que usaremos para este cliente
-		
 		// Crear thead y decirle lo que tiene que hacer
 		
-		pthread_create (&thread, NULL, AtenderCliente,&in);
-		i=i+1;
-		
+		pthread_create(&thread, NULL, AtenderCliente, &in);
 	}
+	
 }
