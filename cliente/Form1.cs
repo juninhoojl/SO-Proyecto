@@ -32,7 +32,8 @@ namespace Cliente
             IPEndPoint ipep = new IPEndPoint(direc, 9002);
 
             buttonConectados.Enabled = false;
-
+            listView1.Items.Clear();
+            listView1.Enabled = false;
             //Creamos el socket 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
@@ -92,6 +93,8 @@ namespace Cliente
                         textUser.Enabled = true;
                         textPassword.Enabled = true;
                         buttonConectados.Enabled = false;
+                        listView1.Items.Clear();
+                        listView1.Enabled = false;
                         buttonRegistra.Text = "Registrar";
                         buttonLogin.Text = "Login";
                         this.BackColor = Color.Purple;
@@ -127,7 +130,6 @@ namespace Cliente
                     MessageBox.Show("Registrado com sucesso");
                     this.BackColor = Color.Orange;
                     buttonLogin.PerformClick();
-
                 }
                 else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
                 {
@@ -169,6 +171,8 @@ namespace Cliente
                     textUser.Enabled = true;
                     textPassword.Enabled = true;
                     buttonConectados.Enabled = false;
+                    listView1.Items.Clear();
+                    listView1.Enabled = false;
                     buttonLogin.Text = "Login";
                     buttonRegistra.Text = "Registrar";
                     this.BackColor = Color.Blue;
@@ -204,8 +208,10 @@ namespace Cliente
                     textPassword.Enabled = false;
                     this.BackColor = Color.Orange;
                     buttonConectados.Enabled = true;
+                    listView1.Enabled = true;
                     buttonRegistra.Text = "Deletar";
                     buttonLogin.Text = "Logout";
+                    buttonConectados.PerformClick();
                 }
                 else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
                 {
@@ -261,15 +267,37 @@ namespace Cliente
 
                 for (int i = 1; i <= Convert.ToInt32(separada[0]); i++)
                 {
-                   if (separada[i].Trim() != "") listView1.Items.Add(separada[i]);
+                    // Proprio usuario
+                    if (String.Compare(separada[i], textUser.Text) == 0)
+                    {
+                        listView1.Items.Add(separada[i]+" (tu)");
+                    }
+                    else
+                    {
+                        listView1.Items.Add(separada[i]);
+                    }
+
+                    // if (separada[i].Trim() != "")
+                        
+                    
                 }
 
                 // ListViewItem item = new ListViewItem(mensaje);
                 //listView1.Items.Add(item);
-
-                MessageBox.Show(separada[0]+"jugadores conectados!");
-
+                if (Convert.ToInt32(separada[0])==1)
+                {
+                    MessageBox.Show(separada[0] + " jugador conectado! (tu mismo)");
+                }
+                else
+                {
+                    MessageBox.Show(separada[0] + " jugadores conectados!");
+                }
             }
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
