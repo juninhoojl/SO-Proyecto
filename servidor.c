@@ -3,40 +3,17 @@
 void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
-	//int sock_conn;
 	int suser = args->a;
-	
-	// Ja copia valores para ter aqui
 	node * lista = args->lista;
-
-	// Mostra
-	// mostra(args->lista);
 	mostra(lista);
-	//sock_conn = 
-	
-	// int i = 0; // laco mostra digest
-	
-	//s = (int*) args->a;
-	//sock_conn = args->a;
-	
-	// Mostra
-	
-	// mostra((*args)->lista);
-	
-	//printf("Mostra aqui de novo");
-	//insere(args.lista, 7, "joseNovo");
-	
-	
-
 	
 	char peticion[512];
 	char respuesta[512];
 	int ret;
-	
+
 	int logado=0;
 	int terminar =0;
 	int situacao=0;
-	
 	
 	MYSQL *conn;
 	conn=mysql_init(NULL);
@@ -54,14 +31,8 @@ void *AtenderCliente (void *args_void){
 	}
 	
 	
-	// Entramos en un bucle para atender todas las peticiones de este cliente
-	//hasta que se desconecte
-	
-	// So vai reatribuir senha se fizer logout ideia
-	
-	
-	while (terminar ==0)
-	{
+	// Laco para atender todas as peticoes desse cliente
+	while (terminar ==0){
 		
 		// Ahora recibimos la petici?n
 		ret=read(suser, peticion, sizeof(peticion));
@@ -141,6 +112,9 @@ void *AtenderCliente (void *args_void){
 			int situacao=0;
 			strcpy(senha, p);
 			
+			elimina(&lista, nombre);
+			mostra(lista);
+			
 			logado=0;
 			sprintf(respuesta, "0%s",nombre); // Login correto
 			
@@ -151,6 +125,8 @@ void *AtenderCliente (void *args_void){
 				situacao=remove_user(nombre,conn);
 				if(situacao == 1){
 					sprintf(respuesta,"1%s",nombre); // Deletado corretamente
+					elimina(&lista, nombre);
+					mostra(lista);
 					logado=0;
 				}else if(situacao == 2){
 					sprintf(respuesta,"2%s",nombre); // Erro ao excluir
