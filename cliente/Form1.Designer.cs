@@ -34,6 +34,8 @@
             this.buttonRegistra = new System.Windows.Forms.Button();
             this.groupLogin = new System.Windows.Forms.GroupBox();
             this.buttonConectados = new System.Windows.Forms.Button();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupLogin.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,19 +88,37 @@
             // 
             // buttonConectados
             // 
-            this.buttonConectados.Location = new System.Drawing.Point(187, 22);
+            this.buttonConectados.Location = new System.Drawing.Point(12, 156);
             this.buttonConectados.Name = "buttonConectados";
-            this.buttonConectados.Size = new System.Drawing.Size(75, 23);
+            this.buttonConectados.Size = new System.Drawing.Size(168, 23);
             this.buttonConectados.TabIndex = 4;
             this.buttonConectados.Text = "Conectados";
             this.buttonConectados.UseVisualStyleBackColor = true;
             this.buttonConectados.Click += new System.EventHandler(this.buttonConectados_Click);
+            // 
+            // listView1
+            // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(12, 185);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(168, 462);
+            this.listView1.TabIndex = 5;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Jugadores";
+            this.columnHeader1.Width = 140;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1090, 659);
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.buttonConectados);
             this.Controls.Add(this.groupLogin);
             this.Name = "Form1";
@@ -117,6 +137,8 @@
         private System.Windows.Forms.Button buttonRegistra;
         private System.Windows.Forms.GroupBox groupLogin;
         private System.Windows.Forms.Button buttonConectados;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
 

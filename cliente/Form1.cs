@@ -14,7 +14,6 @@ namespace Cliente
 {
 
 
-
     public partial class Form1 : Form
     {
         // int logado = 0;
@@ -243,17 +242,34 @@ namespace Cliente
 
                 //Recibimos la respuesta del servidor
                 byte[] msg2 = new byte[80];
+
+                // Limpa toda vez que chama esse botao e preenche do zero
+
                 server.Receive(msg2);
 
                 // Toda a linha de mensagem
                 //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                 // Toda a linha de mensagem
+                
                 mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                listView1.Items.Clear();
 
-                MessageBox.Show("Conectados:"+ mensaje);
+                // Remove quantida
+
+                string[] separada = mensaje.Split(new Char[]{'/'});
+                //ListViewItem item;
+
+                for (int i = 1; i <= Convert.ToInt32(separada[0]); i++)
+                {
+                   if (separada[i].Trim() != "") listView1.Items.Add(separada[i]);
+                }
+
+                // ListViewItem item = new ListViewItem(mensaje);
+                //listView1.Items.Add(item);
+
+                MessageBox.Show(separada[0]+"jugadores conectados!");
 
             }
-
         }
     }
 }
