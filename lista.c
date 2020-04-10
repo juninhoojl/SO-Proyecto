@@ -201,9 +201,9 @@ int maina(){
 	char * lista_sockets = (char *)malloc(2*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
 	
 	listasockets(cabeca, nome_cliente, lista_sockets, 2);
-	free(lista_sockets);
-	printf("\n%s\n",lista_sockets);
 	
+	printf("\n%s\n",lista_sockets);
+	free(lista_sockets);
 	
 	printf("\n#########################\n");
 	printf("Buscando socket\n");

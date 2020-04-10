@@ -34,7 +34,7 @@ namespace Cliente
         private void Form1_Load(object sender, EventArgs e)
         {
             IPAddress direc = IPAddress.Parse("10.211.55.9");
-            IPEndPoint ipep = new IPEndPoint(direc, 9000);
+            IPEndPoint ipep = new IPEndPoint(direc, 9002);
 
             //Creamos el socket 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

@@ -4,16 +4,39 @@
 void *AtenderCliente (void *args_void)
 {
 	
-	struct thread_args *args = args_void;
+	struct thread_args * args = args_void;
 	int sock_conn;
 	int * s;
+	printf("Mostra aqui\n");
 	
-	printf("Numero = %lf\n", args->b);
+	// Mostra
+	mostra(args->lista);
+	
+	// Insere aqui
+	
+	//printf("Numero = %lf\n", args->b);
+	printf("Insere aqui");
+
+	
+	printf("Mostra aqui\n");
+	
+	// Mostra
+	mostra(args->lista);
 	
 	int i = 0; // laco mostra digest
 	
 	//s = (int*) args->a;
 	sock_conn = args->a;
+	
+	// Mostra
+	
+	// mostra((*args)->lista);
+	
+	//printf("Mostra aqui de novo");
+	//insere(args.lista, 7, "joseNovo");
+	
+	
+
 	
 	char peticion[512];
 	char respuesta[512];
@@ -44,8 +67,6 @@ void *AtenderCliente (void *args_void)
 	//hasta que se desconecte
 	
 	// So vai reatribuir senha se fizer logout ideia
-	
-	
 	
 	
 	while (terminar ==0)
@@ -99,6 +120,12 @@ void *AtenderCliente (void *args_void)
 			
 			if (situacao == 1){
 				logado=1;
+				insere(&args->lista, args->a, nombre);
+				printf("Mostra aqui\n");
+				
+				// Mostra
+				mostra(args->lista);
+				
 				sprintf (respuesta, "1%s",nombre); // Login correto
 			}else if (situacao == 3){
 				sprintf (respuesta, "2%s",nombre); // Credenciais errados

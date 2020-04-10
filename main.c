@@ -19,6 +19,10 @@
 // Para compilar Zinjal (em main.c Run-> COnfigure -> Extra arguments for compiler:
 // -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c lista.c -lcrypto -lm 
 
+// Ps.: Em alguns casos Zinjal nao deleta os .bin antigos e nao compila os novos
+// rm *.bin
+
+
 int logado = 0;
 
 int main(int argc, char *argv[]){
@@ -57,16 +61,37 @@ int main(int argc, char *argv[]){
 	}
 	
 	
-	int i;
-	int sockets[100];
+	int i=0;
 	pthread_t thread;
-	i=0;
-
 	
 	struct thread_args in;
 	in.b=10;
 	
-	for (;;){
+	// node * cabeca = NULL;
+	
+	
+	// in.lista tem o ** de lista
+	in.lista=NULL;
+	
+	//printf("Endereco Cabeca (lista) --> %p\n",in.lista);
+	
+	node * novo = NULL;
+	insere(&in.lista, 1, "jose");
+	//novo = *in.lista;
+	
+	
+	insere(&in.lista, 2, "luiz");
+	//insere(&in.lista, 3, "correa");
+	
+	//mostra(in.lista);
+	
+	//printf("Cabeca --> %p\n",cabeca);
+	//printf("Endereco Cabeca --> %p\n",&novo);
+	
+
+
+	
+	for(;;){
 		
 		//int terminar =0;
 		// Atender esse cliente ate que se desconecte
@@ -78,7 +103,7 @@ int main(int argc, char *argv[]){
 		sock_conn = accept(sock_listen, NULL, NULL);
 		printf ("He recibido conexion\n");
 		
-		sockets[i] =sock_conn;
+		//sockets[i] =sock_conn;
 		
 		// passa somente um inteiro
 		

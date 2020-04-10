@@ -20,7 +20,7 @@
 #define QTDMIN 2
 #define CHARSNOME 25
 #define TAMUSERNAME CHARSNOME+1
-#define PORTA 9000
+#define PORTA 9002
 
 
 int insere_Player(char nome_arq[], MYSQL *conn);

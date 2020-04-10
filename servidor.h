@@ -3,6 +3,7 @@
 
 #include "basedados.h"
 #include "fmd5.h"
+#include "lista.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -20,6 +21,7 @@ struct thread_args
 {
 	int a;
 	double b;
+	struct Node * lista;
 };
 
 void *AtenderCliente (void *args_void);
