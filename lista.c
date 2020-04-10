@@ -159,13 +159,19 @@ void listasockets(struct Node * no, char lconectados[], char lsockets[], int qtd
 	}
 }
 	
-int maina(){
+int main(){
 	
 	// Inicia lista
 	node * cabeca = NULL;
 	node * test = NULL;
 	
+	head cablista;
+	cablista.plista=&cabeca;
+	cablista.taman=220;
 	
+	printf("Tamanho=%d\n",cablista.taman);
+	node ** teste = cablista.plista;
+	insere(teste, 50, "EU");
 	insere(&cabeca, 1, "jose");
 	insere(&cabeca, 2, "luiz");
 	insere(&cabeca, 3, "correa");
@@ -173,8 +179,7 @@ int maina(){
 	printf("\n#########################\n");
 	printf("Depois de inserir\n");
 	mostra(cabeca);
-	
-	
+
 	printf("\n#########################\n");
 	printf("Buscando usuario\n");
 	test=busca(cabeca,"jose");

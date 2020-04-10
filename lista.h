@@ -16,6 +16,13 @@ typedef struct Node {
 	struct Node* prox;
 }node;
 
+typedef struct Head {
+	
+	int taman;
+	node ** plista;
+	
+}head;
+
 
 int maina();
 
