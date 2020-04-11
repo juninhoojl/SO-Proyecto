@@ -13,7 +13,6 @@ using System.Net.Sockets;
 namespace Cliente
 {
 
-
     public partial class Form1 : Form
     {
         // int logado = 0;
@@ -282,7 +281,6 @@ namespace Cliente
 
 
                     }
-
 
                 }
 
