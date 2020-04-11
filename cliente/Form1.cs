@@ -267,19 +267,23 @@ namespace Cliente
 
                 for (int i = 1; i <= Convert.ToInt32(separada[0]); i++)
                 {
-                    // Proprio usuario
-                    if (String.Compare(separada[i], textUser.Text) == 0)
+
+                    if (separada[i].Trim() != "")
                     {
-                        listView1.Items.Add(separada[i]+" (tu)");
-                    }
-                    else
-                    {
-                        listView1.Items.Add(separada[i]);
+                        // Proprio usuario
+                        if (String.Compare(separada[i], textUser.Text) == 0)
+                        {
+                            listView1.Items.Add(separada[i] + " (tu)");
+                        }
+                        else
+                        {
+                            listView1.Items.Add(separada[i]);
+                        }
+
+
                     }
 
-                    // if (separada[i].Trim() != "")
-                        
-                    
+
                 }
 
                 // ListViewItem item = new ListViewItem(mensaje);

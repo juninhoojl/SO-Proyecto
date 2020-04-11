@@ -21,7 +21,8 @@ struct thread_args
 {
 	int a;
 	double b;
-	struct Node * lista;
+	int * tam;
+	struct Node ** lista;
 };
 
 void *AtenderCliente (void *args_void);

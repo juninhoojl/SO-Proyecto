@@ -60,13 +60,16 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	
-	int i=0;
+	int tamanho=0;
 	pthread_t thread;
 	
 	struct thread_args in;
 	in.b=10.0; // Numero qualquer
-	in.lista=NULL; // Lista
 	
+	node * cabeca = NULL;
+	
+	in.lista=&cabeca; // Lista
+	in.tam = &tamanho;
 	while(1){
 		//int terminar =0;
 		// Atender esse cliente ate que se desconecte

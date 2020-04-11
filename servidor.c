@@ -4,8 +4,9 @@ void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
 	int suser = args->a;
-	node * lista = args->lista;
-	mostra(lista);
+	node ** lista = args->lista;
+	mostra(*lista);
+	int * tamanho = args->tam;
 	
 	char peticion[512];
 	char respuesta[512];
@@ -85,12 +86,12 @@ void *AtenderCliente (void *args_void){
 				
 				// 
 				//insere(&args->lista, args->a, nombre);
-				insere(&lista, suser, nombre);
+				insere(lista, suser, nombre,tamanho);
 				
 				printf("Mostra aqui\n");
 				
 				// Mostra
-				mostra(lista);
+				mostra(*lista);
 				//mostra(args->lista);
 				
 				sprintf (respuesta, "1%s",nombre); 
@@ -112,8 +113,8 @@ void *AtenderCliente (void *args_void){
 			int situacao=0;
 			strcpy(senha, p);
 			
-			elimina(&lista, nombre);
-			mostra(lista);
+			elimina(lista, nombre,tamanho);
+			mostra(*lista);
 			
 			logado=0;
 			sprintf(respuesta, "0%s",nombre); // Login correto
@@ -125,8 +126,8 @@ void *AtenderCliente (void *args_void){
 				situacao=remove_user(nombre,conn);
 				if(situacao == 1){
 					sprintf(respuesta,"1%s",nombre); // Deletado corretamente
-					elimina(&lista, nombre);
-					mostra(lista);
+					elimina(lista, nombre,tamanho);
+					mostra(*lista);
 					logado=0;
 				}else if(situacao == 2){
 					sprintf(respuesta,"2%s",nombre); // Erro ao excluir
@@ -141,7 +142,7 @@ void *AtenderCliente (void *args_void){
 			printf("\n#########################\n");
 			printf("String conectados\n");
 			char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
-			conectados(lista, novo);
+			conectados(*lista, novo,tamanho);
 			printf("\n%s\n",novo);
 			// Lista conectados
 			sprintf(respuesta,"%s",novo); // Inserido correto

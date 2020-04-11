@@ -115,7 +115,7 @@ void elimina(node ** cabeca, char name[MAXNOME],int * tam){
 		}
 		
 		free(no);
-		tam-=1;
+		*tam-=1;
 		
 	}else{
 		printf("Nao encontrado\n");
