@@ -25,6 +25,8 @@ struct thread_args
 	struct Node ** lista;
 };
 
+
+
 void *AtenderCliente (void *args_void);
 
 

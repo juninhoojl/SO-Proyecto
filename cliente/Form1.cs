@@ -28,7 +28,7 @@ namespace Cliente
         private void Form1_Load(object sender, EventArgs e)
         {
             IPAddress direc = IPAddress.Parse("10.211.55.9");
-            IPEndPoint ipep = new IPEndPoint(direc, 9002);
+            IPEndPoint ipep = new IPEndPoint(direc, 9003);
 
             buttonConectados.Enabled = false;
             listView1.Items.Clear();

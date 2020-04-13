@@ -1,5 +1,9 @@
 #include "servidor.h"
 
+int contador;
+//Estructura necesaria para acceso excluyente
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
@@ -182,6 +186,12 @@ void *AtenderCliente (void *args_void){
 			printf ("Resposta: %s\n", respuesta);
 			// Enviamos a resposta
 			write (suser,respuesta, strlen(respuesta));
+		}
+		if ((codigo ==1)||(codigo==2)||(codigo==3)||(codigo==4)||(codigo==5))
+		{
+			pthread_mutex_lock( &mutex ); //No me interrumpas ahora
+			contador = contador +1;
+			pthread_mutex_unlock( &mutex ); //Ya puedes interrumpirme
 		}
 	}
 	// Se acabo el servicio para este cliente
