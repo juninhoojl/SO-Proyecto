@@ -40,7 +40,9 @@ namespace Cliente
             this.buttonConectados = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupLogin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // textPassword
@@ -81,6 +83,7 @@ namespace Cliente
             // 
             // groupLogin
             // 
+            this.groupLogin.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.groupLogin.Controls.Add(this.button1);
             this.groupLogin.Controls.Add(this.buttonRegistra);
             this.groupLogin.Controls.Add(this.textUser);
@@ -116,6 +119,7 @@ namespace Cliente
             // 
             // listView1
             // 
+            this.listView1.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.listView1.HideSelection = false;
@@ -131,6 +135,16 @@ namespace Cliente
             this.columnHeader1.Text = "Jugadores";
             this.columnHeader1.Width = 140;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Cliente.Properties.Resources.gandalf3;
+            this.pictureBox1.Location = new System.Drawing.Point(63, 176);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(889, 367);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -139,6 +153,7 @@ namespace Cliente
             this.BackgroundImage = global::Cliente.Properties.Resources.gandalf;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(984, 586);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.buttonConectados);
             this.Controls.Add(this.groupLogin);
@@ -150,6 +165,7 @@ namespace Cliente
             this.Load += new System.EventHandler(this.Form1_Load_1);
             this.groupLogin.ResumeLayout(false);
             this.groupLogin.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -166,6 +182,7 @@ namespace Cliente
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button button1;
+        private PictureBox pictureBox1;
     }
 }
 

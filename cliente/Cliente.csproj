@@ -104,5 +104,17 @@
   <ItemGroup>
     <None Include="Resources\gandalf_reduzido.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background_wood2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gandalf.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gandalf1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gandalf2.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
