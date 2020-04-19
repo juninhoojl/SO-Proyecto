@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Media;
 
 namespace Cliente
 {
@@ -34,10 +35,10 @@ namespace Cliente
             this.MinimumSize = new Size(1000, 625);
             this.MaximumSize = new Size(1000, 625);
 
-            
-            this.BackgroundImage = new Bitmap(Properties.Resources.background_wood);
-            //this.BackgroundImageLayout = ImageLayout.Center;
+            SoundPlayer splayer = new SoundPlayer(Properties.Resources.gandalf_reduzido);
 
+            splayer.PlayLooping();
+            //this.BackgroundImage = new Bitmap(Properties.Resources.background_wood);
 
         }
 
