@@ -122,7 +122,7 @@
         AAEAAAD/////AQAAAAAAAAAEAQAAABZTeXN0ZW0uSU8uTWVtb3J5U3RyZWFtCgAAAAdfYnVmZmVyB19v
         cmlnaW4JX3Bvc2l0aW9uB19sZW5ndGgJX2NhcGFjaXR5C19leHBhbmRhYmxlCV93cml0YWJsZQpfZXhw
         b3NhYmxlB19pc09wZW4dTWFyc2hhbEJ5UmVmT2JqZWN0K19faWRlbnRpdHkHAAAAAAAAAAACAggICAgB
-        AQEBCQIAAAAAAAAAAAAAAPjgCQD44AkAAAEAAQoPAgAAAPjgCQACUklGRvDgCQBXQVZFZm10IBAAAAAB
+        AQEBCQIAAAAAAAAA+OAJAPjgCQD44AkAAAEAAQoPAgAAAPjgCQACUklGRvDgCQBXQVZFZm10IBAAAAAB
         AAEARKwAAIhYAQACABAAZGF0YcDfCQDY/xAIYQ6tDlcKBQbgBBIHZAdKAZz3YO4L6jjtk/Dt7jvvRfLK
         8ajusOtx6cDpfus07R3yfPo0A1QHZAFj9mDzI/vjBWkLWQiRACj3+etq5GvkDOic7InxuPQp9336kf/N
         BfEG8wAM/lIDtgvhE90YLBhzFoAY/BsEHmQgSyMCIdoZSBbVFWMTqBHgDwoMOg9QGZ0b5xbeF7wcdh10
@@ -10918,20 +10918,5 @@
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="gandalf" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gandalf.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="gandalf1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\gandalf.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="gandalf2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\gandalf1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="gandalf3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\gandalf2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="background_wood" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\background_wood2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="gandalf_ok" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\gandalf_ok.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

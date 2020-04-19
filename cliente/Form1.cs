@@ -66,7 +66,7 @@ namespace Cliente
             {
                 // Tentamos conectar usando socket
                 server.Connect(ipep);
-                this.BackColor = Color.Green;
+               
                 MessageBox.Show("Conectado");
             }
             catch (SocketException)
@@ -154,7 +154,7 @@ namespace Cliente
                             textPassword.Text = "";
                             textUser.Text = "";
 
-                        this.BackColor = Color.Purple;
+                   
 
                         }
                         else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
@@ -186,7 +186,7 @@ namespace Cliente
                     if (String.Compare(mensaje, "1" + textUser.Text) == 0)
                     {
                         MessageBox.Show("Registrado com sucesso");
-                        this.BackColor = Color.Orange;
+                        
                         buttonLogin.PerformClick();
                 }
                     else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
@@ -242,7 +242,7 @@ namespace Cliente
                         button1.Enabled = true;
                         textPassword.Text = "";
                         textUser.Text = "";
-                    this.BackColor = Color.Blue;
+                   
 
                     }
                     else
@@ -273,7 +273,7 @@ namespace Cliente
                         Global.logado = 1;
                         textUser.Enabled = false;
                         textPassword.Enabled = false;
-                        this.BackColor = Color.Orange;
+                
                         buttonConectados.Enabled = true;
                         listView1.Enabled = true;
                         button1.Enabled = false;
