@@ -11,7 +11,7 @@
 #include "servidor.h"
 #include "fmd5.h"
 #include "lista.h"
-// /media/psf/Home/Documents/SO-Proyecto/GAME
+// /media/psf/Home/Documents/SO/SO-Proyecto
 
 // Para compilar terminal
 // gcc main.c -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c lista.c -lcrypto -lm -o main.bin

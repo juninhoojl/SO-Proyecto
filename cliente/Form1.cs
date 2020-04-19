@@ -301,5 +301,16 @@ namespace Cliente
         {
 
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            string mensaje = "0/" + textUser.Text + "/" + textPassword.Text;
+
+            // Enviamos ao servidor a mensagem
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+
+        }
     }
 }
