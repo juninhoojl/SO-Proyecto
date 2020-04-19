@@ -56,8 +56,9 @@ void *AtenderCliente (void *args_void){
 		// Ya tenemos el c?digo de la petici?n
 		char nombre[20];
 		
-		if (codigo !=0)
-		{
+		// Se estiver logado pega os dados do mesmo jeito ao desconectar
+		if (codigo !=0){
+			
 			p = strtok( NULL, "/");
 			strcpy (nombre, p);
 			// Ya tenemos el nombre
@@ -66,7 +67,15 @@ void *AtenderCliente (void *args_void){
 		
 		if(codigo ==0){ // Solicita sair
 			
-			logado=0;
+			// Se esta logado desloga
+			if(logado){
+				p = strtok( NULL, "/");
+				strcpy (nombre, p);	
+				elimina(lista, nombre,tamanho);
+				mostra(*lista);
+				logado=0;
+			}
+			
 			terminar=1;
 			
 		}else if (codigo==1){ // Solicita login
@@ -177,7 +186,6 @@ void *AtenderCliente (void *args_void){
 				sprintf(respuesta,"3%s",nombre); // Erro ao inserir
 			}
 			
-			
 			free(hsenha);
 			
 		}
@@ -186,12 +194,12 @@ void *AtenderCliente (void *args_void){
 			printf ("Resposta: %s\n", respuesta);
 			// Enviamos a resposta
 			write (suser,respuesta, strlen(respuesta));
-		}
-		if ((codigo ==1)||(codigo==2)||(codigo==3)||(codigo==4)||(codigo==5))
-		{
-			pthread_mutex_lock( &mutex ); //No me interrumpas ahora
-			contador = contador +1;
-			pthread_mutex_unlock( &mutex ); //Ya puedes interrumpirme
+			
+		}if ((codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)){
+			
+			pthread_mutex_lock( &mutex ); // No me interrumpas ahora
+			contador += 1;
+			pthread_mutex_unlock( &mutex ); // Ya puedes interrumpirme
 		}
 	}
 	// Se acabo el servicio para este cliente

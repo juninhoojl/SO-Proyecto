@@ -45,6 +45,7 @@
             this.textPassword.Name = "textPassword";
             this.textPassword.Size = new System.Drawing.Size(153, 20);
             this.textPassword.TabIndex = 1;
+            this.textPassword.TextChanged += new System.EventHandler(this.textPassword_TextChanged_1);
             // 
             // buttonLogin
             // 
@@ -62,6 +63,7 @@
             this.textUser.Name = "textUser";
             this.textUser.Size = new System.Drawing.Size(153, 20);
             this.textUser.TabIndex = 0;
+            this.textUser.TextChanged += new System.EventHandler(this.textUser_TextChanged_1);
             // 
             // buttonRegistra
             // 
