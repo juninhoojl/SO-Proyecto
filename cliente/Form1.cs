@@ -22,6 +22,23 @@ namespace Cliente
             InitializeComponent();
             Load += new EventHandler(Form1_Load);
 
+            // Define the border style of the form to a dialog box.
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+
+            // Set the MaximizeBox to false to remove the maximize box.
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+
+            // Set the start position of the form to the center of the screen.
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.MinimumSize = new Size(1000, 625);
+            this.MaximumSize = new Size(1000, 625);
+
+            
+            this.BackgroundImage = new Bitmap(Properties.Resources.background_wood);
+            //this.BackgroundImageLayout = ImageLayout.Center;
+
+
         }
 
 
@@ -39,6 +56,7 @@ namespace Cliente
             // Set to no text.
             textPassword.Text = "";
             // The password character is an asterisk.
+            textPassword.UseSystemPasswordChar = true;
             // textPassword.PasswordChar = '*';
 
             //Creamos el socket 
@@ -127,11 +145,15 @@ namespace Cliente
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
                             buttonConectados.Enabled = false;
+                            button1.Enabled = true;
                             listView1.Items.Clear();
                             listView1.Enabled = false;
                             buttonRegistra.Text = "Registrar";
                             buttonLogin.Text = "Login";
-                            this.BackColor = Color.Purple;
+                            textPassword.Text = "";
+                            textUser.Text = "";
+
+                        this.BackColor = Color.Purple;
 
                         }
                         else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
@@ -165,7 +187,7 @@ namespace Cliente
                         MessageBox.Show("Registrado com sucesso");
                         this.BackColor = Color.Orange;
                         buttonLogin.PerformClick();
-                    }
+                }
                     else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
                     {
                         MessageBox.Show("Usuario ja existe");
@@ -216,7 +238,10 @@ namespace Cliente
                         listView1.Enabled = false;
                         buttonLogin.Text = "Login";
                         buttonRegistra.Text = "Registrar";
-                        this.BackColor = Color.Blue;
+                        button1.Enabled = true;
+                        textPassword.Text = "";
+                        textUser.Text = "";
+                    this.BackColor = Color.Blue;
 
                     }
                     else
@@ -250,6 +275,7 @@ namespace Cliente
                         this.BackColor = Color.Orange;
                         buttonConectados.Enabled = true;
                         listView1.Enabled = true;
+                        button1.Enabled = false;
                         buttonRegistra.Text = "Deletar";
                         buttonLogin.Text = "Logout";
                         buttonConectados.PerformClick();
@@ -261,6 +287,9 @@ namespace Cliente
                     else if (String.Compare(mensaje, "0" + textUser.Text) == 0)
                     {
                         MessageBox.Show("Usuario nao existe");
+                    }else if(String.Compare(mensaje, "4" + textUser.Text) == 0) {
+
+                        MessageBox.Show("Usuario esta ativo em outra sessao, nao foi possivel logar");
                     }
                     else
                     {
@@ -352,24 +381,19 @@ namespace Cliente
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
             server.Send(msg);
 
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
 
         }
 
         // Botao olho
 
-        private void button1_MouseDown(object sender, EventArgs e)
+        private void button1_MouseHover_1(object sender, EventArgs e)
         {
             textPassword.UseSystemPasswordChar = false;
         }
 
-        private void button1_MouseUp(object sender, EventArgs e)
+        private void button1_MouseLeave_1(object sender, EventArgs e)
         {
             textPassword.UseSystemPasswordChar = true;
         }
-        
     }
 }

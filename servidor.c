@@ -85,36 +85,47 @@ void *AtenderCliente (void *args_void){
 			p = strtok( NULL, "/");
 			int situacao=0;
 			strcpy(senha, p);
-			
 			char *asenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
-			
 			asenha = smd5(senha,asenha);
 			
 			printf("%s\n",asenha);
 			
-			situacao=loga_user(nombre,asenha,conn);
-			
-			if (situacao == 1){ // Login correto
-				logado=1;
+			// Nao existe
+			if (busca(*lista, nombre) != NULL){
 				
-				// 
-				//insere(&args->lista, args->a, nombre);
-				insere(lista, suser, nombre,tamanho);
 				
-				printf("Mostra aqui\n");
+				sprintf (respuesta, "4%s",nombre);
 				
-				// Mostra
-				mostra(*lista);
-				//mostra(args->lista);
 				
-				sprintf (respuesta, "1%s",nombre); 
-			}else if (situacao == 3){  // Credenciais errados
-				sprintf (respuesta, "2%s",nombre);
-			}else if (situacao == 0){ // Erro ao logar
-				sprintf (respuesta, "0%s",nombre);
-			}else{ // Erro ao logar
+			}else{ // Existe faz tudo normal
 				
-				sprintf (respuesta, "3%s",nombre);
+				// Se usuario ja existe na lista nao pode logar de novo
+				situacao=loga_user(nombre,asenha,conn);
+				
+				if (situacao == 1){ // Login correto
+					logado=1;
+					
+					// 
+					//insere(&args->lista, args->a, nombre);
+					insere(lista, suser, nombre,tamanho);
+					
+					printf("Mostra aqui\n");
+					
+					// Mostra
+					mostra(*lista);
+					//mostra(args->lista);
+					
+					sprintf (respuesta, "1%s",nombre); 
+				}else if (situacao == 3){  // Credenciais errados
+					sprintf (respuesta, "2%s",nombre);
+				}else if (situacao == 0){ // Erro ao logar
+					sprintf (respuesta, "0%s",nombre);
+				}else{ // Erro ao logar
+					
+					sprintf (respuesta, "3%s",nombre);
+				}
+				
+				
 			}
 			
 			free(asenha);

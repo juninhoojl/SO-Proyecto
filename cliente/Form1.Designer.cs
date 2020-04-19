@@ -36,10 +36,10 @@ namespace Cliente
             this.textUser = new System.Windows.Forms.TextBox();
             this.buttonRegistra = new System.Windows.Forms.Button();
             this.groupLogin = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.buttonConectados = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button1 = new System.Windows.Forms.Button();
             this.groupLogin.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,6 +93,17 @@ namespace Cliente
             this.groupLogin.TabStop = false;
             this.groupLogin.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(133, 45);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(26, 21);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "👁";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.MouseLeave += new System.EventHandler(this.button1_MouseLeave_1);
+            this.button1.MouseHover += new System.EventHandler(this.button1_MouseHover_1);
+            // 
             // buttonConectados
             // 
             this.buttonConectados.Location = new System.Drawing.Point(12, 156);
@@ -110,7 +121,7 @@ namespace Cliente
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(12, 185);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(168, 462);
+            this.listView1.Size = new System.Drawing.Size(168, 389);
             this.listView1.TabIndex = 5;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -120,23 +131,11 @@ namespace Cliente
             this.columnHeader1.Text = "Jugadores";
             this.columnHeader1.Width = 140;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(133, 45);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(26, 21);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "👁";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
-            this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button1_MouseUp);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1090, 659);
+            this.ClientSize = new System.Drawing.Size(984, 586);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.buttonConectados);
             this.Controls.Add(this.groupLogin);
