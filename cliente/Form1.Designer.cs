@@ -1,4 +1,7 @@
-﻿namespace Cliente
+﻿using System;
+using System.Windows.Forms;
+
+namespace Cliente
 {
     partial class Form1
     {
@@ -36,6 +39,7 @@
             this.buttonConectados = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.button1 = new System.Windows.Forms.Button();
             this.groupLogin.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +47,7 @@
             // 
             this.textPassword.Location = new System.Drawing.Point(6, 45);
             this.textPassword.Name = "textPassword";
-            this.textPassword.Size = new System.Drawing.Size(153, 20);
+            this.textPassword.Size = new System.Drawing.Size(121, 20);
             this.textPassword.TabIndex = 1;
             this.textPassword.TextChanged += new System.EventHandler(this.textPassword_TextChanged_1);
             // 
@@ -77,6 +81,7 @@
             // 
             // groupLogin
             // 
+            this.groupLogin.Controls.Add(this.button1);
             this.groupLogin.Controls.Add(this.buttonRegistra);
             this.groupLogin.Controls.Add(this.textUser);
             this.groupLogin.Controls.Add(this.buttonLogin);
@@ -115,6 +120,18 @@
             this.columnHeader1.Text = "Jugadores";
             this.columnHeader1.Width = 140;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(133, 45);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(26, 21);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "👁";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
+            this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button1_MouseUp);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -133,6 +150,7 @@
 
         }
 
+
         #endregion
 
         private System.Windows.Forms.TextBox textPassword;
@@ -143,6 +161,7 @@
         private System.Windows.Forms.Button buttonConectados;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

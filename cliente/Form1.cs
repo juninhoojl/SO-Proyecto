@@ -39,7 +39,7 @@ namespace Cliente
             // Set to no text.
             textPassword.Text = "";
             // The password character is an asterisk.
-            textPassword.PasswordChar = '*';
+            // textPassword.PasswordChar = '*';
 
             //Creamos el socket 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -354,5 +354,22 @@ namespace Cliente
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Botao olho
+
+        private void button1_MouseDown(object sender, EventArgs e)
+        {
+            textPassword.UseSystemPasswordChar = false;
+        }
+
+        private void button1_MouseUp(object sender, EventArgs e)
+        {
+            textPassword.UseSystemPasswordChar = true;
+        }
+        
     }
 }
