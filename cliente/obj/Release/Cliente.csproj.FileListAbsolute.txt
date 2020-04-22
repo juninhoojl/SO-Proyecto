@@ -1,0 +1,9 @@
+\\Mac\Home\Documents\SO\SO-Proyecto\cliente\bin\Release\Cliente.exe.config
+\\Mac\Home\Documents\SO\SO-Proyecto\cliente\bin\Release\Cliente.exe
+\\Mac\Home\Documents\SO\SO-Proyecto\cliente\bin\Release\Cliente.pdb
+\\Mac\Home\Documents\SO\SO-Proyecto\cliente\obj\Release\Cliente.csprojAssemblyReference.cache
+\\Mac\Home\Documents\SO\SO-Proyecto\cliente\obj\Release\Cliente.Form1.resources
+\\Mac\Home\Documents\SO\SO-Proyecto\cliente\obj\Release\Cliente.Properties.Resources.resources
+\\Mac\Home\Documents\SO\SO-Proyecto\cliente\obj\Release\Cliente.csproj.GenerateResource.cache
+\\Mac\Home\Documents\SO\SO-Proyecto\cliente\obj\Release\Cliente.exe
+\\Mac\Home\Documents\SO\SO-Proyecto\cliente\obj\Release\Cliente.pdb

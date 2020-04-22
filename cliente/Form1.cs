@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Media;
 
 namespace Cliente
 {
@@ -22,24 +23,58 @@ namespace Cliente
             InitializeComponent();
             Load += new EventHandler(Form1_Load);
 
+            // Define the border style of the form to a dialog box.
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+
+            // Set the MaximizeBox to false to remove the maximize box.
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+
+            // Set the start position of the form to the center of the screen.
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.MinimumSize = new Size(1000, 625);
+            this.MaximumSize = new Size(1000, 625);
+
+            SoundPlayer splayer = new SoundPlayer(Properties.Resources.gandalf_reduzido);
+
+            splayer.PlayLooping();
+            //this.BackgroundImage = new Bitmap(Properties.Resources.background_wood);
+
         }
+
 
         // Conecta ao carregar
         private void Form1_Load(object sender, EventArgs e)
         {
-            IPAddress direc = IPAddress.Parse("10.211.55.9");
-            IPEndPoint ipep = new IPEndPoint(direc, 9003);
+            // PRODUCION ###########
+            IPAddress direc = IPAddress.Parse("147.83.117.22");
+            IPEndPoint ipep = new IPEndPoint(direc, 50001);
+            // ########### ###########
+
+            // LOCAL ###########
+            // IPAddress direc = IPAddress.Parse("10.211.55.9");
+            // IPEndPoint ipep = new IPEndPoint(direc, 9003);
+            // ########### ###########
+
 
             buttonConectados.Enabled = false;
             listView1.Items.Clear();
             listView1.Enabled = false;
+            buttonLogin.Enabled = false;
+            buttonRegistra.Enabled = false;
+            // Set to no text.
+            textPassword.Text = "";
+            // The password character is an asterisk.
+            textPassword.UseSystemPasswordChar = true;
+            // textPassword.PasswordChar = '*';
+
             //Creamos el socket 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
                 // Tentamos conectar usando socket
                 server.Connect(ipep);
-                this.BackColor = Color.Green;
+               
                 MessageBox.Show("Conectado");
             }
             catch (SocketException)
@@ -60,19 +95,174 @@ namespace Cliente
             public static int logado = 0;
         }
 
+
+
+        private void textPassword_TextChanged_1(object sender, EventArgs e)
+        {
+            setButtonVisibility();
+        }
+
+        private void textUser_TextChanged_1(object sender, EventArgs e)
+        {
+            setButtonVisibility();
+        }
+
+        private void setButtonVisibility()
+        {
+            if (String.IsNullOrEmpty(textUser.Text) || String.IsNullOrWhiteSpace(textUser.Text) || String.IsNullOrEmpty(textPassword.Text) || String.IsNullOrWhiteSpace(textPassword.Text))
+            {
+                buttonLogin.Enabled = false;
+                buttonRegistra.Enabled = false;
+            }
+            else
+            {
+                buttonLogin.Enabled = true;
+                buttonRegistra.Enabled = true;
+            }
+        }
+
+
         // 1- Registrado corretamente
         // 2- Usuario ja existe
         // 3- erro ao registrar
         private void buttonRegistra_Click(object sender, EventArgs e)
         {
-            // Remove usuario
-            if (Global.logado == 1)
-            {
-                dynamic result = MessageBox.Show("Seguro que quieres\n\t borrar usuario?", "GameSO", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes) // Somente se quiser deletar
+
+                if (Global.logado == 1)
+                {
+                    dynamic result = MessageBox.Show("Seguro que quieres\n\t borrar usuario?", "GameSO", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes) // Somente se quiser deletar
+                    {
+
+                        string mensaje = "3/" + textUser.Text + "/" + textPassword.Text;
+
+                        // Enviamos ao servidor a mensagem
+                        byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                        server.Send(msg);
+
+                        //Recibimos la respuesta del servidor
+                        byte[] msg2 = new byte[80];
+                        server.Receive(msg2);
+
+                        // Toda a linha de mensagem
+                        mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+                        if (String.Compare(mensaje, "1" + textUser.Text) == 0)
+                        {
+                            MessageBox.Show("Excluido com sucesso");
+                            Global.logado = 0;
+                            textUser.Enabled = true;
+                            textPassword.Enabled = true;
+                            buttonConectados.Enabled = false;
+                            button1.Enabled = true;
+                            listView1.Items.Clear();
+                            listView1.Enabled = false;
+                            buttonRegistra.Text = "Registrar";
+                            buttonLogin.Text = "Login";
+                            textPassword.Text = "";
+                            textUser.Text = "";
+
+                   
+
+                        }
+                        else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
+                        {
+                            MessageBox.Show("Erro ao excluir usuario");
+                        }
+                        else // Eh impossivel chegar nesse caso
+                        {
+                            MessageBox.Show("Credenciais incorretas");
+                        }
+                    }
+                }
+                else
                 {
 
-                    string mensaje = "3/" + textUser.Text + "/" + textPassword.Text;
+                    // Mensagem Login
+                    string mensaje = "5/" + textUser.Text + "/" + textPassword.Text;
+
+                    // Enviamos ao servidor a mensagem
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                    //Recibimos la respuesta del servidor
+                    byte[] msg2 = new byte[80];
+                    server.Receive(msg2);
+
+                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+                    if (String.Compare(mensaje, "1" + textUser.Text) == 0)
+                    {
+                        MessageBox.Show("Registrado com sucesso");
+                        
+                        buttonLogin.PerformClick();
+                }
+                    else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
+                    {
+                        MessageBox.Show("Usuario ja existe");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erro ao registrar usuario");
+                    }
+
+                }
+
+  
+            // Remove usuario
+            
+        }
+
+        // 1- Logado corretamente
+        // 2- Credenciais incorretas
+        // 3- Erro ao logar
+        // 0- Deslogado ok
+        private void buttonLogin_Click(object sender, EventArgs e)
+        {
+
+
+                // Se logado pede logout
+                if (Global.logado == 1)
+                {
+                    string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
+
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+
+                    //Recibimos la respuesta del servidor
+                    byte[] msg2 = new byte[80];
+                    server.Receive(msg2);
+
+                    // Toda a linha de mensagem
+                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+                    if (String.Compare(mensaje, "0" + textUser.Text) == 0)
+                    {
+                        MessageBox.Show("Deslogado com sucesso");
+                        Global.logado = 0;
+                        textUser.Enabled = true;
+                        textPassword.Enabled = true;
+                        buttonConectados.Enabled = false;
+                        listView1.Items.Clear();
+                        listView1.Enabled = false;
+                        buttonLogin.Text = "Login";
+                        buttonRegistra.Text = "Registrar";
+                        button1.Enabled = true;
+                        textPassword.Text = "";
+                        textUser.Text = "";
+                   
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erro ao deslogar");
+                    }
+
+                }
+                else // Efetua login
+                {
+                    // Mensagem Login
+                    string mensaje = "1/" + textUser.Text + "/" + textPassword.Text;
 
                     // Enviamos ao servidor a mensagem
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
@@ -87,146 +277,35 @@ namespace Cliente
 
                     if (String.Compare(mensaje, "1" + textUser.Text) == 0)
                     {
-                        MessageBox.Show("Excluido com sucesso");
-                        Global.logado = 0;
-                        textUser.Enabled = true;
-                        textPassword.Enabled = true;
-                        buttonConectados.Enabled = false;
-                        listView1.Items.Clear();
-                        listView1.Enabled = false;
-                        buttonRegistra.Text = "Registrar";
-                        buttonLogin.Text = "Login";
-                        this.BackColor = Color.Purple;
-
+                        MessageBox.Show("Logado com sucesso");
+                        Global.logado = 1;
+                        textUser.Enabled = false;
+                        textPassword.Enabled = false;
+                
+                        buttonConectados.Enabled = true;
+                        listView1.Enabled = true;
+                        button1.Enabled = false;
+                        buttonRegistra.Text = "Deletar";
+                        buttonLogin.Text = "Logout";
+                        buttonConectados.PerformClick();
                     }
                     else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
                     {
-                        MessageBox.Show("Erro ao excluir usuario");
+                        MessageBox.Show("Usuario ou senha incorretos");
                     }
-                    else // Eh impossivel chegar nesse caso
+                    else if (String.Compare(mensaje, "0" + textUser.Text) == 0)
                     {
-                        MessageBox.Show("Credenciais incorretas");
+                        MessageBox.Show("Usuario nao existe");
+                    }else if(String.Compare(mensaje, "4" + textUser.Text) == 0) {
+
+                        MessageBox.Show("Usuario esta ativo em outra sessao, nao foi possivel logar");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erro ao efetuar login");
                     }
                 }
-            }
-            else { 
-
-                // Mensagem Login
-                string mensaje = "5/" + textUser.Text + "/" + textPassword.Text;
-
-                // Enviamos ao servidor a mensagem
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-                if (String.Compare(mensaje, "1" + textUser.Text) == 0)
-                {
-                    MessageBox.Show("Registrado com sucesso");
-                    this.BackColor = Color.Orange;
-                    buttonLogin.PerformClick();
-                }
-                else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
-                {
-                    MessageBox.Show("Usuario ja existe");
-                }
-                else
-                {
-                    MessageBox.Show("Erro ao registrar usuario");
-                }
-
-            }
-        }
-
-        // 1- Logado corretamente
-        // 2- Credenciais incorretas
-        // 3- Erro ao logar
-        // 0- Deslogado ok
-        private void buttonLogin_Click(object sender, EventArgs e)
-        {
-            // Se logado pede logout
-            if (Global.logado == 1)
-            {
-                string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
-
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-
-                // Toda a linha de mensagem
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-                if (String.Compare(mensaje, "0" + textUser.Text) == 0)
-                {
-                    MessageBox.Show("Deslogado com sucesso");
-                    Global.logado = 0;
-                    textUser.Enabled = true;
-                    textPassword.Enabled = true;
-                    buttonConectados.Enabled = false;
-                    listView1.Items.Clear();
-                    listView1.Enabled = false;
-                    buttonLogin.Text = "Login";
-                    buttonRegistra.Text = "Registrar";
-                    this.BackColor = Color.Blue;
-
-                }
-                else
-                {
-                    MessageBox.Show("Erro ao deslogar");
-                }
-
-            }
-            else // Efetua login
-            {
-                // Mensagem Login
-                string mensaje = "1/" + textUser.Text + "/" + textPassword.Text;
-
-                // Enviamos ao servidor a mensagem
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                server.Send(msg);
-
-                //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
-                server.Receive(msg2);
-
-                // Toda a linha de mensagem
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-                if (String.Compare(mensaje, "1" + textUser.Text) == 0)
-                {
-                    MessageBox.Show("Logado com sucesso");
-                    Global.logado = 1;
-                    textUser.Enabled = false;
-                    textPassword.Enabled = false;
-                    this.BackColor = Color.Orange;
-                    buttonConectados.Enabled = true;
-                    listView1.Enabled = true;
-                    buttonRegistra.Text = "Deletar";
-                    buttonLogin.Text = "Logout";
-                    buttonConectados.PerformClick();
-                }
-                else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
-                {
-                    MessageBox.Show("Usuario ou senha incorretos");
-                }
-                else if (String.Compare(mensaje, "0" + textUser.Text) == 0)
-                {
-                    MessageBox.Show("Usuario nao existe");
-                }
-                else
-                {
-                    MessageBox.Show("Erro ao efetuar login");
-                }
-            }
-
-
+ 
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -300,6 +379,30 @@ namespace Cliente
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            string mensaje = "0/" + textUser.Text + "/" + textPassword.Text;
+
+            // Enviamos ao servidor a mensagem
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+
+
+        }
+
+        // Botao olho
+
+        private void button1_MouseHover_1(object sender, EventArgs e)
+        {
+            textPassword.UseSystemPasswordChar = false;
+        }
+
+        private void button1_MouseLeave_1(object sender, EventArgs e)
+        {
+            textPassword.UseSystemPasswordChar = true;
         }
     }
 }
