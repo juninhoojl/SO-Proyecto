@@ -46,8 +46,16 @@ namespace Cliente
         // Conecta ao carregar
         private void Form1_Load(object sender, EventArgs e)
         {
-            IPAddress direc = IPAddress.Parse("10.211.55.9");
-            IPEndPoint ipep = new IPEndPoint(direc, 9003);
+            // PRODUCION ###########
+            IPAddress direc = IPAddress.Parse("147.83.117.22");
+            IPEndPoint ipep = new IPEndPoint(direc, 50001);
+            // ########### ###########
+
+            // LOCAL ###########
+            // IPAddress direc = IPAddress.Parse("10.211.55.9");
+            // IPEndPoint ipep = new IPEndPoint(direc, 9003);
+            // ########### ###########
+
 
             buttonConectados.Enabled = false;
             listView1.Items.Clear();
