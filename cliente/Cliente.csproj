@@ -81,43 +81,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\background_wood.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\background_wood1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\gandalf.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\865622.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gandalf.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gandalf.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gandalf1.wav" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\gandalf_reduzido.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\background_wood2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gandalf.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gandalf1.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gandalf2.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gandalf_ok.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

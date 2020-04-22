@@ -35,9 +35,8 @@ namespace Cliente
             this.MinimumSize = new Size(1000, 625);
             this.MaximumSize = new Size(1000, 625);
 
-            SoundPlayer splayer = new SoundPlayer(Properties.Resources.gandalf_reduzido);
 
-            splayer.PlayLooping();
+         
             //this.BackgroundImage = new Bitmap(Properties.Resources.background_wood);
 
         }
@@ -93,6 +92,13 @@ namespace Cliente
         {
             public static string texto = "Hello";
             public static int logado = 0;
+            public static int musica = 0;
+
+
+            public static SoundPlayer splayer = new SoundPlayer(Properties.Resources.gandalf_reduzido);
+
+            
+
         }
 
 
@@ -403,6 +409,25 @@ namespace Cliente
         private void button1_MouseLeave_1(object sender, EventArgs e)
         {
             textPassword.UseSystemPasswordChar = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (Global.musica == 1)
+            {
+                button2.Text = "Con Musiquita";
+                Global.splayer.Stop();
+                Global.musica = 0;
+            }
+            else
+            {
+                button2.Text = "Sin Musiquita";
+                
+                Global.splayer.PlayLooping();
+                Global.musica = 1;
+
+            }
+
         }
     }
 }
