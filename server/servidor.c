@@ -4,6 +4,8 @@ int contador;
 //Estructura necesaria para acceso excluyente
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
+
+
 void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
@@ -73,6 +75,10 @@ void *AtenderCliente (void *args_void){
 				p = strtok( NULL, "/");
 				strcpy (nombre, p);	
 				elimina(lista, nombre,tamanho);
+				// Atualizar
+				sprintf (respuesta, "#ActualizaConectados#");
+				
+				
 				mostra(*lista);
 				logado=0;
 			}
@@ -111,7 +117,8 @@ void *AtenderCliente (void *args_void){
 					insere(lista, suser, nombre,tamanho);
 					
 					printf("Mostra aqui\n");
-					
+					// Atualizar
+					sprintf (respuesta, "#ActualizaConectados#");
 					// Mostra
 					mostra(*lista);
 					//mostra(args->lista);
@@ -139,6 +146,10 @@ void *AtenderCliente (void *args_void){
 			strcpy(senha, p);
 			
 			elimina(lista, nombre,tamanho);
+			
+			// Atualizar
+			sprintf (respuesta, "#ActualizaConectados#");
+			
 			mostra(*lista);
 			
 			logado=0;

@@ -30,9 +30,8 @@ int main(int argc, char *argv[]){
 	//maina(); // Testando lista
 	
 	MYSQL *conn;
-	//conn=mysql_init(NULL);
+	conn=mysql_init(NULL);
 	
-	conn=mysql_real_connect(conn,SERVIDORDADOS,USUARIO,SENHA,BASE,0, NULL, 0);
 	
 	int sock_conn, sock_listen;
 	struct sockaddr_in serv_adr;
