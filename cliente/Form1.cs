@@ -20,9 +20,12 @@ namespace Cliente
     {
         // int logado = 0;
         Socket server;
-
+        Thread atender;
         public Form1()
-        {     
+        {
+
+            CheckForIllegalCrossThreadCalls = false;
+
             InitializeComponent();
             Load += new EventHandler(Form1_Load);
 
@@ -87,6 +90,12 @@ namespace Cliente
                 // Se nao foi possivel
                 return;
             }
+
+            ThreadStart ts = delegate { AtenderServidor(); };
+            atender = new Thread(ts);
+            atender.Start();
+
+
         }
 
         private void AtenderServidor()
@@ -95,7 +104,7 @@ namespace Cliente
             while (true)
             {
                 //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
+                byte[] msg2 = new byte[200];
 
                 // Limpa toda vez que chama esse botao e preenche do zero
 
@@ -120,7 +129,9 @@ namespace Cliente
                             button1.Enabled = false;
                             buttonRegistra.Text = "Deletar";
                             buttonLogin.Text = "Logout";
-                            buttonConectados.PerformClick();
+
+
+                            //buttonConectados.PerformClick();
 
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
@@ -201,13 +212,21 @@ namespace Cliente
                         //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                         listView1.Items.Clear();
 
-                        // Remove quantida
+                        // Mensagem toda
 
-                        string[] separada = trozos[1].Split('\0')[0].Split(new Char[] { '/' });
+                        string inteira = trozos[2].Split('\0')[0];
+
+                        //Console.WriteLine("INTEIRA = "+inteira);
+
+                        
+
+                        string [] separada = inteira.Split(new Char[] { '/' });
+                        //Console.WriteLine("SEPARADA[0] = " + separada[0]);
                         //ListViewItem item;
 
-                        for (int i = 1; i <= Convert.ToInt32(separada[0]); i++)
+                        for (int i = 0; i < Convert.ToInt32(trozos[1]); i++)
                         {
+
                             if (separada[i].Trim() != "")
                             {
                                 // Proprio usuario
@@ -219,19 +238,23 @@ namespace Cliente
                                 {
                                     listView1.Items.Add(separada[i]);
                                 }
+
+
                             }
+
                         }
 
                         // ListViewItem item = new ListViewItem(mensaje);
                         //listView1.Items.Add(item);
-                        if (Convert.ToInt32(separada[0]) == 1)
+                        if (Convert.ToInt32(trozos[1]) == 1)
                         {
-                            MessageBox.Show(separada[0] + " jugador conectado! (tu mismo)");
+                            MessageBox.Show(trozos[1] + " jugador conectado! (tu mismo)");
                         }
                         else
                         {
-                            MessageBox.Show(separada[0] + " jugadores conectados!");
+                            MessageBox.Show(trozos[1] + " jugadores conectados!");
                         }
+
 
                         break;
 
@@ -240,7 +263,7 @@ namespace Cliente
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
                         {
                             MessageBox.Show("Registrado com sucesso");
-                            buttonLogin.PerformClick();
+                            //buttonLogin.PerformClick();
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
                         {
@@ -257,7 +280,7 @@ namespace Cliente
                         if (String.Compare(trozos[1].Split('\0')[0], "AtualizaLista") == 0)
                         {
                             //MessageBox.Show("Novos usuarios conectados");
-                            buttonConectados.PerformClick();
+                            // buttonConectados.PerformClick();
                         }
                         else
                         {
@@ -328,18 +351,8 @@ namespace Cliente
 
                         // Enviamos ao servidor a mensagem
                         byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                        
 
-                        //Recibimos la respuesta del servidor
-                       // byte[] msg2 = new byte[80];
-
-                
                         server.Send(msg);
-                       // server.Receive(msg2);
-                   
-
-                        // Toda a linha de mensagem
-                       // mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
 
                     }
                 }
@@ -351,23 +364,11 @@ namespace Cliente
 
                     // Enviamos ao servidor a mensagem
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    
 
-                    //Recibimos la respuesta del servidor
-                    //byte[] msg2 = new byte[80];
-
-           
                     server.Send(msg);
-                    //server.Receive(msg2);
-          
-
-                   // mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-
 
                 }
 
-  
             // Remove usuario
             
         }
@@ -384,15 +385,8 @@ namespace Cliente
                     string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
 
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    //byte[] msg2 = new byte[80];
-
-                    //Recibimos la respuesta del servidor
-                    
 
                     server.Send(msg);
-
-                    //server.Receive(msg2);
-                    //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
 
                 }
                 else // Efetua login
@@ -402,20 +396,9 @@ namespace Cliente
 
                     // Enviamos ao servidor a mensagem
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    
-
-                    //Recibimos la respuesta del servidor
-                    //byte[] msg2 = new byte[80];
-                    
 
                     server.Send(msg);
-                    //server.Receive(msg2);
-       
 
-                    // Toda a linha de mensagem
-                    //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-                
                 }
  
         }
@@ -428,28 +411,6 @@ namespace Cliente
         private void buttonConectados_Click(object sender, EventArgs e)
         {
 
-            {
-                // Mensagem Login
-                string mensaje = "4/" + textUser.Text + "/" + textPassword.Text;
-
-                // Enviamos ao servidor a mensagem
-                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                
-
-                //Recibimos la respuesta del servidor
-                //byte[] msg2 = new byte[80];
-
-                // Limpa toda vez que chama esse botao e preenche do zero
-         
-                server.Send(msg);
-                //server.Receive(msg2);
-
-                // Toda a linha de mensagem
-                //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                // Toda a linha de mensagem
-                
-
-            }
         }
 
         private void Form1_Load_1(object sender, EventArgs e)
@@ -466,7 +427,7 @@ namespace Cliente
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
 
             server.Send(msg);
-
+            atender.Abort();
 
         }
 

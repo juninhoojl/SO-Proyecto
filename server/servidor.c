@@ -175,20 +175,6 @@ void *AtenderCliente (void *args_void){
 				sprintf(respuesta,"3/3%s",nombre); // Erro ao excluir
 			}
 			
-		}else if(codigo==4){ // Solicita ver usuarios conectados servico = 4/
-			
-			
-			printf("\n#########################\n");
-			printf("String conectados\n");
-			char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
-			conectados(*lista, novo,tamanho);
-			printf("\n%s\n",novo);
-			// Lista conectados
-			sprintf(respuesta,"4/%s",novo); // Inserido correto
-			free(novo);
-			
-			
-			
 		}else if (codigo==5){ // insere USUARIO servico = 5/
 			
 			char senha[20];
@@ -231,20 +217,29 @@ void *AtenderCliente (void *args_void){
 			
 			if(alterlista){
 				
+				printf("String conectados\n");
+				char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
+				
+				conectados(*lista, novo,tamanho);
+				
+				printf("\n%s\n",novo);
+				
 				vetsockets = vetorSocket(*lista,tamanho);
-				char notificacion[20];
-				sprintf(notificacion, "6/AtualizaLista");
+				
+				char notificacion[MAXNOME*MAXELE+2];
+				
+				sprintf(notificacion, "4/%s",novo);
 				
 				if(vetorSocket){ // Nao vazio
 					for(i=0;i<*tamanho;i++){
 						
 						
 						// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
-						if(vetsockets[i] != suser){
-							
-							write(suser,respuesta, strlen(respuesta));
-							
-						}
+						//if(vetsockets[i] != suser){
+						printf("USUARIOS CONECTADOS STRING = %s \n",notificacion);
+						write(suser,notificacion, strlen(notificacion));
+						
+						//}
 						printf("vetsockets p%d = %d \n",i,vetsockets[i]);
 						
 						
@@ -253,7 +248,7 @@ void *AtenderCliente (void *args_void){
 					printf("Vetor sockets vazio\n\n");
 				}
 				free(vetsockets);
-				
+				free(novo);
 				alterlista=0;
 			}
 			
