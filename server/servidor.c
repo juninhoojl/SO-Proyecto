@@ -142,7 +142,7 @@ void *AtenderCliente (void *args_void){
 			free(asenha);
 			
 		}else if(codigo==2){ // Solicita deslogar servico = 2/
-			printf("SOlicitou deslogar");
+			printf("Solicitou deslogar");
 			char senha[20];
 			p = strtok( NULL, "/");
 			int situacao=0;
@@ -156,6 +156,7 @@ void *AtenderCliente (void *args_void){
 			mostra(*lista);
 			
 			logado=0;
+			
 			sprintf(respuesta, "2/0%s",nombre); // Login correto
 			
 		}else if(codigo==3){ // Solicita excluir USUARIO servico = 3/

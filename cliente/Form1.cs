@@ -105,14 +105,14 @@ namespace Cliente
 
                 // Limpa toda vez que chama esse botao e preenche do zero
 
-       
+
                 server.Receive(msg2);
-                string [] trozos = Encoding.ASCII.GetString(msg2).Split('/');
+                string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
                 int codigo = Convert.ToInt32(trozos[0]); // Antes da barra
 
-                switch(codigo)
-                { 
-                    
+                switch (codigo)
+                {
+
                     case 1: // Resposta ao login
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
@@ -176,7 +176,7 @@ namespace Cliente
                     case 3: // Resposta excluir
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
-                         {
+                        {
                             MessageBox.Show("Excluido com sucesso");
                             Global.logado = 0;
                             textUser.Enabled = true;
@@ -212,9 +212,9 @@ namespace Cliente
 
                         //Console.WriteLine("INTEIRA = "+inteira);
 
-                        
 
-                        string [] separada = inteira.Split(new Char[] { '/' });
+
+                        string[] separada = inteira.Split(new Char[] { '/' });
                         //Console.WriteLine("SEPARADA[0] = " + separada[0]);
                         //ListViewItem item;
 
@@ -344,7 +344,7 @@ namespace Cliente
                         string mensaje = "3/" + textUser.Text + "/" + textPassword.Text;
 
                         // Enviamos ao servidor a mensagem
-                        byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                        byte[] msg = Encoding.ASCII.GetBytes(mensaje);
 
                         server.Send(msg);
 
@@ -357,7 +357,7 @@ namespace Cliente
                     string mensaje = "5/" + textUser.Text + "/" + textPassword.Text;
 
                     // Enviamos ao servidor a mensagem
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    byte[] msg = Encoding.ASCII.GetBytes(mensaje);
 
                     server.Send(msg);
 
@@ -378,7 +378,7 @@ namespace Cliente
                 {
                     string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
 
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    byte[] msg = Encoding.ASCII.GetBytes(mensaje);
 
                     server.Send(msg);
 
@@ -389,7 +389,7 @@ namespace Cliente
                     string mensaje = "1/" + textUser.Text + "/" + textPassword.Text;
 
                     // Enviamos ao servidor a mensagem
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    byte[] msg = Encoding.ASCII.GetBytes(mensaje);
 
                     server.Send(msg);
 
@@ -418,6 +418,7 @@ namespace Cliente
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
 
             server.Send(msg);
+
             atender.Abort();
 
         }
