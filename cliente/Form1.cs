@@ -89,6 +89,191 @@ namespace Cliente
             }
         }
 
+        private void AtenderServidor()
+        {
+
+            while (true)
+            {
+                //Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+
+                // Limpa toda vez que chama esse botao e preenche do zero
+
+       
+                server.Receive(msg2);
+                string [] trozos = Encoding.ASCII.GetString(msg2).Split('/');
+                int codigo = Convert.ToInt32(trozos[0]); // Antes da barra
+
+                switch(codigo)
+                { 
+                    
+                    case 1: // Resposta ao login
+
+                        if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
+                        {
+                            MessageBox.Show("Logado com sucesso");
+                            Global.logado = 1;
+                            textUser.Enabled = false;
+                            textPassword.Enabled = false;
+                            buttonConectados.Enabled = true;
+                            listView1.Enabled = true;
+                            button1.Enabled = false;
+                            buttonRegistra.Text = "Deletar";
+                            buttonLogin.Text = "Logout";
+                            buttonConectados.PerformClick();
+
+                        }
+                        else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
+                        {
+                            MessageBox.Show("Usuario ou senha incorretos");
+                        }
+                        else if (String.Compare(trozos[1].Split('\0')[0], "0" + textUser.Text) == 0)
+                        {
+                            MessageBox.Show("Usuario nao existe");
+                        }
+                        else if (String.Compare(trozos[1].Split('\0')[0], "4" + textUser.Text) == 0)
+                        {
+                            MessageBox.Show("Usuario esta ativo em outra sessao, nao foi possivel logar");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Erro ao efetuar login");
+                        }
+
+                        break;
+
+                    case 2: // Resposta deslogin
+                        if (String.Compare(trozos[1].Split('\0')[0], "0" + textUser.Text) == 0)
+                        {
+
+                            MessageBox.Show("Deslogado com sucesso");
+                            Global.logado = 0;
+                            textUser.Enabled = true;
+                            textPassword.Enabled = true;
+                            buttonConectados.Enabled = false;
+                            listView1.Items.Clear();
+                            listView1.Enabled = false;
+                            buttonLogin.Text = "Login";
+                            buttonRegistra.Text = "Registrar";
+                            button1.Enabled = true;
+                            textPassword.Text = "";
+                            textUser.Text = "";
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Erro ao deslogar");
+                        }
+
+                        break;
+
+                    case 3: // Resposta excluir
+
+                        if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
+                         {
+                            MessageBox.Show("Excluido com sucesso");
+                            Global.logado = 0;
+                            textUser.Enabled = true;
+                            textPassword.Enabled = true;
+                            buttonConectados.Enabled = false;
+                            button1.Enabled = true;
+                            listView1.Items.Clear();
+                            listView1.Enabled = false;
+                            buttonRegistra.Text = "Registrar";
+                            buttonLogin.Text = "Login";
+                            textPassword.Text = "";
+                            textUser.Text = "";
+
+                        }
+                        else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
+                        {
+                            MessageBox.Show("Erro ao excluir usuario");
+                        }
+                        else // Eh impossivel chegar nesse caso
+                        {
+                            MessageBox.Show("Credenciais incorretas");
+                        }
+
+                        break;
+
+                    case 4: // Resposta ver usuarios conectados
+
+                        //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                        listView1.Items.Clear();
+
+                        // Remove quantida
+
+                        string[] separada = trozos[1].Split('\0')[0].Split(new Char[] { '/' });
+                        //ListViewItem item;
+
+                        for (int i = 1; i <= Convert.ToInt32(separada[0]); i++)
+                        {
+                            if (separada[i].Trim() != "")
+                            {
+                                // Proprio usuario
+                                if (String.Compare(separada[i], textUser.Text) == 0)
+                                {
+                                    listView1.Items.Add(separada[i] + " (tu)");
+                                }
+                                else
+                                {
+                                    listView1.Items.Add(separada[i]);
+                                }
+                            }
+                        }
+
+                        // ListViewItem item = new ListViewItem(mensaje);
+                        //listView1.Items.Add(item);
+                        if (Convert.ToInt32(separada[0]) == 1)
+                        {
+                            MessageBox.Show(separada[0] + " jugador conectado! (tu mismo)");
+                        }
+                        else
+                        {
+                            MessageBox.Show(separada[0] + " jugadores conectados!");
+                        }
+
+                        break;
+
+                    case 5: // Resposta insere usuario conectado
+
+                        if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
+                        {
+                            MessageBox.Show("Registrado com sucesso");
+                            buttonLogin.PerformClick();
+                        }
+                        else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
+                        {
+                            MessageBox.Show("Usuario ja existe");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Erro ao registrar usuario");
+                        }
+
+                        break;
+                    case 6: // notificacao atualiza usuarios conectados
+
+                        if (String.Compare(trozos[1].Split('\0')[0], "AtualizaLista") == 0)
+                        {
+                            //MessageBox.Show("Novos usuarios conectados");
+                            buttonConectados.PerformClick();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Outra notificacao");
+                        }
+
+                        break;
+
+                    default:
+                        MessageBox.Show("Mensagem recebida desconhecida");
+                        break;
+                }
+
+            }
+
+        }
         public static class Global
         {
             public static string texto = "Hello";
@@ -146,42 +331,16 @@ namespace Cliente
                         
 
                         //Recibimos la respuesta del servidor
-                        byte[] msg2 = new byte[80];
+                       // byte[] msg2 = new byte[80];
 
                 
                         server.Send(msg);
-                        server.Receive(msg2);
+                       // server.Receive(msg2);
                    
 
                         // Toda a linha de mensagem
-                        mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                       // mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
 
-                        if (String.Compare(mensaje, "1" + textUser.Text) == 0)
-                        {
-                            MessageBox.Show("Excluido com sucesso");
-                            Global.logado = 0;
-                            textUser.Enabled = true;
-                            textPassword.Enabled = true;
-                            buttonConectados.Enabled = false;
-                            button1.Enabled = true;
-                            listView1.Items.Clear();
-                            listView1.Enabled = false;
-                            buttonRegistra.Text = "Registrar";
-                            buttonLogin.Text = "Login";
-                            textPassword.Text = "";
-                            textUser.Text = "";
-
-                   
-
-                        }
-                        else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
-                        {
-                            MessageBox.Show("Erro ao excluir usuario");
-                        }
-                        else // Eh impossivel chegar nesse caso
-                        {
-                            MessageBox.Show("Credenciais incorretas");
-                        }
                     }
                 }
                 else
@@ -195,29 +354,16 @@ namespace Cliente
                     
 
                     //Recibimos la respuesta del servidor
-                    byte[] msg2 = new byte[80];
+                    //byte[] msg2 = new byte[80];
 
            
                     server.Send(msg);
-                    server.Receive(msg2);
+                    //server.Receive(msg2);
           
 
-                 mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                   // mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
 
-                    if (String.Compare(mensaje, "1" + textUser.Text) == 0)
-                    {
-                        MessageBox.Show("Registrado com sucesso");
-                        
-                        buttonLogin.PerformClick();
-                }
-                    else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
-                    {
-                        MessageBox.Show("Usuario ja existe");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Erro ao registrar usuario");
-                    }
+
 
                 }
 
@@ -238,39 +384,15 @@ namespace Cliente
                     string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
 
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    byte[] msg2 = new byte[80];
+                    //byte[] msg2 = new byte[80];
 
                     //Recibimos la respuesta del servidor
                     
 
                     server.Send(msg);
-                    server.Receive(msg2);
 
-
-                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-                if (String.Compare(mensaje, "0" + textUser.Text) == 0)
-                    {
-
-                        MessageBox.Show("Deslogado com sucesso");
-                        Global.logado = 0;
-                        textUser.Enabled = true;
-                        textPassword.Enabled = true;
-                        buttonConectados.Enabled = false;
-                        listView1.Items.Clear();
-                        listView1.Enabled = false;
-                        buttonLogin.Text = "Login";
-                        buttonRegistra.Text = "Registrar";
-                        button1.Enabled = true;
-                        textPassword.Text = "";
-                        textUser.Text = "";
-                   
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Erro ao deslogar");
-                    }
+                    //server.Receive(msg2);
+                    //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
 
                 }
                 else // Efetua login
@@ -283,46 +405,17 @@ namespace Cliente
                     
 
                     //Recibimos la respuesta del servidor
-                    byte[] msg2 = new byte[80];
+                    //byte[] msg2 = new byte[80];
                     
 
                     server.Send(msg);
-                    server.Receive(msg2);
+                    //server.Receive(msg2);
        
 
                     // Toda a linha de mensagem
-                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                    //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
 
-                if (String.Compare(mensaje, "1" + textUser.Text) == 0)
-                    {
-                        MessageBox.Show("Logado com sucesso");
-                        Global.logado = 1;
-                        textUser.Enabled = false;
-                        textPassword.Enabled = false;
                 
-                        buttonConectados.Enabled = true;
-                        listView1.Enabled = true;
-                        button1.Enabled = false;
-                        buttonRegistra.Text = "Deletar";
-                        buttonLogin.Text = "Logout";
-                        buttonConectados.PerformClick();
-
-                    }
-                    else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
-                    {
-                        MessageBox.Show("Usuario ou senha incorretos");
-                    }
-                    else if (String.Compare(mensaje, "0" + textUser.Text) == 0)
-                    {
-                        MessageBox.Show("Usuario nao existe");
-                    }else if(String.Compare(mensaje, "4" + textUser.Text) == 0) {
-
-                        MessageBox.Show("Usuario esta ativo em outra sessao, nao foi possivel logar");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Erro ao efetuar login");
-                    }
                 }
  
         }
@@ -344,55 +437,18 @@ namespace Cliente
                 
 
                 //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[80];
+                //byte[] msg2 = new byte[80];
 
                 // Limpa toda vez que chama esse botao e preenche do zero
          
                 server.Send(msg);
-                server.Receive(msg2);
+                //server.Receive(msg2);
 
                 // Toda a linha de mensagem
                 //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                 // Toda a linha de mensagem
                 
-                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                listView1.Items.Clear();
 
-                // Remove quantida
-
-                string[] separada = mensaje.Split(new Char[]{'/'});
-                //ListViewItem item;
-
-                for (int i = 1; i <= Convert.ToInt32(separada[0]); i++)
-                {
-
-                    if (separada[i].Trim() != "")
-                    {
-                        // Proprio usuario
-                        if (String.Compare(separada[i], textUser.Text) == 0)
-                        {
-                            listView1.Items.Add(separada[i] + " (tu)");
-                        }
-                        else
-                        {
-                            listView1.Items.Add(separada[i]);
-                        }
-
-
-                    }
-
-                }
-
-                // ListViewItem item = new ListViewItem(mensaje);
-                //listView1.Items.Add(item);
-                if (Convert.ToInt32(separada[0])==1)
-                {
-                    MessageBox.Show(separada[0] + " jugador conectado! (tu mismo)");
-                }
-                else
-                {
-                    MessageBox.Show(separada[0] + " jugadores conectados!");
-                }
             }
         }
 
