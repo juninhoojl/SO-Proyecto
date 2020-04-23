@@ -60,8 +60,6 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	
-
-	
 	int tamanho=0;
 	pthread_t thread;
 	

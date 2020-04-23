@@ -57,9 +57,6 @@ namespace Cliente
 
             IPEndPoint ipep = new IPEndPoint(direc, 50001);
 
-
-
-            buttonConectados.Enabled = false;
             listView1.Items.Clear();
             listView1.Enabled = false;
             buttonLogin.Enabled = false;
@@ -124,7 +121,6 @@ namespace Cliente
                             Global.logado = 1;
                             textUser.Enabled = false;
                             textPassword.Enabled = false;
-                            buttonConectados.Enabled = true;
                             listView1.Enabled = true;
                             button1.Enabled = false;
                             buttonRegistra.Text = "Deletar";
@@ -161,7 +157,6 @@ namespace Cliente
                             Global.logado = 0;
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
-                            buttonConectados.Enabled = false;
                             listView1.Items.Clear();
                             listView1.Enabled = false;
                             buttonLogin.Text = "Login";
@@ -186,7 +181,6 @@ namespace Cliente
                             Global.logado = 0;
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
-                            buttonConectados.Enabled = false;
                             button1.Enabled = true;
                             listView1.Items.Clear();
                             listView1.Enabled = false;
@@ -403,20 +397,17 @@ namespace Cliente
  
         }
 
+        // PARA REMOVER DEPOIS
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
         }
-
-        private void buttonConectados_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
         }
+        // ########
+
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {

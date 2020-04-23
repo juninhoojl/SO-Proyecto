@@ -37,7 +37,6 @@ namespace Cliente
             this.buttonRegistra = new System.Windows.Forms.Button();
             this.groupLogin = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.buttonConectados = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button2 = new System.Windows.Forms.Button();
@@ -106,16 +105,6 @@ namespace Cliente
             this.button1.MouseLeave += new System.EventHandler(this.button1_MouseLeave_1);
             this.button1.MouseHover += new System.EventHandler(this.button1_MouseHover_1);
             // 
-            // buttonConectados
-            // 
-            this.buttonConectados.Location = new System.Drawing.Point(12, 156);
-            this.buttonConectados.Name = "buttonConectados";
-            this.buttonConectados.Size = new System.Drawing.Size(168, 23);
-            this.buttonConectados.TabIndex = 4;
-            this.buttonConectados.Text = "Conectados";
-            this.buttonConectados.UseVisualStyleBackColor = true;
-            this.buttonConectados.Click += new System.EventHandler(this.buttonConectados_Click);
-            // 
             // listView1
             // 
             this.listView1.BackColor = System.Drawing.SystemColors.WindowFrame;
@@ -124,7 +113,7 @@ namespace Cliente
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(12, 185);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(168, 360);
+            this.listView1.Size = new System.Drawing.Size(168, 389);
             this.listView1.TabIndex = 5;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -136,7 +125,7 @@ namespace Cliente
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(12, 551);
+            this.button2.Location = new System.Drawing.Point(12, 156);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(168, 23);
             this.button2.TabIndex = 6;
@@ -154,7 +143,6 @@ namespace Cliente
             this.ClientSize = new System.Drawing.Size(984, 586);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.listView1);
-            this.Controls.Add(this.buttonConectados);
             this.Controls.Add(this.groupLogin);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DoubleBuffered = true;
@@ -176,7 +164,6 @@ namespace Cliente
         private System.Windows.Forms.TextBox textUser;
         private System.Windows.Forms.Button buttonRegistra;
         private System.Windows.Forms.GroupBox groupLogin;
-        private System.Windows.Forms.Button buttonConectados;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button button1;
