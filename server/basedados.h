@@ -9,13 +9,11 @@
 #include "fmd5.h"
 
 // PRODUCION
-#define SERVIDORDADOS "shiva2.upc.es"
+// #define SERVIDORDADOS "shiva2.upc.es"
 
 
 // LOCAL ##########
-//#define SERVIDORDADOS "localhost"
-
-
+#define SERVIDORDADOS "localhost"
 #define SERVIDOR "localhost"
 #define USUARIO "root"
 #define SENHA "mysql"

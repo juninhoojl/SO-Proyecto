@@ -10,9 +10,12 @@ void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
 	int suser = args->a;
+	int i;// laco vetor sockets
+	int * vetsockets; // ponteiro vetor sockets
 	node ** lista = args->lista;
 	mostra(*lista);
 	int * tamanho = args->tam;
+	int alterlista = 0;
 	
 	char peticion[512];
 	char respuesta[512];
@@ -76,7 +79,7 @@ void *AtenderCliente (void *args_void){
 				strcpy (nombre, p);	
 				elimina(lista, nombre,tamanho);
 				// Atualizar
-				sprintf (respuesta, "#ActualizaConectados#");
+				alterlista = 1;
 				
 				
 				mostra(*lista);
@@ -118,7 +121,7 @@ void *AtenderCliente (void *args_void){
 					
 					printf("Mostra aqui\n");
 					// Atualizar
-					sprintf (respuesta, "#ActualizaConectados#");
+					alterlista = 1;
 					// Mostra
 					mostra(*lista);
 					//mostra(args->lista);
@@ -148,7 +151,7 @@ void *AtenderCliente (void *args_void){
 			elimina(lista, nombre,tamanho);
 			
 			// Atualizar
-			sprintf (respuesta, "#ActualizaConectados#");
+			alterlista = 1;
 			
 			mostra(*lista);
 			
@@ -224,6 +227,26 @@ void *AtenderCliente (void *args_void){
 			contador += 1;
 			pthread_mutex_unlock( &mutex ); // Ya puedes interrumpirme
 		}
+		
+		
+		// Verifica se teve alguma alteracao, se sim envia para todos os conectados
+		
+		// Se teve alguma alteracao
+		if(alterlista){
+			
+			vetsockets = vetorSocket(*lista,tamanho);
+			
+			if(vetorSocket){ // Nao vazio
+				for(i=0;i<*tamanho;i++){
+					// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
+					printf("vetsockets p%d = %d \n",i,vetsockets[i]);
+				}
+			}else{
+				printf("Vetor sockets vazio\n\n");
+			}
+			free(vetsockets);
+		}
+
 	}
 	// Se acabo el servicio para este cliente
 	close(suser); 

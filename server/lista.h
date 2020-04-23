@@ -32,4 +32,6 @@ void conectados(struct Node * no, char lconectados[],int * tam);
 
 void listasockets(struct Node * no, char lconectados[], char lsockets[], int qtd);
 
+int * vetorSocket(struct Node * no, int * tam);
+
 #endif
