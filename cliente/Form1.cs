@@ -102,7 +102,31 @@ namespace Cliente
         }
 
 
+        private void AtenderServidor() // funcion para atender al servidor
+        {
+            while (true)
+            {
+                //Recibimos mensaje del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                string respuesta = Encoding.ASCII.GetString(msg2).Split('\0')[0];//netejar de basura
 
+                string[] trozos = respuesta.Split('/');// Codigo/codigo error o numero filas/mensaje
+                //MessageBox.Show(respuesta);
+
+                int codigo = Convert.ToInt32(trozos[0]);//Sacamos el codigo correspondiente a que respuesta es
+
+                switch (codigo)
+                {
+                    case 1:
+                        buttonConectados.PerformClick();
+                        break;
+                    case 2:
+                        buttonConectados.PerformClick();
+                        break;
+                }
+            }
+        }
         private void textPassword_TextChanged_1(object sender, EventArgs e)
         {
             setButtonVisibility();
@@ -225,8 +249,6 @@ namespace Cliente
         // 0- Deslogado ok
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-
-
                 // Se logado pede logout
                 if (Global.logado == 1)
                 {
@@ -293,7 +315,7 @@ namespace Cliente
                         button1.Enabled = false;
                         buttonRegistra.Text = "Deletar";
                         buttonLogin.Text = "Logout";
-                        buttonConectados.PerformClick();
+                     
                     }
                     else if (String.Compare(mensaje, "2" + textUser.Text) == 0)
                     {
