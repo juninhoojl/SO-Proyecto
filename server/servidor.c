@@ -168,6 +168,7 @@ void *AtenderCliente (void *args_void){
 					sprintf(respuesta,"3/1%s",nombre); // Deletado corretamente
 					elimina(lista, nombre,tamanho);
 					mostra(*lista);
+					alterlista = 1;
 					logado=0;
 				}else if(situacao == 2){
 					sprintf(respuesta,"3/2%s",nombre); // Erro ao excluir
