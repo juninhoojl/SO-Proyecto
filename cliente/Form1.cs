@@ -13,7 +13,7 @@ using System.Media;
 using System.Threading;
 
 
-namespace Cliente
+namespace Clientes
 {
 
     public partial class Form1 : Form
@@ -204,28 +204,10 @@ namespace Cliente
 
                     case 4: // Resposta ver usuarios conectados
 
-                        // Ja esta feito o split dentro do trozos
-
-                        //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                         listView1.Items.Clear();
 
-                        // Mensagem toda
-
-                        //string inteira = trozos[2].Split('\0')[0];
-
-                        // Trozos[0] tem codigo (4)
-                        // Trozos[1] tem tamanho (inteiro)
-                        // de Trozos[2] ate users qtd tem o resto
-                        // trozos quantidade faz split
                         int quantidade = Convert.ToInt32(trozos[1]);
                         trozos[quantidade+1] = trozos[quantidade+1].Split('\0')[0];
-
-                        // agora caminha de trozos 2 ate tam +2
-                        // recebi tam = 2
-                        // entao 
-
-                        //Console.WriteLine("SEPARADA[0] = " + separada[0]);
-                        //ListViewItem item;
 
                         // a partir do 2
                         for (int i=2; i < quantidade+2; i++)
