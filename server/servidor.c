@@ -216,7 +216,7 @@ void *AtenderCliente (void *args_void){
 			
 			
 			
-			if(alterlista){
+			if(alterlista && *tamanho>0){
 				
 				printf("String conectados\n");
 				char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
@@ -260,7 +260,6 @@ void *AtenderCliente (void *args_void){
 		
 		// Se teve alguma alteracao
 		// Servico 6 notificacao
-
 
 	}
 	// Se acabo el servicio para este cliente

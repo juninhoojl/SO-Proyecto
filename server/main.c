@@ -21,6 +21,10 @@
 // Ps.: Em alguns casos Zinjal nao deleta os .bin antigos e nao compila os novos
 // rm *.bin
 
+// Visualizar o processo que esta utilizando a PORTA
+// sudo fuser -v 50001/tcp
+// matar ele
+// kill PID
 
 
 int logado = 0;

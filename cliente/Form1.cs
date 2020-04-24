@@ -57,8 +57,8 @@ namespace Cliente
 
             IPEndPoint ipep = new IPEndPoint(direc, 50001);
 
-            listView1.Items.Clear();
-            listView1.Enabled = false;
+            //listView1.Items.Clear();
+            //listView1.Enabled = false;
             buttonLogin.Enabled = false;
             buttonRegistra.Enabled = false;
             // Set to no text.
@@ -108,6 +108,7 @@ namespace Cliente
 
                 server.Receive(msg2);
                 string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
+
                 int codigo = Convert.ToInt32(trozos[0]); // Antes da barra
 
                 switch (codigo)
@@ -121,7 +122,7 @@ namespace Cliente
                             Global.logado = 1;
                             textUser.Enabled = false;
                             textPassword.Enabled = false;
-                            listView1.Enabled = true;
+                            //listView1.Enabled = true;
                             button1.Enabled = false;
                             buttonRegistra.Text = "Deletar";
                             buttonLogin.Text = "Logout";
@@ -158,7 +159,7 @@ namespace Cliente
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
                             listView1.Items.Clear();
-                            listView1.Enabled = false;
+                            //listView1.Enabled = false;
                             buttonLogin.Text = "Login";
                             buttonRegistra.Text = "Registrar";
                             button1.Enabled = true;
@@ -183,7 +184,7 @@ namespace Cliente
                             textPassword.Enabled = true;
                             button1.Enabled = true;
                             listView1.Items.Clear();
-                            listView1.Enabled = false;
+                            //listView1.Enabled = false;
                             buttonRegistra.Text = "Registrar";
                             buttonLogin.Text = "Login";
                             textPassword.Text = "";
@@ -203,34 +204,42 @@ namespace Cliente
 
                     case 4: // Resposta ver usuarios conectados
 
+                        // Ja esta feito o split dentro do trozos
+
                         //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                         listView1.Items.Clear();
 
                         // Mensagem toda
 
-                        string inteira = trozos[2].Split('\0')[0];
+                        //string inteira = trozos[2].Split('\0')[0];
 
-                        //Console.WriteLine("INTEIRA = "+inteira);
+                        // Trozos[0] tem codigo (4)
+                        // Trozos[1] tem tamanho (inteiro)
+                        // de Trozos[2] ate users qtd tem o resto
+                        // trozos quantidade faz split
+                        int quantidade = Convert.ToInt32(trozos[1]);
+                        trozos [quantidade] = trozos[quantidade].Split('\0')[0];
+                        // agora caminha de trozos 2 ate tam +2
+                        // recebi tam = 2
+                        // entao 
 
-
-
-                        string[] separada = inteira.Split(new Char[] { '/' });
                         //Console.WriteLine("SEPARADA[0] = " + separada[0]);
                         //ListViewItem item;
 
-                        for (int i = 0; i < Convert.ToInt32(trozos[1]); i++)
+                        // a partir do 2
+                        for (int i=2; i < quantidade+2; i++)
                         {
 
-                            if (separada[i].Trim() != "")
+                            if (trozos[i].Trim() != "")
                             {
                                 // Proprio usuario
-                                if (String.Compare(separada[i], textUser.Text) == 0)
+                                if (String.Compare(trozos[i], textUser.Text) == 0)
                                 {
-                                    listView1.Items.Add(separada[i] + " (tu)");
+                                    listView1.Items.Add(trozos[i] + " (tu)");
                                 }
                                 else
                                 {
-                                    listView1.Items.Add(separada[i]);
+                                    listView1.Items.Add(trozos[i]);
                                 }
 
 
@@ -240,13 +249,13 @@ namespace Cliente
 
                         // ListViewItem item = new ListViewItem(mensaje);
                         //listView1.Items.Add(item);
-                        if (Convert.ToInt32(trozos[1]) == 1)
+                        if (quantidade == 1)
                         {
-                            MessageBox.Show(trozos[1] + " jugador conectado! (tu mismo)");
+                            MessageBox.Show(quantidade + " jugador conectado! (tu mismo)");
                         }
                         else
                         {
-                            MessageBox.Show(trozos[1] + " jugadores conectados!");
+                            MessageBox.Show(quantidade + " jugadores conectados!");
                         }
 
 
