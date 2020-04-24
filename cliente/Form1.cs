@@ -218,7 +218,8 @@ namespace Cliente
                         // de Trozos[2] ate users qtd tem o resto
                         // trozos quantidade faz split
                         int quantidade = Convert.ToInt32(trozos[1]);
-                        trozos [quantidade] = trozos[quantidade].Split('\0')[0];
+                        trozos[quantidade+1] = trozos[quantidade+1].Split('\0')[0];
+
                         // agora caminha de trozos 2 ate tam +2
                         // recebi tam = 2
                         // entao 
@@ -242,13 +243,10 @@ namespace Cliente
                                     listView1.Items.Add(trozos[i]);
                                 }
 
-
                             }
 
                         }
 
-                        // ListViewItem item = new ListViewItem(mensaje);
-                        //listView1.Items.Add(item);
                         if (quantidade == 1)
                         {
                             MessageBox.Show(quantidade + " jugador conectado! (tu mismo)");
@@ -261,12 +259,12 @@ namespace Cliente
 
                         break;
 
-                    case 5: // Resposta insere usuario conectado
+                    case 5: // Resposta insere usuario
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
                         {
                             MessageBox.Show("Registrado com sucesso");
-                            //buttonLogin.PerformClick();
+                            
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
                         {
@@ -275,19 +273,6 @@ namespace Cliente
                         else
                         {
                             MessageBox.Show("Erro ao registrar usuario");
-                        }
-
-                        break;
-                    case 6: // notificacao atualiza usuarios conectados
-
-                        if (String.Compare(trozos[1].Split('\0')[0], "AtualizaLista") == 0)
-                        {
-                            //MessageBox.Show("Novos usuarios conectados");
-                            // buttonConectados.PerformClick();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Outra notificacao");
                         }
 
                         break;

@@ -208,7 +208,7 @@ void *AtenderCliente (void *args_void){
 			// Enviamos a resposta
 			write(suser,respuesta, strlen(respuesta));
 			
-		}if ((codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)){
+		}if ((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 5)){
 			
 			pthread_mutex_lock( &mutex ); // No me interrumpas ahora
 			contador += 1;
@@ -238,7 +238,7 @@ void *AtenderCliente (void *args_void){
 						// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
 						//if(vetsockets[i] != suser){
 						printf("USUARIOS CONECTADOS STRING = %s \n",notificacion);
-						write(suser,notificacion, strlen(notificacion));
+						write(vetsockets[i],notificacion, strlen(notificacion));
 						
 						//}
 						printf("vetsockets p%d = %d \n",i,vetsockets[i]);
