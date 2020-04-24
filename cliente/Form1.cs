@@ -13,7 +13,7 @@ using System.Media;
 using System.Threading;
 
 
-namespace Clientes
+namespace Cliente
 {
 
     public partial class Form1 : Form
@@ -49,10 +49,10 @@ namespace Clientes
         private void Form1_Load(object sender, EventArgs e)
         {
             // PRODUCION ###########
-           // IPAddress direc = IPAddress.Parse("147.83.117.22");
+            IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-             IPAddress direc = IPAddress.Parse("10.211.55.9");
+             // IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50001);
@@ -204,6 +204,9 @@ namespace Clientes
 
                     case 4: // Resposta ver usuarios conectados
 
+                        // Ja esta feito o split dentro do trozos
+
+                        //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                         listView1.Items.Clear();
 
                         int quantidade = Convert.ToInt32(trozos[1]);
