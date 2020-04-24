@@ -15,7 +15,6 @@
 // LOCAL ##########
 //#define SERVIDORDADOS "localhost"
 
-
 #define SERVIDOR "localhost"
 #define USUARIO "root"
 #define SENHA "mysql"

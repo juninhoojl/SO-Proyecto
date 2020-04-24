@@ -21,6 +21,10 @@
 // Ps.: Em alguns casos Zinjal nao deleta os .bin antigos e nao compila os novos
 // rm *.bin
 
+// Visualizar o processo que esta utilizando a PORTA
+// sudo fuser -v 50001/tcp
+// matar ele
+// kill PID
 
 
 int logado = 0;
@@ -32,15 +36,13 @@ int main(int argc, char *argv[]){
 	MYSQL *conn;
 	conn=mysql_init(NULL);
 	
-	
-	int sock_conn, sock_listen;
+	int sock_listen;
 	struct sockaddr_in serv_adr;
 
 	// Socket que vai esperar por alguma conexao, de escuta
 	if ((sock_listen = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		printf("Error ao criar socket");
 	}
-	
 	
 	memset(&serv_adr, 0, sizeof(SERVIDOR));
 	serv_adr.sin_family = AF_INET;
@@ -79,12 +81,9 @@ int main(int argc, char *argv[]){
 		// COMECA AQUIIIIIIIIIIIIIIIIIIIII
 		printf("Escuchando\n");
 		
-		sock_conn = accept(sock_listen, NULL, NULL);
-		printf("He recibido conexion\n");
-		
 		// passa somente um inteiro
-		in.a=sock_conn;
-		
+		in.a = accept(sock_listen, NULL, NULL);
+		printf("He recibido conexion\n");
 		//sock_conn es el socket que usaremos para este cliente
 		// Crear thead y decirle lo que tiene que hacer
 		

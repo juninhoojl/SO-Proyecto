@@ -47,7 +47,36 @@ void mostra(struct Node * no){
 	}
 
 }
+
+int * vetorSocket(struct Node * no, int * tam){
+	// retorna null se estiver vazia
+
+	if (!no){
+		printf("Lista vazia\n");
+		return NULL; // Retorna nulo para conferir em quem chamou
+	}
 	
+	int * vsockets;
+	vsockets = (int*)malloc(*tam*sizeof(int));
+	
+	if(vsockets == NULL){
+		printf("Sem memoria disponivel\n");
+		exit(1);
+	}
+	
+	
+	// Pode ser que se alguem insira no meio de problema, entao tem que ver o esquema do mutex
+	while (no != NULL){
+		//printf("%s -> %d\n", no->username, no->socket);
+
+		*vsockets = no->socket;
+		vsockets+=1;
+		no = no->prox;
+	}
+	
+	vsockets-=*tam*1;
+	return vsockets;
+}
 	
 	
 // Se retornar NULL nao encontrou
@@ -160,12 +189,15 @@ void listasockets(struct Node * no, char lconectados[], char lsockets[], int qtd
 	}
 }
 	
+
+	
+	
 int maina(){
 	
 	// Inicia lista
 	node * cabeca = NULL;
 	node * test = NULL;
-	int tamanho = 0;
+	int tamanho = 0, i = 0;
 	
 	insere(&cabeca, 11, "jose",&tamanho);
 	insere(&cabeca, 22, "luiz",&tamanho);
@@ -174,7 +206,25 @@ int maina(){
 	printf("\n#########################\n");
 	printf("Depois de inserir\n");
 	mostra(cabeca);
+
+	printf("\n#########################\n");
+	printf("Vetor sockets\n");
+	int * vetsockets = vetorSocket(cabeca,&tamanho);
 	
+	if(vetorSocket){ // Nao vazio
+		
+		for(i=0;i<tamanho;i++){
+			
+			printf("vetsockets p%d = %d \n",i,vetsockets[i]);
+			
+		}
+		
+	}else{
+		
+		printf("Vetor sockets vazio\n\n");
+	}
+	
+	free(vetsockets);
 	
 	printf("\n#########################\n");
 	printf("Buscando usuario\n");
@@ -210,6 +260,7 @@ int maina(){
 	printf("Buscando socket\n");
 	printf("Socket = %d\n",getsocket(cabeca, "juninheo"));
 	printf("Socket = %d\n",getsocket(cabeca, "correa"));
+	
 	
 	printf("\n#########################\n");
 	printf("Removendo\n");

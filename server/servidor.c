@@ -10,9 +10,12 @@ void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
 	int suser = args->a;
+	int i;// laco vetor sockets
+	int * vetsockets; // ponteiro vetor sockets
 	node ** lista = args->lista;
 	mostra(*lista);
 	int * tamanho = args->tam;
+	int alterlista = 0;
 	
 	char peticion[512];
 	char respuesta[512];
@@ -46,7 +49,7 @@ void *AtenderCliente (void *args_void){
 		ret=read(suser, peticion, sizeof(peticion));
 		printf ("Recibido\n");
 		
-		// Tenemos que a?adirle la marca de fin de string 
+		// Tenemos que anadirle la marca de fin de string 
 		// para que no escriba lo que hay despues en el buffer
 		peticion[ret]='\0';
 		
@@ -73,10 +76,10 @@ void *AtenderCliente (void *args_void){
 			// Se esta logado desloga
 			if(logado){
 				p = strtok( NULL, "/");
-				strcpy (nombre, p);	
+				strcpy(nombre, p);	
 				elimina(lista, nombre,tamanho);
 				// Atualizar
-				sprintf (respuesta, "#ActualizaConectados#");
+				alterlista = 1;
 				
 				
 				mostra(*lista);
@@ -85,7 +88,7 @@ void *AtenderCliente (void *args_void){
 			
 			terminar=1;
 			
-		}else if (codigo==1){ // Solicita login
+		}else if (codigo==1){ // Solicita login servico login = 1/
 			
 			printf("SOlicitou login");
 			char senha[20];
@@ -118,19 +121,19 @@ void *AtenderCliente (void *args_void){
 					
 					printf("Mostra aqui\n");
 					// Atualizar
-					sprintf (respuesta, "#ActualizaConectados#");
+					alterlista = 1;
 					// Mostra
 					mostra(*lista);
 					//mostra(args->lista);
 					
-					sprintf (respuesta, "1%s",nombre); 
+					sprintf (respuesta, "1/1%s",nombre); 
 				}else if (situacao == 3){  // Credenciais errados
-					sprintf (respuesta, "2%s",nombre);
+					sprintf (respuesta, "1/2%s",nombre);
 				}else if (situacao == 0){ // Erro ao logar
-					sprintf (respuesta, "0%s",nombre);
+					sprintf (respuesta, "1/0%s",nombre);
 				}else{ // Erro ao logar
 					
-					sprintf (respuesta, "3%s",nombre);
+					sprintf (respuesta, "1/3%s",nombre);
 				}
 				
 				
@@ -138,8 +141,8 @@ void *AtenderCliente (void *args_void){
 			
 			free(asenha);
 			
-		}else if(codigo==2){ // Solicita deslogar
-			printf("SOlicitou deslogar");
+		}else if(codigo==2){ // Solicita deslogar servico = 2/
+			printf("Solicitou deslogar");
 			char senha[20];
 			p = strtok( NULL, "/");
 			int situacao=0;
@@ -148,45 +151,32 @@ void *AtenderCliente (void *args_void){
 			elimina(lista, nombre,tamanho);
 			
 			// Atualizar
-			sprintf (respuesta, "#ActualizaConectados#");
+			alterlista = 1;
 			
 			mostra(*lista);
 			
 			logado=0;
-			sprintf(respuesta, "0%s",nombre); // Login correto
 			
-		}else if(codigo==3){ // Solicita excluir USUARIO
+			sprintf(respuesta, "2/0%s",nombre); // Login correto
+			
+		}else if(codigo==3){ // Solicita excluir USUARIO servico = 3/
 
 			// Somente se estiver logado
 			if(logado){
 				situacao=remove_user(nombre,conn);
 				if(situacao == 1){
-					sprintf(respuesta,"1%s",nombre); // Deletado corretamente
+					sprintf(respuesta,"3/1%s",nombre); // Deletado corretamente
 					elimina(lista, nombre,tamanho);
 					mostra(*lista);
 					logado=0;
 				}else if(situacao == 2){
-					sprintf(respuesta,"2%s",nombre); // Erro ao excluir
+					sprintf(respuesta,"3/2%s",nombre); // Erro ao excluir
 				}
 			}else{ // Praticamente impossivel de cair nesse caso
-				sprintf(respuesta,"3%s",nombre); // Erro ao excluir
+				sprintf(respuesta,"3/3%s",nombre); // Erro ao excluir
 			}
 			
-		}else if(codigo==4){ // Solicita ver usuarios conectados
-			
-			
-			printf("\n#########################\n");
-			printf("String conectados\n");
-			char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
-			conectados(*lista, novo,tamanho);
-			printf("\n%s\n",novo);
-			// Lista conectados
-			sprintf(respuesta,"%s",novo); // Inserido correto
-			free(novo);
-			
-			
-			
-		}else if (codigo==5){ // insere USUARIO
+		}else if (codigo==5){ // insere USUARIO servico = 5/
 			
 			char senha[20];
 			p = strtok( NULL, "/");
@@ -202,11 +192,11 @@ void *AtenderCliente (void *args_void){
 			situacao=insere_user(nombre,hsenha,conn);
 			
 			if(situacao == 1){
-				sprintf(respuesta,"1%s",nombre); // Inserido correto
+				sprintf(respuesta,"5/1%s",nombre); // Inserido correto
 			}else if(situacao == 2){
-				sprintf(respuesta,"2%s",nombre); // Usuario ja existe
+				sprintf(respuesta,"5/2%s",nombre); // Usuario ja existe
 			}else{
-				sprintf(respuesta,"3%s",nombre); // Erro ao inserir
+				sprintf(respuesta,"5/3%s",nombre); // Erro ao inserir
 			}
 			
 			free(hsenha);
@@ -216,14 +206,61 @@ void *AtenderCliente (void *args_void){
 		if(codigo !=0){ // Desconectar
 			printf ("Resposta: %s\n", respuesta);
 			// Enviamos a resposta
-			write (suser,respuesta, strlen(respuesta));
+			write(suser,respuesta, strlen(respuesta));
 			
-		}if ((codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)){
+		}if ((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 5)){
 			
 			pthread_mutex_lock( &mutex ); // No me interrumpas ahora
 			contador += 1;
 			pthread_mutex_unlock( &mutex ); // Ya puedes interrumpirme
+			
+			
+			
+			if(alterlista && *tamanho>0){
+				
+				printf("String conectados\n");
+				char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
+				
+				conectados(*lista, novo,tamanho);
+				
+				printf("\n%s\n",novo);
+				
+				vetsockets = vetorSocket(*lista,tamanho);
+				
+				char notificacion[MAXNOME*MAXELE+2];
+				
+				sprintf(notificacion, "4/%s",novo);
+				
+				if(vetorSocket){ // Nao vazio
+					for(i=0;i<*tamanho;i++){
+						
+						
+						// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
+						//if(vetsockets[i] != suser){
+						printf("USUARIOS CONECTADOS STRING = %s \n",notificacion);
+						write(vetsockets[i],notificacion, strlen(notificacion));
+						
+						//}
+						printf("vetsockets p%d = %d \n",i,vetsockets[i]);
+						
+						
+					}
+				}else{
+					printf("Vetor sockets vazio\n\n");
+				}
+				free(vetsockets);
+				free(novo);
+				alterlista=0;
+			}
+			
 		}
+		
+		
+		// Verifica se teve alguma alteracao, se sim envia para todos os conectados
+		
+		// Se teve alguma alteracao
+		// Servico 6 notificacao
+
 	}
 	// Se acabo el servicio para este cliente
 	close(suser); 
