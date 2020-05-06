@@ -49,10 +49,10 @@ namespace Cliente
         private void Form1_Load(object sender, EventArgs e)
         {
             // PRODUCION ###########
-            IPAddress direc = IPAddress.Parse("147.83.117.22");
+            // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-             // IPAddress direc = IPAddress.Parse("10.211.55.9");
+              IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50002);
@@ -87,6 +87,9 @@ namespace Cliente
                 // Se nao foi possivel
                 return;
             }
+
+            
+
 
             ThreadStart ts = delegate { AtenderServidor(); };
             atender = new Thread(ts);
@@ -159,6 +162,7 @@ namespace Cliente
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
                             listView1.Items.Clear();
+                            checkedListBox1.Items.Clear();
                             //listView1.Enabled = false;
                             buttonLogin.Text = "Login";
                             buttonRegistra.Text = "Registrar";
@@ -184,6 +188,7 @@ namespace Cliente
                             textPassword.Enabled = true;
                             button1.Enabled = true;
                             listView1.Items.Clear();
+                            checkedListBox1.Items.Clear();
                             //listView1.Enabled = false;
                             buttonRegistra.Text = "Registrar";
                             buttonLogin.Text = "Login";
@@ -208,6 +213,7 @@ namespace Cliente
 
                         //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                         listView1.Items.Clear();
+                        checkedListBox1.Items.Clear();
 
                         int quantidade = Convert.ToInt32(trozos[1]);
                         trozos[quantidade+1] = trozos[quantidade+1].Split('\0')[0];
@@ -222,9 +228,15 @@ namespace Cliente
                                 if (String.Compare(trozos[i], textUser.Text) == 0)
                                 {
                                     listView1.Items.Add(trozos[i] + " (tu)");
+                                   // string[] teste = { "item1", "item2", "Item3" };
+                                    checkedListBox1.Items.Add(trozos[i] + " (tu)");
                                 }
                                 else
                                 {
+
+                                   // string[] teste = { "item1", "item2", "Item3" };
+                                    checkedListBox1.Items.Add(trozos[i]);
+
                                     listView1.Items.Add(trozos[i]);
                                 }
 
@@ -431,6 +443,19 @@ namespace Cliente
 
             }
 
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+
+
+
+        }
+
+        private void buttonInvitar_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(checkedListBox1.CheckedItems.Count.ToString());
         }
     }
 }

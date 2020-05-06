@@ -40,6 +40,8 @@ namespace Cliente
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button2 = new System.Windows.Forms.Button();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.buttonInvitar = new System.Windows.Forms.Button();
             this.groupLogin.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,9 +113,9 @@ namespace Cliente
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(12, 185);
+            this.listView1.Location = new System.Drawing.Point(12, 389);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(168, 389);
+            this.listView1.Size = new System.Drawing.Size(168, 185);
             this.listView1.TabIndex = 5;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -133,6 +135,25 @@ namespace Cliente
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Location = new System.Drawing.Point(12, 185);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(168, 169);
+            this.checkedListBox1.TabIndex = 7;
+            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
+            // 
+            // buttonInvitar
+            // 
+            this.buttonInvitar.Location = new System.Drawing.Point(12, 360);
+            this.buttonInvitar.Name = "buttonInvitar";
+            this.buttonInvitar.Size = new System.Drawing.Size(167, 23);
+            this.buttonInvitar.TabIndex = 8;
+            this.buttonInvitar.Text = "Invitar";
+            this.buttonInvitar.UseVisualStyleBackColor = true;
+            this.buttonInvitar.Click += new System.EventHandler(this.buttonInvitar_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -141,6 +162,8 @@ namespace Cliente
             this.BackgroundImage = global::Cliente.Properties.Resources.gandalf;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(984, 586);
+            this.Controls.Add(this.buttonInvitar);
+            this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.groupLogin);
@@ -168,6 +191,8 @@ namespace Cliente
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button button1;
         private Button button2;
+        private CheckedListBox checkedListBox1;
+        private Button buttonInvitar;
     }
 }
 

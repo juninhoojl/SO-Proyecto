@@ -9,11 +9,11 @@
 #include "fmd5.h"
 
 // PRODUCION
-#define SERVIDORDADOS "shiva2.upc.es"
+// #define SERVIDORDADOS "shiva2.upc.es"
 
 
 // LOCAL ##########
-//#define SERVIDORDADOS "localhost"
+#define SERVIDORDADOS "localhost"
 
 #define SERVIDOR "localhost"
 #define USUARIO "root"
@@ -25,7 +25,7 @@
 #define QTDMIN 2
 #define CHARSNOME 25
 #define TAMUSERNAME CHARSNOME+1
-#define PORTA 50001
+#define PORTA 50002
 
 
 int insere_Player(char nome_arq[], MYSQL *conn);
