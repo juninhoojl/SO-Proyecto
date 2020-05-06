@@ -360,6 +360,39 @@ namespace Cliente
             
         }
 
+        private void buttonInvitar_Click(object sender, EventArgs e)
+        {
+
+            if (checkedListBox1.CheckedItems.Count > 0 && checkedListBox1.CheckedItems.Count <= 5)
+            {
+                string invitados = "6/"+checkedListBox1.CheckedItems.Count.ToString()+"/"+ textUser.Text+"/";
+                foreach (int i in checkedListBox1.CheckedIndices)
+                {
+
+                    invitados += checkedListBox1.Items[i] + "/";
+                    // The indexChecked variable contains the index of the item.
+                    //MessageBox.Show("Index#: " + indexChecked.ToString() + ", is checked. Checked state is:" +
+                    //                checkedListBox1.GetItemCheckState(indexChecked).ToString() + ".");
+
+
+                }
+                invitados = invitados.TrimEnd(',');
+                MessageBox.Show(invitados);
+
+            }
+            else if(checkedListBox1.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("Selecione por lo menos un jugador!");
+
+            }
+            else
+            {
+                MessageBox.Show("Selecione no mas que 5 jugadore!");
+
+            }
+
+        }
+
         // 1- Logado corretamente
         // 2- Credenciais incorretas
         // 3- Erro ao logar
@@ -456,16 +489,6 @@ namespace Cliente
         }
 
         // Funcao para convidar
-        private void buttonInvitar_Click(object sender, EventArgs e)
-        {
-
-            if(checkedListBox1.CheckedItems.Count == 1)
-            {
-
-                MessageBox.Show("TESTE");
-            }
-
-            
-        }
+        
     }
 }
