@@ -228,8 +228,10 @@ namespace Cliente
                                 if (String.Compare(trozos[i], textUser.Text) == 0)
                                 {
                                     listView1.Items.Add(trozos[i] + " (tu)");
-                                   // string[] teste = { "item1", "item2", "Item3" };
-                                    checkedListBox1.Items.Add(trozos[i] + " (tu)");
+                                    // string[] teste = { "item1", "item2", "Item3" };
+
+
+                                    //checkedListBox1.Items.Add(trozos[i] + " (tu)", );
                                 }
                                 else
                                 {
@@ -453,9 +455,17 @@ namespace Cliente
 
         }
 
+        // Funcao para convidar
         private void buttonInvitar_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(checkedListBox1.CheckedItems.Count.ToString());
+
+            if(checkedListBox1.CheckedItems.Count == 1)
+            {
+
+                MessageBox.Show("TESTE");
+            }
+
+            
         }
     }
 }
