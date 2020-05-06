@@ -193,7 +193,81 @@ int altera_Pontuacao(MYSQL *conn, unsigned int id_game, char player[], int alt_s
 	return 0;
 }
 	
+
 	
+// Cria jogo e devolve o id
+unsigned int cria_partida(MYSQL *conn){
+	
+	int err,i=0;
+	unsigned int id_game=0;
+	char query[80];
+	char id_games[10];
+	MYSQL_RES *resultado;
+	MYSQL_ROW row;
+	
+	// Cria Game
+	strcpy (query, "INSERT INTO Game () VALUES ();");
+	err = mysql_query(conn, query);
+	
+	if (err!=0){
+		printf ("Error ao introduzir dados na base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		exit (1); 
+	}
+	
+	// Seleciona ultimo ID
+	strcpy (query, "SELECT LAST_INSERT_ID();");
+	err = mysql_query(conn, query);
+	
+	if (err!=0) {
+		printf ("Error al consultar ultimo ID de la base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		exit (1); 
+	}
+	
+	resultado = mysql_store_result(conn);
+	row = mysql_fetch_row(resultado);
+	
+	id_game = atoi(row[0]);
+	
+	printf("id_game novo = %u\n",id_game); 
+	
+	
+	// Retorna id do Game que foram adicionados
+	return id_game;
+}
+
+	
+int relaciona_jugador(MYSQL *conn, char jugador[], unsigned int id_game){
+	
+	int err,i=0;
+	unsigned int id_game=0;
+	char query[80];
+	char id_games[10];
+	MYSQL_RES *resultado;
+	MYSQL_ROW row;
+	
+	//INSERT INTO Relaciona (Game,Player) VALUES (1,'Luiz');
+	printf("id_game = %u\n",id_game);
+	
+	strcpy (query, "INSERT INTO Relaciona (Game,Player) VALUES ('");
+	sprintf(id_games, "%u", id_game);
+	strcat (query, id_games);
+	strcat (query, "','");
+	strcat (query, jugador);
+	strcat (query, "'");
+	strcat (query, ");");
+	printf("query = %s\n", query);
+	err = mysql_query(conn, query);
+	
+	// Nao precisa esvaziar string pq tem o fim da linha e comeca no 0
+	if (err!=0){
+		printf ("Error ao introduzir dados na base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		exit(1); 
+	}
+
+	return 0;
+}
+	
+
 unsigned int cria_Game(MYSQL *conn, char players[QTDMAX][TAMUSERNAME], int qtd){
 	
 	int err,i=0;

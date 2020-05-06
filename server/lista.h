@@ -13,6 +13,7 @@ typedef struct Node {
 	char username[MAXNOME];
 	struct Node* ante;
 	struct Node* prox;
+	unsigned int partida;
 }node;
 
 

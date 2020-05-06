@@ -14,8 +14,6 @@
 #include <pthread.h>
 
 
-
-
 struct thread_args
 {
 	int a;

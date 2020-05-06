@@ -27,7 +27,6 @@
 #define TAMUSERNAME CHARSNOME+1
 #define PORTA 50002
 
-
 int insere_Player(char nome_arq[], MYSQL *conn);
 
 // Funcao para criar Game inserir usernames do array e retrornar o id do game que estao
@@ -47,6 +46,11 @@ int insere_user(char user[], char senha[], MYSQL *conn);
 // (remove tudo que esta relacionado)
 int remove_user(char user[], MYSQL *conn);
 
+// Cria partida e devolve id
+unsigned int cria_partida(MYSQL *conn);
+
+// Relaciona jogador com jogo a partir do ID
+int relaciona_jugador(MYSQL *conn, char jugador[], unsigned int id_game);
 
 #endif
 
