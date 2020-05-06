@@ -4,8 +4,6 @@ int contador;
 //Estructura necesaria para acceso excluyente
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
-
-
 void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
