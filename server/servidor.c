@@ -76,7 +76,7 @@ void *AtenderCliente (void *args_void){
 			// Se esta logado desloga
 			if(logado){
 				p = strtok( NULL, "/");
-				strcpy(nombre, p);	
+				strcpy(nombre, p);
 				elimina(lista, nombre,tamanho);
 				// Atualizar
 				alterlista = 1;
@@ -214,10 +214,6 @@ void *AtenderCliente (void *args_void){
 			p = strtok( NULL, "/");
 			strcpy(qjugador, p);
 			
-			
-			
-			
-			
 			int qjugadores =  atoi(qjugador);
 			printf("Quantidade de jogadores = %d",qjugadores);
 			char convidado[TAMUSERNAME];
@@ -228,11 +224,20 @@ void *AtenderCliente (void *args_void){
 			idgame=cria_partida(conn);
 			// Ate aqui ja tenho quem criou o jogo
 			// Agora relaciono o criador do jogo
-			printf("Abaixo tem que ter o nome de quem solicitou\n"); 
 			printf("Nome de quem solicitou = %s\n",nombre); 
 			
 			relaciona_jugador(conn, nombre, idgame);
-			printf("Acima tem que ter o nome de quem solicitou\n"); 
+			// Adiciona quantidade de jogadores
+			
+			node * usuario = busca(*lista, nombre);
+			usuario->emjogo=0; // So vai entrar em jogo ate ficar completo
+			usuario->jugadores_partida=qjugadores+1; // 
+			usuario->jugadores_momento=1;
+			usuario->partida=idgame;
+			// A cada resposta altera osvalores de quem criou a partida
+			
+			
+			// Se alguem nao aceita deleta tudo relacionado ao jogo
 			
 			
 			// 6/quemchamou/idgame
@@ -247,7 +252,6 @@ void *AtenderCliente (void *args_void){
 				// Envia para todos os jogadores convidados
 				
 				printf("Convidado %d = %s\n",i,convidado);
-
 				// Enviar convite para os convidados
 				write(getsocket(*lista,convidado),conviteres, strlen(conviteres));
 				
@@ -259,7 +263,6 @@ void *AtenderCliente (void *args_void){
 			
 			// Aqui envia que ja esta na partida e que os convites foram enviados
 			sprintf(respuesta,"7/1%s",nombre);
-			printf("Chgou aqui normal");
 			// Convida os outros da partida
 			
 			// Antes de convidar para testar vou tentar fazer um loop

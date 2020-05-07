@@ -15,6 +15,8 @@ typedef struct Node {
 	struct Node* prox;
 	unsigned int partida;
 	int jugadores_partida;
+	int jugadores_momento;
+	int emjogo;
 }node;
 
 
