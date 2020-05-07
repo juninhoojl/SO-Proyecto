@@ -270,6 +270,89 @@ void *AtenderCliente (void *args_void){
 			// Faz um for com a quantidade de convidados e envia:
 			// 6/quemchamou/idpartida
 			
+		}else if(codigo==7){ // resposta convite partida = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
+			
+			printf("Codigo 7\n");
+			// 7/nombre/1/donopartida/idgame
+			// aqui vai sobrar somente  /1/donopartida/idgame
+			
+			char respconvite[2];
+			p = strtok( NULL, "/");
+			strcpy(respconvite, p);
+			int respconvites = atoi(respconvite);
+			printf("Reposta convite game = %d",respconvites);
+			// Trim o dono da partida
+			char donopartida[MAXNOME+1];
+			p = strtok( NULL, "/");
+			strcpy(donopartida, p);
+			
+			
+			// Seleciona o id da partida
+			char idbdgame[10];
+			p = strtok( NULL, "/");
+			strcpy(idbdgame, p);
+			unsigned int idbdgames = atoi(idbdgame);
+			// verifica se existe uma partida com essa id (fazer depois)
+			printf("Nome de quem respondeu = %s\n",nombre); 
+			printf("Nome do dono da partida = %s\n",donopartida); 
+			node * usuario = busca(*lista, donopartida);
+			
+			
+			if(respconvites == 1){ // Aceitou
+				
+				// relaciona a pessoa com a partida
+				relaciona_jugador(conn, nombre, idbdgames);
+				
+				// Adiciona uma pessoa a mais no dono e se completou avisa o dono
+				// So vai entrar em jogo ate ficar completo
+				usuario->jugadores_momento+=1;
+				// Confere se completou as pessoas
+				
+				if(usuario->jugadores_momento == usuario->jugadores_partida){
+					
+					printf("Todos ja estao prontos para comecar\n"); 
+				}else{
+					
+					printf("Ainda faltam pessoas\n"); 
+				}
+				
+				
+				// Pode fazer para avisar que entrou na partida tambem
+				// Insere e avisa o dono que entrou
+				//write(getsocket(*lista,convidado),conviteres, strlen(conviteres));
+				
+				
+			}else{ // Recusou				
+				
+				// Se recusou envia para todos que estao na partida que nao aceitou e deleta da base
+				
+			}
+			
+			
+			
+			
+			// Vai verificar se aceitou ou nao e alterar a quantidade de conectados
+			
+			// Caso se a pessoa aceitou depois que nao existe mais, para isso vai verificar se existe na BASE
+			// de dados uma prtida com o id, se nao existe avisa que nao existe mais, se existe
+			// altera o dono da partida e verifica se esta cheio e envia para ele que pode comecar
+			
+			
+			// Ya tenemos el nombre
+			
+			// Cria partida insere quem convidou e faz loop com os outros
+			// Cria partida e devolve id
+			// Ate aqui ja tenho quem criou o jogo
+			// Agora relaciono o criador do jogo
+
+			// A cada resposta altera osvalores de quem criou a partida
+			
+			
+			// Se alguem nao aceita deleta tudo relacionado ao jogo
+			
+			
+			// Aqui avisa que entrou na partida
+			sprintf(respuesta,"7/1%s",nombre);
 		}
 		
 		if(codigo !=0){ // Desconectar
