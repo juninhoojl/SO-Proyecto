@@ -235,14 +235,21 @@ void *AtenderCliente (void *args_void){
 			printf("Acima tem que ter o nome de quem solicitou\n"); 
 			
 			
+			// 6/quemchamou/idgame
+			char conviteres[MAXNOME+10];
+			sprintf(conviteres, "6/%s/%u",nombre,idgame);
+			
 			for(i=0;i<qjugadores;i++){
 				
 				p = strtok( NULL, "/");
-				strcpy (convidado, p);
+				strcpy(convidado, p);
+				
 				// Envia para todos os jogadores convidados
-				// 6/quemchamou/idgame
 				
 				printf("Convidado %d = %s\n",i,convidado);
+
+				// Enviar convite para os convidados
+				write(getsocket(*lista,convidado),conviteres, strlen(conviteres));
 				
 			}
 			
@@ -250,6 +257,7 @@ void *AtenderCliente (void *args_void){
 			// Criar variavel com quantiade de pessoas que foram convidadas tambem
 			// vai descontanto ate faltar zero para iniciar
 			
+			// Aqui envia que ja esta na partida e que os convites foram enviados
 			sprintf(respuesta,"7/1%s",nombre);
 			printf("Chgou aqui normal");
 			// Convida os outros da partida
