@@ -205,7 +205,6 @@ void *AtenderCliente (void *args_void){
 		}else if(codigo==6){ // insere USUARIO servico = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
 			
 			printf("Codigo 6\n");
-			p = strtok( NULL, "/");
 			int i = 0;
 			
 			unsigned int idgame = 0;
@@ -214,6 +213,10 @@ void *AtenderCliente (void *args_void){
 			char qjugador[5];
 			p = strtok( NULL, "/");
 			strcpy(qjugador, p);
+			
+			
+			
+			
 			
 			int qjugadores =  atoi(qjugador);
 			printf("Quantidade de jogadores = %d",qjugadores);
@@ -231,7 +234,7 @@ void *AtenderCliente (void *args_void){
 			relaciona_jugador(conn, nombre, idgame);
 			printf("Acima tem que ter o nome de quem solicitou\n"); 
 			
-			/*
+			
 			for(i=0;i<qjugadores;i++){
 				
 				p = strtok( NULL, "/");
@@ -242,7 +245,7 @@ void *AtenderCliente (void *args_void){
 				printf("Convidado %d = %s\n",i,convidado);
 				
 			}
-			*/
+			
 			// atriubi a idgame no usuario que convidou
 			// Criar variavel com quantiade de pessoas que foram convidadas tambem
 			// vai descontanto ate faltar zero para iniciar
