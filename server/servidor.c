@@ -298,39 +298,58 @@ void *AtenderCliente (void *args_void){
 			node * usuario = busca(*lista, donopartida);
 			
 			
-			if(respconvites == 1){ // Aceitou
+			if(existe_game(conn, idbdgames){ // Se game existe
 				
-				// relaciona a pessoa com a partida
-				relaciona_jugador(conn, nombre, idbdgames);
 				
-				// Adiciona uma pessoa a mais no dono e se completou avisa o dono
-				// So vai entrar em jogo ate ficar completo
-				usuario->jugadores_momento+=1;
-				// Confere se completou as pessoas
-				
-				if(usuario->jugadores_momento == usuario->jugadores_partida){
+				if(respconvites == 1){ // Aceitou
 					
-					printf("Todos ja estao prontos para comecar\n"); 
-				}else{
+					// relaciona a pessoa com a partida
+					relaciona_jugador(conn, nombre, idbdgames);
 					
-					printf("Ainda faltam pessoas\n"); 
+					// Adiciona uma pessoa a mais no dono e se completou avisa o dono
+					// So vai entrar em jogo ate ficar completo
+					usuario->jugadores_momento+=1;
+					// Confere se completou as pessoas
+					
+					if(usuario->jugadores_momento == usuario->jugadores_partida){
+						
+						printf("Todos ja estao prontos para comecar\n"); 
+						// Envia para dono da partida que pode comecar
+						// Adiciona todos 
+						
+					}else{
+						
+						printf("Ainda faltam pessoas\n"); 
+					}
+					
+					
+					// Pode fazer para avisar que entrou na partida tambem
+					// Insere e avisa o dono que entrou
+					//write(getsocket(*lista,convidado),conviteres, strlen(conviteres));
+					
+					
+				}else{ // Recusou
+					
+					// int deleta_game(MYSQL *conn, unsigned int id_game);
+					
+					// Vai avisar todos que alguem nao aceitou e excuir
+					deleta_game(conn, idbdgames);
+					
+					printf("Usuario %S nao aceitou, partida deletada\n",nombre);
+					// int existe_game(MYSQL *conn, unsigned int id_game);
+					// DELETE FROM Game Where ID=IDGAME
+					
+					// Se recusou envia para todos que estao na partida que nao aceitou e deleta da base
+					
 				}
 				
+			}else{ // Avisa que soliciotu por ele que nao esta disponivel mais
 				
-				// Pode fazer para avisar que entrou na partida tambem
-				// Insere e avisa o dono que entrou
-				//write(getsocket(*lista,convidado),conviteres, strlen(conviteres));
-				
-				
-			}else{ // Recusou				
-				
-				// Se recusou envia para todos que estao na partida que nao aceitou e deleta da base
+				// 7/0
+				// Aqui avisa que entrou na partida
+				sprintf(respuesta,"7/0");// Nao existe mais a partida que deseja entrar
 				
 			}
-			
-			
-			
-			
 			// Vai verificar se aceitou ou nao e alterar a quantidade de conectados
 			
 			// Caso se a pessoa aceitou depois que nao existe mais, para isso vai verificar se existe na BASE
@@ -344,15 +363,11 @@ void *AtenderCliente (void *args_void){
 			// Cria partida e devolve id
 			// Ate aqui ja tenho quem criou o jogo
 			// Agora relaciono o criador do jogo
-
 			// A cada resposta altera osvalores de quem criou a partida
 			
 			
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
-			
-			
-			// Aqui avisa que entrou na partida
-			sprintf(respuesta,"7/1%s",nombre);
+
 		}
 		
 		if(codigo !=0){ // Desconectar

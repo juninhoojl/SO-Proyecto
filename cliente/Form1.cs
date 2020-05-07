@@ -303,6 +303,12 @@ namespace Cliente
                         // Responde aceitando ou recusando
     
                         break;
+                    case 7: // Convite para jogar
+                            // Nao existe mais o jogo que tentou entrar
+                        MessageBox.Show("La partida ya no esta disponible mas!");
+                        // Responde aceitando ou recusando
+
+                        break;
 
                     default:
                         MessageBox.Show("Mensagem recebida desconhecida");

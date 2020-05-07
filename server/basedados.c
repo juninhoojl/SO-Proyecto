@@ -58,6 +58,62 @@ int remove_user(char user[], MYSQL *conn){
 	
 }
 	
+	
+int deleta_game(MYSQL *conn, unsigned int id_game){
+	
+	char query[200];
+	int err;
+	char id_games[10];
+	
+	// Nem precisa conferir porque ja esta logado
+	strcpy (query, "DELETE FROM Game WHERE ID='");
+	sprintf(id_games, "%u", id_game);
+	strcat(query, id_games);
+	strcat (query, "';");
+	
+	err = mysql_query(conn, query);
+	
+	
+	if (err!=0){
+		printf ("Error ao deletar game na base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		return 2;
+	}else{
+		printf("Game excluido com sucesso\n");
+		return 1;
+	}
+	
+}
+	
+int existe_game(MYSQL *conn, unsigned int id_game){
+	
+	char query[200];
+	int err;
+	char id_games[10];
+	MYSQL_RES *resultado;
+	MYSQL_ROW row;
+	
+	strcpy(query, "SELECT EXISTS(SELECT * FROM Game WHERE ID='");
+	sprintf(id_games, "%u", id_game);
+	strcat(query, id_games);
+	strcat(query, "');");
+	
+	err = mysql_query(conn, query);
+	
+	if (err!=0) {
+		printf ("Error ao consultar game na base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		exit (1); 
+	}
+	
+	resultado = mysql_store_result(conn);
+	row = mysql_fetch_row(resultado);
+	
+	// Quantidade que existe, tem que ser 1 para existir
+	
+	return atoi(row[0]);
+}
+
+	
+	
 int loga_user(char user[], char senha[], MYSQL *conn){
 	
 	char query[200];

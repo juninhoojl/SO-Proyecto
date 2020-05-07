@@ -52,6 +52,11 @@ unsigned int cria_partida(MYSQL *conn);
 // Relaciona jogador com jogo a partir do ID
 int relaciona_jugador(MYSQL *conn, char jugador[], unsigned int id_game);
 
+int deleta_game(MYSQL *conn, unsigned int id_game);
+
+int existe_game(MYSQL *conn, unsigned int id_game);
+
+
 #endif
 
 
