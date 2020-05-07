@@ -207,6 +207,9 @@ unsigned int cria_partida(MYSQL *conn){
 	
 	// Cria Game
 	strcpy (query, "INSERT INTO Game () VALUES ();");
+	
+	printf("\n%s\n" ,query);
+	
 	err = mysql_query(conn, query);
 	
 	if (err!=0){
@@ -239,7 +242,7 @@ unsigned int cria_partida(MYSQL *conn){
 int relaciona_jugador(MYSQL *conn, char jugador[], unsigned int id_game){
 	
 	int err,i=0;
-	unsigned int id_game=0;
+	
 	char query[80];
 	char id_games[10];
 	MYSQL_RES *resultado;
@@ -247,6 +250,8 @@ int relaciona_jugador(MYSQL *conn, char jugador[], unsigned int id_game){
 	
 	//INSERT INTO Relaciona (Game,Player) VALUES (1,'Luiz');
 	printf("id_game = %u\n",id_game);
+	
+	
 	
 	strcpy (query, "INSERT INTO Relaciona (Game,Player) VALUES ('");
 	sprintf(id_games, "%u", id_game);

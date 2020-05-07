@@ -202,14 +202,69 @@ void *AtenderCliente (void *args_void){
 			
 			free(hsenha);
 			
+		}else if(codigo==6){ // insere USUARIO servico = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
+			
+			printf("Codigo 6\n");
+			p = strtok( NULL, "/");
+			int i = 0;
+			
+			unsigned int idgame = 0;
+			
+			
+			char qjugador[5];
+			p = strtok( NULL, "/");
+			strcpy(qjugador, p);
+			
+			int qjugadores =  atoi(qjugador);
+			printf("Quantidade de jogadores = %d",qjugadores);
+			char convidado[TAMUSERNAME];
+			// Ya tenemos el nombre
+			
+			// Cria partida insere quem convidou e faz loop com os outros
+			// Cria partida e devolve id
+			idgame=cria_partida(conn);
+			// Ate aqui ja tenho quem criou o jogo
+			// Agora relaciono o criador do jogo
+			printf("Abaixo tem que ter o nome de quem solicitou\n"); 
+			printf("Nome de quem solicitou = %s\n",nombre); 
+			
+			relaciona_jugador(conn, nombre, idgame);
+			printf("Acima tem que ter o nome de quem solicitou\n"); 
+			
+			/*
+			for(i=0;i<qjugadores;i++){
+				
+				p = strtok( NULL, "/");
+				strcpy (convidado, p);
+				// Envia para todos os jogadores convidados
+				// 6/quemchamou/idgame
+				
+				printf("Convidado %d = %s\n",i,convidado);
+				
+			}
+			*/
+			// atriubi a idgame no usuario que convidou
+			// Criar variavel com quantiade de pessoas que foram convidadas tambem
+			// vai descontanto ate faltar zero para iniciar
+			
+			sprintf(respuesta,"7/1%s",nombre);
+			printf("Chgou aqui normal");
+			// Convida os outros da partida
+			
+			// Antes de convidar para testar vou tentar fazer um loop
+			
+			// Faz um for com a quantidade de convidados e envia:
+			// 6/quemchamou/idpartida
+			
 		}
 		
 		if(codigo !=0){ // Desconectar
 			printf ("Resposta: %s\n", respuesta);
 			// Enviamos a resposta
+			
 			write(suser,respuesta, strlen(respuesta));
 			
-		}if ((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 5)){
+		}if ((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 5)||(codigo== 6)){
 			
 			pthread_mutex_lock( &mutex ); // No me interrumpas ahora
 			contador += 1;

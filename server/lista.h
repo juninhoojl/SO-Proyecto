@@ -14,6 +14,7 @@ typedef struct Node {
 	struct Node* ante;
 	struct Node* prox;
 	unsigned int partida;
+	int jugadores_partida;
 }node;
 
 

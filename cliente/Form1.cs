@@ -55,7 +55,7 @@ namespace Cliente
               IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
-            IPEndPoint ipep = new IPEndPoint(direc, 50002);
+            IPEndPoint ipep = new IPEndPoint(direc, 50003);
 
             //listView1.Items.Clear();
             //listView1.Enabled = false;
@@ -275,6 +275,34 @@ namespace Cliente
                         }
 
                         break;
+                    case 6: // Convite para jogar
+
+                        // So mostra quem convidou
+                        // trozos[0] = proprio codigo
+                        // trozos[1] = quem chamou
+                        // trozos[2] = idgame bd
+
+                        // Resposta
+                        // 7/nombre/respuesta/quieninvito/idbasedados
+
+                        dynamic result = MessageBox.Show(trozos[1]+"te ivitou para jugar, \n\t aceptar?", "Invitacion", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            // Aceptou
+                            string mensaje = "7/" + textUser.Text + "/1/" + trozos[1]+"/"+trozos[2]; // logout
+                            byte[] msg = Encoding.ASCII.GetBytes(mensaje);
+                            server.Send(msg);
+                        }
+                        else
+                        {
+                            string mensaje = "7/" + textUser.Text + "/0/" + trozos[1]+"/"+ trozos[2]; // logout
+                            byte[] msg = Encoding.ASCII.GetBytes(mensaje);
+                            server.Send(msg);
+                            // Nao aceptou
+                        }
+                        // Responde aceitando ou recusando
+    
+                        break;
 
                     default:
                         MessageBox.Show("Mensagem recebida desconhecida");
@@ -365,7 +393,7 @@ namespace Cliente
 
             if (checkedListBox1.CheckedItems.Count > 0 && checkedListBox1.CheckedItems.Count <= 5)
             {
-                string invitados = "6/"+checkedListBox1.CheckedItems.Count.ToString()+"/"+ textUser.Text+"/";
+                string invitados = "6/"+textUser.Text+"/"+checkedListBox1.CheckedItems.Count.ToString()+"/";
                 foreach (int i in checkedListBox1.CheckedIndices)
                 {
 
@@ -378,6 +406,11 @@ namespace Cliente
                 }
                 invitados = invitados.TrimEnd(',');
                 MessageBox.Show(invitados);
+
+                byte[] msg = Encoding.ASCII.GetBytes(invitados);
+
+                server.Send(msg);
+
 
             }
             else if(checkedListBox1.CheckedItems.Count == 0)
