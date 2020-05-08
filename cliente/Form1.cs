@@ -309,6 +309,12 @@ namespace Cliente
                         // Responde aceitando ou recusando
 
                         break;
+                    case 8: // Convite para jogar
+                            // Nao existe mais o jogo que tentou entrar
+                        MessageBox.Show("Aun faltan personas!");
+                        // Responde aceitando ou recusando
+
+                        break;
 
                     default:
                         MessageBox.Show("Mensagem recebida desconhecida");

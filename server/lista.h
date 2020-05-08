@@ -39,4 +39,6 @@ void listasockets(struct Node * no, char lconectados[], char lsockets[], int qtd
 
 int * vetorSocket(struct Node * no, int * tam);
 
+int * vetorPartida(struct Node * no, int qtdjugadores, unsigned int partida);
+
 #endif

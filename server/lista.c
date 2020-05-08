@@ -77,8 +77,45 @@ int * vetorSocket(struct Node * no, int * tam){
 	vsockets-=*tam*1;
 	return vsockets;
 }
+
+
+	
+int * vetorPartida(struct Node * no, int qtdjugadores, unsigned int partida){
+	// retorna null se estiver vazia
+	
+	if (!no){
+		printf("Lista vazia\n");
+		return NULL; // Retorna nulo para conferir em quem chamou
+	}
+	
+	int * vsockets;
+	vsockets = (int*)malloc(qtdjugadores*sizeof(int));
+	
+	if(vsockets == NULL){
+		printf("Sem memoria disponivel\n");
+		exit(1);
+	}
 	
 	
+	// Pode ser que se alguem insira no meio de problema, entao tem que ver o esquema do mutex
+	while (no != NULL){
+		//printf("%s -> %d\n", no->username, no->socket);
+		
+		if(partida == no->partida){
+			
+			*vsockets = no->socket;
+			
+		}
+		
+		vsockets+=1;
+		no = no->prox;
+	}
+	
+	vsockets-=qtdjugadores*1;
+	return vsockets;
+}	
+
+
 // Se retornar NULL nao encontrou
 // Se retornar Endereco encontrou
 node * busca(struct Node * no, char name[MAXNOME]){

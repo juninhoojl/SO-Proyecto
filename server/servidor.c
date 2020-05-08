@@ -285,8 +285,8 @@ void *AtenderCliente (void *args_void){
 			char donopartida[MAXNOME+1];
 			p = strtok( NULL, "/");
 			strcpy(donopartida, p);
-			
-			
+			int i=0, momento=0;
+			char contesta[10];
 			// Seleciona o id da partida
 			char idbdgame[10];
 			p = strtok( NULL, "/");
@@ -296,10 +296,9 @@ void *AtenderCliente (void *args_void){
 			printf("Nome de quem respondeu = %s\n",nombre); 
 			printf("Nome do dono da partida = %s\n",donopartida); 
 			node * usuario = busca(*lista, donopartida);
+			node * invitado = busca(*lista, nombre);
 			
-			
-			if(existe_game(conn, idbdgames){ // Se game existe
-				
+			if(existe_game(conn, idbdgames)){ // Se game existe
 				
 				if(respconvites == 1){ // Aceitou
 					
@@ -310,7 +309,7 @@ void *AtenderCliente (void *args_void){
 					// So vai entrar em jogo ate ficar completo
 					usuario->jugadores_momento+=1;
 					// Confere se completou as pessoas
-					
+					invitado->partida=idbdgames;
 					if(usuario->jugadores_momento == usuario->jugadores_partida){
 						
 						printf("Todos ja estao prontos para comecar\n"); 
@@ -318,8 +317,16 @@ void *AtenderCliente (void *args_void){
 						// Adiciona todos 
 						
 					}else{
-						
-						printf("Ainda faltam pessoas\n"); 
+						momento=usuario->jugadores_momento;
+						int * socketPartida;
+						socketPartida = vetorPartida(*lista, momento,idbdgames);
+						printf("Ainda faltam pessoas\n");
+						strcpy(contesta,"8/0");// faltan personas
+						for(i=0;i<momento;i++){
+							// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
+							// 8/0 -> aun faltan personas
+							write(socketPartida[i],contesta, strlen(contesta));
+						}
 					}
 					
 					
@@ -335,7 +342,7 @@ void *AtenderCliente (void *args_void){
 					// Vai avisar todos que alguem nao aceitou e excuir
 					deleta_game(conn, idbdgames);
 					
-					printf("Usuario %S nao aceitou, partida deletada\n",nombre);
+					printf("Usuario %s nao aceitou, partida deletada\n",nombre);
 					// int existe_game(MYSQL *conn, unsigned int id_game);
 					// DELETE FROM Game Where ID=IDGAME
 					
@@ -392,7 +399,7 @@ void *AtenderCliente (void *args_void){
 				conectados(*lista, novo,tamanho);
 				
 				printf("\n%s\n",novo);
-				
+					
 				vetsockets = vetorSocket(*lista,tamanho);
 				
 				char notificacion[MAXNOME*MAXELE+2];
