@@ -4,8 +4,6 @@ int contador;
 //Estructura necesaria para acceso excluyente
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
-
-
 void *AtenderCliente (void *args_void){
 	
 	struct thread_args * args = args_void;
@@ -168,6 +166,7 @@ void *AtenderCliente (void *args_void){
 					sprintf(respuesta,"3/1%s",nombre); // Deletado corretamente
 					elimina(lista, nombre,tamanho);
 					mostra(*lista);
+					alterlista = 1;
 					logado=0;
 				}else if(situacao == 2){
 					sprintf(respuesta,"3/2%s",nombre); // Erro ao excluir
