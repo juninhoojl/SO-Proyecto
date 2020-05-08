@@ -319,14 +319,14 @@ namespace Cliente
                         }
                         else
                         {
-
-                            MessageBox.Show("Aun faltan personas!");
+                            
+                            MessageBox.Show(trozos[2].Split('\0')[0] + " acepto la invitacion! Pero aun faltan personas!");
                         }
                         break;
                     case 9: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
-
-                            MessageBox.Show("Invitaciones Inviadas!");
+                        
+                        MessageBox.Show("Invitaciones Inviadas!");
 
                         // Responde aceitando ou recusando
 

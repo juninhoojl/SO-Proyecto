@@ -286,7 +286,7 @@ void *AtenderCliente (void *args_void){
 			p = strtok( NULL, "/");
 			strcpy(donopartida, p);
 			int i=0, momento=0;
-			char contesta[10];
+			char contesta[7+MAXNOME];
 			// Seleciona o id da partida
 			char idbdgame[10];
 			p = strtok( NULL, "/");
@@ -318,7 +318,7 @@ void *AtenderCliente (void *args_void){
 						momento=usuario->jugadores_momento;
 						int * socketPartida;
 						socketPartida = vetorPartida(*lista, momento,idbdgames);
-						printf("Ainda faltam pessoas\n");
+						printf("No faltam pessoas, estan todos\n");
 						strcpy(contesta,"8/1");// faltan personas
 						for(i=0;i<momento;i++){
 							// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
@@ -331,7 +331,8 @@ void *AtenderCliente (void *args_void){
 						int * socketPartida;
 						socketPartida = vetorPartida(*lista, momento,idbdgames);
 						printf("Ainda faltam pessoas\n");
-						strcpy(contesta,"8/0");// faltan personas
+						strcpy(contesta,"8/0/");// faltan personas
+						strcat(contesta,nombre);
 						for(i=0;i<momento;i++){
 							// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
 							// 8/0 -> aun faltan personas
