@@ -76,7 +76,7 @@ void *AtenderCliente (void *args_void){
 			// Se esta logado desloga
 			if(logado){
 				p = strtok( NULL, "/");
-				strcpy(nombre, p);	
+				strcpy(nombre, p);
 				elimina(lista, nombre,tamanho);
 				// Atualizar
 				alterlista = 1;
@@ -214,10 +214,6 @@ void *AtenderCliente (void *args_void){
 			p = strtok( NULL, "/");
 			strcpy(qjugador, p);
 			
-			
-			
-			
-			
 			int qjugadores =  atoi(qjugador);
 			printf("Quantidade de jogadores = %d",qjugadores);
 			char convidado[TAMUSERNAME];
@@ -228,11 +224,20 @@ void *AtenderCliente (void *args_void){
 			idgame=cria_partida(conn);
 			// Ate aqui ja tenho quem criou o jogo
 			// Agora relaciono o criador do jogo
-			printf("Abaixo tem que ter o nome de quem solicitou\n"); 
 			printf("Nome de quem solicitou = %s\n",nombre); 
 			
 			relaciona_jugador(conn, nombre, idgame);
-			printf("Acima tem que ter o nome de quem solicitou\n"); 
+			// Adiciona quantidade de jogadores
+			
+			node * usuario = busca(*lista, nombre);
+			usuario->emjogo=0; // So vai entrar em jogo ate ficar completo
+			usuario->jugadores_partida=qjugadores+1; // 
+			usuario->jugadores_momento=1;
+			usuario->partida=idgame;
+			// A cada resposta altera osvalores de quem criou a partida
+			
+			
+			// Se alguem nao aceita deleta tudo relacionado ao jogo
 			
 			
 			// 6/quemchamou/idgame
@@ -247,7 +252,6 @@ void *AtenderCliente (void *args_void){
 				// Envia para todos os jogadores convidados
 				
 				printf("Convidado %d = %s\n",i,convidado);
-
 				// Enviar convite para os convidados
 				write(getsocket(*lista,convidado),conviteres, strlen(conviteres));
 				
@@ -259,7 +263,6 @@ void *AtenderCliente (void *args_void){
 			
 			// Aqui envia que ja esta na partida e que os convites foram enviados
 			sprintf(respuesta,"7/1%s",nombre);
-			printf("Chgou aqui normal");
 			// Convida os outros da partida
 			
 			// Antes de convidar para testar vou tentar fazer um loop
@@ -267,6 +270,104 @@ void *AtenderCliente (void *args_void){
 			// Faz um for com a quantidade de convidados e envia:
 			// 6/quemchamou/idpartida
 			
+		}else if(codigo==7){ // resposta convite partida = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
+			
+			printf("Codigo 7\n");
+			// 7/nombre/1/donopartida/idgame
+			// aqui vai sobrar somente  /1/donopartida/idgame
+			
+			char respconvite[2];
+			p = strtok( NULL, "/");
+			strcpy(respconvite, p);
+			int respconvites = atoi(respconvite);
+			printf("Reposta convite game = %d",respconvites);
+			// Trim o dono da partida
+			char donopartida[MAXNOME+1];
+			p = strtok( NULL, "/");
+			strcpy(donopartida, p);
+			
+			
+			// Seleciona o id da partida
+			char idbdgame[10];
+			p = strtok( NULL, "/");
+			strcpy(idbdgame, p);
+			unsigned int idbdgames = atoi(idbdgame);
+			// verifica se existe uma partida com essa id (fazer depois)
+			printf("Nome de quem respondeu = %s\n",nombre); 
+			printf("Nome do dono da partida = %s\n",donopartida); 
+			node * usuario = busca(*lista, donopartida);
+			
+			
+			if(existe_game(conn, idbdgames){ // Se game existe
+				
+				
+				if(respconvites == 1){ // Aceitou
+					
+					// relaciona a pessoa com a partida
+					relaciona_jugador(conn, nombre, idbdgames);
+					
+					// Adiciona uma pessoa a mais no dono e se completou avisa o dono
+					// So vai entrar em jogo ate ficar completo
+					usuario->jugadores_momento+=1;
+					// Confere se completou as pessoas
+					
+					if(usuario->jugadores_momento == usuario->jugadores_partida){
+						
+						printf("Todos ja estao prontos para comecar\n"); 
+						// Envia para dono da partida que pode comecar
+						// Adiciona todos 
+						
+					}else{
+						
+						printf("Ainda faltam pessoas\n"); 
+					}
+					
+					
+					// Pode fazer para avisar que entrou na partida tambem
+					// Insere e avisa o dono que entrou
+					//write(getsocket(*lista,convidado),conviteres, strlen(conviteres));
+					
+					
+				}else{ // Recusou
+					
+					// int deleta_game(MYSQL *conn, unsigned int id_game);
+					
+					// Vai avisar todos que alguem nao aceitou e excuir
+					deleta_game(conn, idbdgames);
+					
+					printf("Usuario %S nao aceitou, partida deletada\n",nombre);
+					// int existe_game(MYSQL *conn, unsigned int id_game);
+					// DELETE FROM Game Where ID=IDGAME
+					
+					// Se recusou envia para todos que estao na partida que nao aceitou e deleta da base
+					
+				}
+				
+			}else{ // Avisa que soliciotu por ele que nao esta disponivel mais
+				
+				// 7/0
+				// Aqui avisa que entrou na partida
+				sprintf(respuesta,"7/0");// Nao existe mais a partida que deseja entrar
+				
+			}
+			// Vai verificar se aceitou ou nao e alterar a quantidade de conectados
+			
+			// Caso se a pessoa aceitou depois que nao existe mais, para isso vai verificar se existe na BASE
+			// de dados uma prtida com o id, se nao existe avisa que nao existe mais, se existe
+			// altera o dono da partida e verifica se esta cheio e envia para ele que pode comecar
+			
+			
+			// Ya tenemos el nombre
+			
+			// Cria partida insere quem convidou e faz loop com os outros
+			// Cria partida e devolve id
+			// Ate aqui ja tenho quem criou o jogo
+			// Agora relaciono o criador do jogo
+			// A cada resposta altera osvalores de quem criou a partida
+			
+			
+			// Se alguem nao aceita deleta tudo relacionado ao jogo
+
 		}
 		
 		if(codigo !=0){ // Desconectar
