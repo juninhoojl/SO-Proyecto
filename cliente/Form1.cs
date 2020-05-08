@@ -55,7 +55,7 @@ namespace Cliente
              // IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
-            IPEndPoint ipep = new IPEndPoint(direc, 50001);
+            IPEndPoint ipep = new IPEndPoint(direc, 50002);
 
             //listView1.Items.Clear();
             //listView1.Enabled = false;
