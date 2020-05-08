@@ -262,7 +262,7 @@ void *AtenderCliente (void *args_void){
 			// vai descontanto ate faltar zero para iniciar
 			
 			// Aqui envia que ja esta na partida e que os convites foram enviados
-			sprintf(respuesta,"7/1%s",nombre);
+			sprintf(respuesta,"9/1%s",nombre);
 			// Convida os outros da partida
 			
 			// Antes de convidar para testar vou tentar fazer um loop
@@ -315,6 +315,16 @@ void *AtenderCliente (void *args_void){
 						printf("Todos ja estao prontos para comecar\n"); 
 						// Envia para dono da partida que pode comecar
 						// Adiciona todos 
+						momento=usuario->jugadores_momento;
+						int * socketPartida;
+						socketPartida = vetorPartida(*lista, momento,idbdgames);
+						printf("Ainda faltam pessoas\n");
+						strcpy(contesta,"8/1");// faltan personas
+						for(i=0;i<momento;i++){
+							// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
+							// 8/0 -> aun faltan personas
+							write(socketPartida[i],contesta, strlen(contesta));
+						}
 						
 					}else{
 						momento=usuario->jugadores_momento;
@@ -371,10 +381,9 @@ void *AtenderCliente (void *args_void){
 			// Ate aqui ja tenho quem criou o jogo
 			// Agora relaciono o criador do jogo
 			// A cada resposta altera osvalores de quem criou a partida
-			
+			strcpy(respuesta,"99/1");
 			
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
-
 		}
 		
 		if(codigo !=0){ // Desconectar

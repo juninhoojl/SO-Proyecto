@@ -55,7 +55,7 @@ namespace Cliente
               IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
-            IPEndPoint ipep = new IPEndPoint(direc, 50003);
+            IPEndPoint ipep = new IPEndPoint(direc, 50004);
 
             //listView1.Items.Clear();
             //listView1.Enabled = false;
@@ -311,9 +311,29 @@ namespace Cliente
                         break;
                     case 8: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
-                        MessageBox.Show("Aun faltan personas!");
+
+                        if(String.Compare(trozos[1], "1") == 0) // listo
+                        {
+                            MessageBox.Show("Todos ya estan!");
+
+                        }
+                        else
+                        {
+
+                            MessageBox.Show("Aun faltan personas!");
+                        }
+                        break;
+                    case 9: // Convite para jogar
+                            // Nao existe mais o jogo que tentou entrar
+
+                            MessageBox.Show("Invitaciones Inviadas!");
+
                         // Responde aceitando ou recusando
 
+                        break;
+                    case 99: // No hace nada
+
+                        // Responde aceitando ou recusando
                         break;
 
                     default:
