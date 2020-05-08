@@ -317,12 +317,34 @@ namespace Cliente
                             MessageBox.Show("Todos ya estan!");
 
                         }
-                        else
+                        else if (String.Compare(trozos[1], "0") == 0)
                         {
                             
                             MessageBox.Show(trozos[2].Split('\0')[0] + " acepto la invitacion! Pero aun faltan personas!");
+                        
+                        }else if (String.Compare(trozos[1], "2") == 0)
+                        {
+                            dynamic result2 = MessageBox.Show("Ya estan todos, desea empezar?", "Empezar", MessageBoxButtons.YesNo);
+                            if (result2 == DialogResult.Yes)
+                            {
+
+                                MessageBox.Show("Eligiste empezar!");
+                                // Aceptou
+                                // string mensaje = "7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]; // logout
+                                //byte[] msg = Encoding.ASCII.GetBytes(mensaje);
+                                //server.Send(msg);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Eligiste no empezar!");
+                                //string mensaje = "7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]; // logout
+                                //byte[] msg = Encoding.ASCII.GetBytes(mensaje);
+                                // server.Send(msg);
+                                // Nao aceptou
+                            }
+
                         }
-                        break;
+                            break;
                     case 9: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
                         
@@ -437,7 +459,7 @@ namespace Cliente
 
                 }
                 invitados = invitados.TrimEnd(',');
-                MessageBox.Show(invitados);
+                // MessageBox.Show(invitados);
 
                 byte[] msg = Encoding.ASCII.GetBytes(invitados);
 

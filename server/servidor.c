@@ -319,12 +319,24 @@ void *AtenderCliente (void *args_void){
 						int * socketPartida;
 						socketPartida = vetorPartida(*lista, momento,idbdgames);
 						printf("No faltam pessoas, estan todos\n");
-						strcpy(contesta,"8/1");// faltan personas
+						strcpy(contesta,"8/1/");// Estan todos
+						strcat(contesta,nombre);
+						
+						
+						
 						for(i=0;i<momento;i++){
 							// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
 							// 8/0 -> aun faltan personas
 							write(socketPartida[i],contesta, strlen(contesta));
+							
 						}
+						
+						strcpy(contesta,"8/2");// Estan todos puedes empezar
+						
+						// Envia al servidor que puedes empezar si quieres
+						write(usuario->socket,contesta, strlen(contesta));
+						
+						
 						
 					}else{
 						momento=usuario->jugadores_momento;
