@@ -1,18 +1,23 @@
 #include "servidor.h"
 
+
 int contador;
 //Estructura necesaria para acceso excluyente
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void *AtenderCliente (void *args_void){
 	
+	// Antes de tudo deve selecionar o head em um no aqui
 	struct thread_args * args = args_void;
+	hnode * lista = args->lista;
+	
 	int suser = args->a;
 	int i;// laco vetor sockets
 	int * vetsockets; // ponteiro vetor sockets
-	node ** lista = args->lista;
-	mostra(*lista);
-	int * tamanho = args->tam;
+	//node ** lista = args->lista;
+	show_list(lista);
+	//mostra(*lista);
+	//int * tamanho = args->tam;
 	int alterlista = 0;
 	
 	char peticion[512];
@@ -75,12 +80,14 @@ void *AtenderCliente (void *args_void){
 			if(logado){
 				p = strtok( NULL, "/");
 				strcpy(nombre, p);
-				elimina(lista, nombre,tamanho);
+				remove_node(lista, search_node(lista,nombre));
+				
+				//elimina(lista, nombre,tamanho);
 				// Atualizar
 				alterlista = 1;
 				
-				
-				mostra(*lista);
+				show_list(lista);
+				//mostra(*lista);
 				logado=0;
 			}
 			
@@ -99,7 +106,7 @@ void *AtenderCliente (void *args_void){
 			printf("%s\n",asenha);
 			
 			// Nao existe
-			if (busca(*lista, nombre) != NULL){
+			if (search_node(lista, nombre) != NULL){
 				
 				
 				sprintf (respuesta, "4%s",nombre);
@@ -112,16 +119,19 @@ void *AtenderCliente (void *args_void){
 				
 				if (situacao == 1){ // Login correto
 					logado=1;
+
+					insert_end(lista, new_node(suser,nombre));
+					//insere(lista, suser, nombre,tamanho);
 					
-					// 
-					//insere(&args->lista, args->a, nombre);
-					insere(lista, suser, nombre,tamanho);
+					show_list(lista);
 					
 					printf("Mostra aqui\n");
 					// Atualizar
 					alterlista = 1;
 					// Mostra
-					mostra(*lista);
+					
+					show_list(lista);
+					//mostra(*lista);
 					//mostra(args->lista);
 					
 					sprintf (respuesta, "1/1%s",nombre); 
@@ -146,12 +156,15 @@ void *AtenderCliente (void *args_void){
 			int situacao=0;
 			strcpy(senha, p);
 			
-			elimina(lista, nombre,tamanho);
+			
+			remove_node(lista, search_node(lista, nombre));
+			//elimina(lista, nombre,tamanho);
 			
 			// Atualizar
 			alterlista = 1;
+			show_list(lista);
 			
-			mostra(*lista);
+			//mostra(*lista);
 			
 			logado=0;
 			
@@ -164,8 +177,13 @@ void *AtenderCliente (void *args_void){
 				situacao=remove_user(nombre,conn);
 				if(situacao == 1){
 					sprintf(respuesta,"3/1%s",nombre); // Deletado corretamente
-					elimina(lista, nombre,tamanho);
-					mostra(*lista);
+					
+					
+					remove_node(lista, search_node(lista,nombre));
+					
+					//elimina(lista, nombre,tamanho);
+					//mostra(*lista);
+					show_list(lista);
 					alterlista = 1;
 					logado=0;
 				}else if(situacao == 2){
@@ -227,11 +245,24 @@ void *AtenderCliente (void *args_void){
 			relaciona_jugador(conn, nombre, idgame);
 			// Adiciona quantidade de jogadores
 			
-			node * usuario = busca(*lista, nombre);
-			usuario->emjogo=0; // So vai entrar em jogo ate ficar completo
-			usuario->jugadores_partida=qjugadores+1; // 
-			usuario->jugadores_momento=1;
-			usuario->partida=idgame;
+			
+			
+			//node * usuario = busca(*lista, nombre);
+			//usuario->emjogo=0; // So vai entrar em jogo ate ficar completo
+			
+			alter_emjogo(lista,nombre,0);
+			
+			
+			//usuario->jugadores_partida=qjugadores+1; //
+			alter_jugadores_partida(lista,nombre,qjugadores+1);
+			
+			//usuario->jugadores_momento=1;
+			sum_jugadores_momento(lista,nombre); // Incrementa um nos jogadores
+			
+			
+			//usuario->partida=idgame;
+			
+			alter_idgame(lista, nombre, idgame);
 			// A cada resposta altera osvalores de quem criou a partida
 			
 			
@@ -251,8 +282,8 @@ void *AtenderCliente (void *args_void){
 				
 				printf("Convidado %d = %s\n",i,convidado);
 				// Enviar convite para os convidados
-				write(getsocket(*lista,convidado),conviteres, strlen(conviteres));
-				
+				write(get_socket(lista,convidado),conviteres, strlen(conviteres));
+			
 			}
 			
 			// atriubi a idgame no usuario que convidou
@@ -292,9 +323,11 @@ void *AtenderCliente (void *args_void){
 			unsigned int idbdgames = atoi(idbdgame);
 			// verifica se existe uma partida com essa id (fazer depois)
 			printf("Nome de quem respondeu = %s\n",nombre); 
-			printf("Nome do dono da partida = %s\n",donopartida); 
-			node * usuario = busca(*lista, donopartida);
-			node * invitado = busca(*lista, nombre);
+			printf("Nome do dono da partida = %s\n",donopartida);
+			
+			//node * usuario = busca(*lista, donopartida);
+			
+			//node * invitado = busca(*lista, nombre);
 			
 			if(existe_game(conn, idbdgames)){ // Se game existe
 				
@@ -305,49 +338,87 @@ void *AtenderCliente (void *args_void){
 					
 					// Adiciona uma pessoa a mais no dono e se completou avisa o dono
 					// So vai entrar em jogo ate ficar completo
-					usuario->jugadores_momento+=1;
+					sum_jugadores_momento(lista,donopartida);
+					
+					//usuario->jugadores_momento+=1;
 					// Confere se completou as pessoas
-					invitado->partida=idbdgames;
-					if(usuario->jugadores_momento == usuario->jugadores_partida){
-						
+					//invitado->partida=idbdgames;
+					
+					alter_idgame(lista,nombre,idbdgames);
+					
+					
+					//if(usuario->jugadores_momento == usuario->jugadores_partida){
+					if(qtd_conectados_partida(lista, idbdgames), get_jugadores_momento(lista, donopartida)){	
 						printf("Todos ja estao prontos para comecar\n"); 
 						// Envia para dono da partida que pode comecar
 						// Adiciona todos 
-						momento=usuario->jugadores_momento;
+						//momento=usuario->jugadores_momento;
+						momento=get_jugadores_momento(lista, donopartida);
+						
 						int * socketPartida;
-						socketPartida = vetorPartida(*lista, momento,idbdgames);
+						
+						//socketPartida = vetorPartida(*lista, momento,idbdgames);
+						socketPartida = vetor_socket_partida(lista, idbdgames);
+						
+						
 						printf("No faltam pessoas, estan todos\n");
 						strcpy(contesta,"8/1/");// Estan todos
 						strcat(contesta,nombre);
 						
+						i=1;
+						while(socketPartida[0]>0){
+							
+							write(socketPartida[i],contesta, strlen(contesta));
+							socketPartida[0]-=1;
+							i+=1;
+						}
+							
 						
-						
-						for(i=0;i<momento;i++){
+						//for(i=0;i<momento;i++){
 							// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
 							// 8/0 -> aun faltan personas
-							write(socketPartida[i],contesta, strlen(contesta));
+						//	write(socketPartida[i],contesta, strlen(contesta));
 							
-						}
+						//}
 						
 						strcpy(contesta,"8/2");// Estan todos puedes empezar
 						
 						// Envia al servidor que puedes empezar si quieres
-						write(usuario->socket,contesta, strlen(contesta));
+						//write(usuario->socket,contesta, strlen(contesta));
+						write(get_socket(lista,donopartida),contesta, strlen(contesta));
 						
 						
 						
 					}else{
-						momento=usuario->jugadores_momento;
+						//momento=usuario->jugadores_momento;
+						momento=qtd_conectados_partida(lista, idbdgames);
+						
 						int * socketPartida;
-						socketPartida = vetorPartida(*lista, momento,idbdgames);
+						
+						//socketPartida = vetorPartida(*lista, momento,idbdgames);
+						socketPartida = vetor_socket_partida(lista, idbdgames);
+						
+						
 						printf("Ainda faltam pessoas\n");
 						strcpy(contesta,"8/0/");// faltan personas
 						strcat(contesta,nombre);
-						for(i=0;i<momento;i++){
+						
+						i = 1;
+						
+						
+						while(socketPartida[0]>0){
+							
+							write(socketPartida[i],contesta, strlen(contesta));
+							i+=1;
+							socketPartida[0]-=1;
+						}
+							
+						
+						//for(i=0;i<momento;i++){
 							// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
 							// 8/0 -> aun faltan personas
-							write(socketPartida[i],contesta, strlen(contesta));
-						}
+							//write(socketPartida[i],contesta, strlen(contesta));
+						//}
 					}
 					
 					
@@ -411,51 +482,48 @@ void *AtenderCliente (void *args_void){
 			
 			
 			
-			if(alterlista && *tamanho>0){
+			if(alterlista && lista->tam > 0){
 				
 				printf("String conectados\n");
-				char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
+				//char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
 				
-				conectados(*lista, novo,tamanho);
+				char * sconectados = string_conectados(lista);
 				
-				printf("\n%s\n",novo);
+				//conectados(*lista, novo,tamanho);
+				
+				printf("\n%s\n",sconectados);
+				
+				vetsockets = vetor_socket(lista);
+				
+				// Aqui libera
+				
+				int i = 1;
+				
+				// Aloca o tamanho maximo de um nome * a quantidade de pessoas
+				char notificacion[MAXNOME*vetsockets[0]+4];
+				
+				sprintf(notificacion, "4/%s",sconectados);
+				
+				while(vetsockets[0]>0){
 					
-				vetsockets = vetorSocket(*lista,tamanho);
-				
-				char notificacion[MAXNOME*MAXELE+2];
-				
-				sprintf(notificacion, "4/%s",novo);
-				
-				if(vetorSocket){ // Nao vazio
-					for(i=0;i<*tamanho;i++){
-						
-						
-						// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
-						//if(vetsockets[i] != suser){
-						printf("USUARIOS CONECTADOS STRING = %s \n",notificacion);
-						write(vetsockets[i],notificacion, strlen(notificacion));
-						
-						//}
-						printf("vetsockets p%d = %d \n",i,vetsockets[i]);
-						
-						
-					}
-				}else{
-					printf("Vetor sockets vazio\n\n");
+					printf("USUARIOS CONECTADOS STRING = %s \n",notificacion);
+					write(vetsockets[i],notificacion, strlen(notificacion));
+					
+					//}
+					printf("vetsockets p%d = %d \n",i,vetsockets[i]);
+					vetsockets[0]-=1;
+					
+					i++;
 				}
+				
 				free(vetsockets);
-				free(novo);
+				free(sconectados);
+				
+				
 				alterlista=0;
+				
 			}
-			
 		}
-		
-		
-		// Verifica se teve alguma alteracao, se sim envia para todos os conectados
-		
-		// Se teve alguma alteracao
-		// Servico 6 notificacao
-
 	}
 	// Se acabo el servicio para este cliente
 	close(suser); 
