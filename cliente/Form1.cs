@@ -52,7 +52,7 @@ namespace Cliente
             // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-              IPAddress direc = IPAddress.Parse("10.211.55.9");
+             IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
@@ -74,7 +74,8 @@ namespace Cliente
             {
                 // Tentamos conectar usando socket
                 server.Connect(ipep);
-               
+
+                label1.Text = "Conectado al servidor: "+ direc;
                 MessageBox.Show("Conectado");
             }
             catch (SocketException)
@@ -121,7 +122,8 @@ namespace Cliente
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Logado com sucesso");
+                            label1.Text = "Logueado con sucesso";
+                            //MessageBox.Show("Logado com sucesso");
                             Global.logado = 1;
                             textUser.Enabled = false;
                             textPassword.Enabled = false;
@@ -136,19 +138,23 @@ namespace Cliente
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Usuario ou senha incorretos");
+                            label1.Text = "Usuario o contrasena incorrectos";
+                            //MessageBox.Show("Usuario ou senha incorretos");
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "0" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Usuario nao existe");
+                            label1.Text = "Usuario no existe";
+                           // MessageBox.Show("Usuario nao existe");
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "4" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Usuario esta ativo em outra sessao, nao foi possivel logar");
+                            label1.Text = "Usuario ya logueado en otra secion";
+                            //MessageBox.Show("Usuario esta ativo em outra sessao, nao foi possivel logar");
                         }
                         else
                         {
-                            MessageBox.Show("Erro ao efetuar login");
+                            label1.Text = "Erro al hacer el login";
+                            //MessageBox.Show("Erro ao efetuar login");
                         }
 
                         break;
@@ -156,8 +162,8 @@ namespace Cliente
                     case 2: // Resposta deslogin
                         if (String.Compare(trozos[1].Split('\0')[0], "0" + textUser.Text) == 0)
                         {
-
-                            MessageBox.Show("Deslogado com sucesso");
+                            label1.Text = "Delogueado con sucesso";
+                            //MessageBox.Show("Deslogado com sucesso");
                             Global.logado = 0;
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
@@ -173,7 +179,8 @@ namespace Cliente
                         }
                         else
                         {
-                            MessageBox.Show("Erro ao deslogar");
+                            label1.Text = "Erro al desloguear";
+                            //MessageBox.Show("Erro ao deslogar");
                         }
 
                         break;
@@ -182,7 +189,8 @@ namespace Cliente
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Excluido com sucesso");
+                            label1.Text = "Usuario borrado con sucesso";
+                            //MessageBox.Show("Excluido com sucesso");
                             Global.logado = 0;
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
@@ -198,11 +206,13 @@ namespace Cliente
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Erro ao excluir usuario");
+                            label1.Text = "Erro ao excluir usuario";
+                            //MessageBox.Show("Erro ao excluir usuario");
                         }
                         else // Eh impossivel chegar nesse caso
                         {
-                            MessageBox.Show("Credenciais incorretas");
+                            label1.Text = "Credenciales incorrectas";
+                            //MessageBox.Show("Credenciais incorretas");
                         }
 
                         break;
@@ -229,9 +239,10 @@ namespace Cliente
                                 {
                                     listView1.Items.Add(trozos[i] + " (tu)");
                                     // string[] teste = { "item1", "item2", "Item3" };
+                                    
 
-
-                                    //checkedListBox1.Items.Add(trozos[i] + " (tu)", );
+                                    //checkedListBox1.Items.Add(trozos[i] + " (tu)");
+                                    
                                 }
                                 else
                                 {
@@ -248,11 +259,13 @@ namespace Cliente
 
                         if (quantidade == 1)
                         {
-                            MessageBox.Show(quantidade + " jugador conectado! (tu mismo)");
+                            label1.Text = quantidade + " jugador conectado! (tu mismo)";
+                            //MessageBox.Show(quantidade + " jugador conectado! (tu mismo)");
                         }
                         else
                         {
-                            MessageBox.Show(quantidade + " jugadores conectados!");
+                            label1.Text = quantidade + " jugadores conectados!";
+                            //MessageBox.Show(quantidade + " jugadores conectados!");
                         }
 
 
@@ -262,16 +275,19 @@ namespace Cliente
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Registrado com sucesso");
+                            label1.Text = "Registrado com sucesso";
+                            //MessageBox.Show("Registrado com sucesso");
                             
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Usuario ja existe");
+                            label1.Text = "Usuario ja existe";
+                            //MessageBox.Show("Usuario ja existe");
                         }
                         else
                         {
-                            MessageBox.Show("Erro ao registrar usuario");
+                            label1.Text = "Erro ao registrar usuario";
+                            //MessageBox.Show("Erro ao registrar usuario");
                         }
 
                         break;
@@ -314,7 +330,8 @@ namespace Cliente
 
                         if(String.Compare(trozos[1], "1") == 0) // listo
                         {
-                            MessageBox.Show("Todos ya estan!");
+                            label1.Text = "Todos los jugadores ya estan";
+                            //MessageBox.Show("Todos ya estan!");
 
                         }
                         else if (String.Compare(trozos[1], "0") == 0)
@@ -348,8 +365,8 @@ namespace Cliente
                     case 9: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
                         
-                        MessageBox.Show("Invitaciones Inviadas!");
-
+                        //MessageBox.Show("Invitaciones Inviadas!");
+                        label1.Text = "Invitaciones Inviadas!";
                         // Responde aceitando ou recusando
 
                         break;
@@ -359,7 +376,8 @@ namespace Cliente
                         break;
 
                     default:
-                        MessageBox.Show("Mensagem recebida desconhecida");
+                        label1.Text = "Mensagem recebida desconhecida";
+                        //MessageBox.Show("Mensagem recebida desconhecida");
                         break;
                 }
 
@@ -469,6 +487,7 @@ namespace Cliente
             }
             else if(checkedListBox1.CheckedItems.Count == 0)
             {
+
                 MessageBox.Show("Selecione por lo menos un jugador!");
 
             }
@@ -553,13 +572,14 @@ namespace Cliente
             if (Global.musica == 1)
             {
                 button2.Text = "Con Musiquita";
+                label1.Text = "Con Musiquita";
                 Global.splayer.Stop();
                 Global.musica = 0;
             }
             else
             {
                 button2.Text = "Sin Musiquita";
-                
+                label1.Text = "Sin Musiquita";
                 Global.splayer.PlayLooping();
                 Global.musica = 1;
 
@@ -575,7 +595,12 @@ namespace Cliente
 
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
         // Funcao para convidar
-        
+
     }
 }
