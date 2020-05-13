@@ -60,3 +60,13 @@ C:\Users\eduar\Documents\GitHub\SO-Proyecto\cliente\obj\Debug\Cliente.pdb
 C:\Users\eduar\Documents\GitHub\SO-Proyecto\cliente\bin\Debug\Cliente.exe.config
 C:\Users\eduar\Documents\GitHub\SO-Proyecto\cliente\bin\Debug\Cliente.exe
 C:\Users\eduar\Documents\GitHub\SO-Proyecto\cliente\bin\Debug\Cliente.pdb
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\bin\Debug\Cliente.exe.config
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\bin\Debug\Cliente.exe
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\bin\Debug\Cliente.pdb
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\obj\Debug\Cliente.csprojAssemblyReference.cache
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\obj\Debug\Cliente.Form1.resources
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\obj\Debug\Cliente.Properties.Resources.resources
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\obj\Debug\Cliente.csproj.GenerateResource.cache
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\obj\Debug\Cliente.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\obj\Debug\Cliente.exe
+C:\Users\Asus\Documents\UNI\3B\SO\SO-Proyecto\cliente\obj\Debug\Cliente.pdb
