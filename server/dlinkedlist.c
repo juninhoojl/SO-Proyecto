@@ -216,6 +216,13 @@ void remove_all(hnode * cabeca){
 }
 
 void remove_node(hnode * cabeca, node * nremove){
+	
+	
+	if (cabeca->tam == 1) {
+		remove_all(cabeca);
+		return;
+	}
+	
 
     if(cabeca->first == nremove){ // Se primeiro
         

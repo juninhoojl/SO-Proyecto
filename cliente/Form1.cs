@@ -147,6 +147,7 @@ namespace Cliente
         private void AtenderServidor()
         {
             byte[] msg2;
+            int codigo;
             while (true)
             {
                 //Recibimos la respuesta del servidor
@@ -157,7 +158,7 @@ namespace Cliente
 
                 string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
 
-                int codigo = Convert.ToInt32(trozos[0]); // Antes da barra
+                codigo = Convert.ToInt32(trozos[0]); // Antes da barra
 
                 switch (codigo)
                 {
@@ -544,8 +545,8 @@ namespace Cliente
                     string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
 
                     byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-                MessageBox.Show("Mensagem deslogin: "+ mensaje);
-                server.Send(msg);
+
+                    server.Send(msg);
 
                 }
                 else // Efetua login

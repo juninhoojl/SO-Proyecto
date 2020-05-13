@@ -52,10 +52,9 @@ void *AtenderCliente (void *args_void){
 		codigo = atoi(p);
 		// Se estiver logado pega os dados do mesmo jeito ao desconectar
 		if(codigo !=0){
-			p = strtok( NULL, "/");
+			p = strtok(NULL,"/");
 			strcpy(nombre, p);
 			printf("Codigo: %d, Nome: %s\n", codigo, nombre);
-			printf("Chegou ate aqui\n");
 		}
 		
 		if(codigo==0){ // Solicita sair
@@ -115,7 +114,6 @@ void *AtenderCliente (void *args_void){
 			remove_node(lista, search_node(lista, nombre));
 			alterlista = 1;
 			logado=0;
-			printf("Desfaz login");
 			show_list(lista);
 			sprintf(respuesta, "2/1/%s",nombre); // Deslogin correto
 			
@@ -170,7 +168,7 @@ void *AtenderCliente (void *args_void){
 		}else if(codigo==6){ // insere USUARIO servico = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
 			
 			printf("Codigo 6\n");
-			int i = 0;
+			i = 0;
 			
 			unsigned int idgame = 0;
 			
@@ -321,24 +319,11 @@ void *AtenderCliente (void *args_void){
 							socketPartida[0]-=1;
 							i+=1;
 						}
-							
-						
-						//for(i=0;i<momento;i++){
-							// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
-							// 8/0 -> aun faltan personas
-						//	write(socketPartida[i],contesta, strlen(contesta));
-							
-						//}
-						
 						strcpy(contesta,"8/2");// Estan todos puedes empezar
 						
 						// Envia al servidor que puedes empezar si quieres
 						//write(usuario->socket,contesta, strlen(contesta));
-						write(get_socket(lista,donopartida),contesta, strlen(contesta));
-						
-						
-						
-					}else{
+						write(get_socket(lista,donopartida),contesta, strlen(contesta));					}else{
 						//momento=usuario->jugadores_momento;
 						momento=qtd_conectados_partida(lista, idbdgames);
 						
@@ -361,13 +346,6 @@ void *AtenderCliente (void *args_void){
 							i+=1;
 							socketPartida[0]-=1;
 						}
-							
-						
-						//for(i=0;i<momento;i++){
-							// Aqui notificaria todos os conectados menos a pessoa que sofreu alteracao
-							// 8/0 -> aun faltan personas
-							//write(socketPartida[i],contesta, strlen(contesta));
-						//}
 					}
 					
 					
@@ -417,7 +395,7 @@ void *AtenderCliente (void *args_void){
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
 		}
 		
-		if(codigo !=0){ // Desconectar
+		if(codigo !=0 ){ // Desconectar
 			printf("Codigo: %d => Reposta: %s\n",codigo,respuesta);
 			//printf ("Resposta: %s\n", respuesta);
 			// Enviamos a resposta
@@ -426,7 +404,7 @@ void *AtenderCliente (void *args_void){
 			
 		}
 		
-		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 5)||(codigo== 6)){
+		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)){
 			
 			pthread_mutex_lock(&mutex); // No me interrumpas ahora
 			contador+=1;
@@ -436,22 +414,15 @@ void *AtenderCliente (void *args_void){
 			if(alterlista && lista->tam > 0){
 				
 				printf("String conectados\n");
-				//char * novo = (char *)malloc(MAXNOME*MAXELE*sizeof(char)+SEPARADOR*sizeof(char));
-				
 				char * sconectados = string_conectados(lista);
-				
-				//conectados(*lista, novo,tamanho);
-				
 				printf("\n%s\n",sconectados);
 				
 				vetsockets = vetor_socket(lista);
 				
-				// Aqui libera
-				
-				int i = 1;
+				i = 1;
 				
 				// Aloca o tamanho maximo de um nome * a quantidade de pessoas
-				char notificacion[MAXNOME*vetsockets[0]+4];
+				char notificacion[MAXNOME*vetsockets[0]+MAXNOME+10];
 				
 				sprintf(notificacion, "4/%s",sconectados);
 				
@@ -459,20 +430,14 @@ void *AtenderCliente (void *args_void){
 					
 					printf("USUARIOS CONECTADOS STRING = %s \n",notificacion);
 					write(vetsockets[i],notificacion, strlen(notificacion));
-					
-					//}
 					printf("vetsockets p%d = %d \n",i,vetsockets[i]);
 					vetsockets[0]-=1;
-					
 					i++;
 				}
 				
 				free(vetsockets);
 				free(sconectados);
-				
-				
 				alterlista=0;
-				
 			}
 		}
 	}
