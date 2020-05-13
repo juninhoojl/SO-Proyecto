@@ -6,17 +6,18 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#include "dlinkedlist.h"
 #include "basedados.h"
 #include "servidor.h"
 #include "fmd5.h"
-#include "lista.h"
-// /media/psf/Home/Documents/SO/SO-Proyecto
+// #include "lista.h"
+// /media/psf/Home/Documents/SO/SO-Proyecto/server54
 
 // Para compilar terminal
-// gcc main.c -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c lista.c -lcrypto -lm -o main.bin
+// gcc main.c -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c dlinkedlist.c -lcrypto -lm -o main.bin
 
 // Para compilar Zinjal (em main.c Run-> COnfigure -> Extra arguments for compiler:
-// -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c lista.c -lcrypto -lm 
+// -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c dlinkedlist.c -lcrypto -lm 
 
 // Ps.: Em alguns casos Zinjal nao deleta os .bin antigos e nao compila os novos
 // rm *.bin
@@ -72,8 +73,9 @@ int main(int argc, char *argv[]){
 	
 	node * cabeca = NULL;
 	
-	in.lista=&cabeca; // Lista
-	in.tam = &tamanho;
+	in.lista = new_list(); // Lista
+	
+	
 	while(1){
 		//int terminar =0;
 		// Atender esse cliente ate que se desconecte

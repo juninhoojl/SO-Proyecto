@@ -42,6 +42,7 @@ namespace Cliente
             this.button2 = new System.Windows.Forms.Button();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.buttonInvitar = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupLogin.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,7 +114,7 @@ namespace Cliente
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(12, 389);
+            this.listView1.Location = new System.Drawing.Point(204, 213);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(168, 185);
             this.listView1.TabIndex = 5;
@@ -154,6 +155,20 @@ namespace Cliente
             this.buttonInvitar.UseVisualStyleBackColor = true;
             this.buttonInvitar.Click += new System.EventHandler(this.buttonInvitar_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(-8, 566);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 2);
+            this.label1.MinimumSize = new System.Drawing.Size(1000, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(1000, 20);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Teste\\n";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -162,6 +177,7 @@ namespace Cliente
             this.BackgroundImage = global::Cliente.Properties.Resources.gandalf;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(984, 586);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonInvitar);
             this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.button2);
@@ -172,10 +188,11 @@ namespace Cliente
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load_1);
+            //this.Load += new System.EventHandler(this.Form1_Load_1);
             this.groupLogin.ResumeLayout(false);
             this.groupLogin.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -193,6 +210,7 @@ namespace Cliente
         private Button button2;
         private CheckedListBox checkedListBox1;
         private Button buttonInvitar;
+        private Label label1;
     }
 }
 

@@ -48,15 +48,18 @@ namespace Cliente
         // Conecta ao carregar
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            /*
             // PRODUCION ###########
             // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
+
               IPAddress direc = IPAddress.Parse("192.168.1.21");
-            // ########### ###########
+
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
-
+            */
             //listView1.Items.Clear();
             //listView1.Enabled = false;
             buttonLogin.Enabled = false;
@@ -69,12 +72,15 @@ namespace Cliente
 
 
             //Creamos el socket 
+            /*
+
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
                 // Tentamos conectar usando socket
                 server.Connect(ipep);
-               
+
+                label1.Text = "Conectado al servidor: "+ direc;
                 MessageBox.Show("Conectado");
             }
             catch (SocketException)
@@ -88,7 +94,10 @@ namespace Cliente
                 return;
             }
 
-            
+            */
+
+
+            ConectServer();
 
 
             ThreadStart ts = delegate { AtenderServidor(); };
@@ -98,30 +107,68 @@ namespace Cliente
 
         }
 
-        private void AtenderServidor()
+        private int ConectServer()
         {
 
+            // PRODUCION ###########
+            // IPAddress direc = IPAddress.Parse("147.83.117.22");
+
+            // LOCAL ###########
+            IPAddress direc = IPAddress.Parse("10.211.55.9");
+            // ########### ###########
+
+            IPEndPoint ipep = new IPEndPoint(direc, 50004);
+
+
+            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            try
+            {
+                // Tentamos conectar usando socket
+                server.Connect(ipep);
+
+                label1.Text = "Conectado al servidor: " + direc;
+                MessageBox.Show("Conectado");
+                return 0;
+            }
+            catch (SocketException)
+            {
+                dynamic result = MessageBox.Show("No he podido conectar con el servidor\n\t Cierrar aplicacion?", "GameSO", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+                // Se nao foi possivel
+                return 1;
+            }
+
+            
+        }
+
+
+        private void AtenderServidor()
+        {
+            byte[] msg2;
+            int codigo;
             while (true)
             {
                 //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[200];
-
+                msg2 = new byte[200];
                 // Limpa toda vez que chama esse botao e preenche do zero
 
-
                 server.Receive(msg2);
+
                 string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
 
-                int codigo = Convert.ToInt32(trozos[0]); // Antes da barra
+                codigo = Convert.ToInt32(trozos[0]); // Antes da barra
 
                 switch (codigo)
                 {
 
                     case 1: // Resposta ao login
 
-                        if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
+                        if (String.Compare(trozos[1], "1") == 0)
                         {
-                            MessageBox.Show("Logado com sucesso");
+                            label1.Text = "Logueado con sucesso";
                             Global.logado = 1;
                             textUser.Enabled = false;
                             textPassword.Enabled = false;
@@ -130,50 +177,44 @@ namespace Cliente
                             buttonRegistra.Text = "Deletar";
                             buttonLogin.Text = "Logout";
 
-
-                            //buttonConectados.PerformClick();
-
                         }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
+                        else if (String.Compare(trozos[1], "2") == 0)
                         {
-                            MessageBox.Show("Usuario ou senha incorretos");
+                            label1.Text = "Usuario o contrasena incorrectos";
                         }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "0" + textUser.Text) == 0)
+                        else if (String.Compare(trozos[1], "0") == 0)
                         {
-                            MessageBox.Show("Usuario nao existe");
+                            label1.Text = "Usuario no existe";
                         }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "4" + textUser.Text) == 0)
+                        else if (String.Compare(trozos[1], "4") == 0)
                         {
-                            MessageBox.Show("Usuario esta ativo em outra sessao, nao foi possivel logar");
+                            label1.Text = "Usuario ya logueado en otra secion";
                         }
                         else
                         {
-                            MessageBox.Show("Erro ao efetuar login");
+                            label1.Text = "Erro al hacer el login";
                         }
 
                         break;
 
                     case 2: // Resposta deslogin
-                        if (String.Compare(trozos[1].Split('\0')[0], "0" + textUser.Text) == 0)
+                        if (String.Compare(trozos[1], "1") == 0)
                         {
-
-                            MessageBox.Show("Deslogado com sucesso");
+                            label1.Text = "Delogueado con sucesso";
                             Global.logado = 0;
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
                             listView1.Items.Clear();
                             checkedListBox1.Items.Clear();
-                            //listView1.Enabled = false;
                             buttonLogin.Text = "Login";
                             buttonRegistra.Text = "Registrar";
                             button1.Enabled = true;
                             textPassword.Text = "";
                             textUser.Text = "";
-
                         }
                         else
                         {
-                            MessageBox.Show("Erro ao deslogar");
+                            label1.Text = "Erro al desloguear";
                         }
 
                         break;
@@ -182,7 +223,8 @@ namespace Cliente
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Excluido com sucesso");
+                            label1.Text = "Usuario borrado con sucesso";
+                            //MessageBox.Show("Excluido com sucesso");
                             Global.logado = 0;
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
@@ -198,11 +240,13 @@ namespace Cliente
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Erro ao excluir usuario");
+                            label1.Text = "Erro ao excluir usuario";
+                            //MessageBox.Show("Erro ao excluir usuario");
                         }
                         else // Eh impossivel chegar nesse caso
                         {
-                            MessageBox.Show("Credenciais incorretas");
+                            label1.Text = "Credenciales incorrectas";
+                            //MessageBox.Show("Credenciais incorretas");
                         }
 
                         break;
@@ -216,10 +260,10 @@ namespace Cliente
                         checkedListBox1.Items.Clear();
 
                         int quantidade = Convert.ToInt32(trozos[1]);
-                        trozos[quantidade+1] = trozos[quantidade+1].Split('\0')[0];
+                        trozos[quantidade + 1] = trozos[quantidade + 1].Split('\0')[0];
 
                         // a partir do 2
-                        for (int i=2; i < quantidade+2; i++)
+                        for (int i = 2; i < quantidade + 2; i++)
                         {
 
                             if (trozos[i].Trim() != "")
@@ -231,12 +275,13 @@ namespace Cliente
                                     // string[] teste = { "item1", "item2", "Item3" };
 
 
-                                    //checkedListBox1.Items.Add(trozos[i] + " (tu)", );
+                                    //checkedListBox1.Items.Add(trozos[i] + " (tu)");
+
                                 }
                                 else
                                 {
 
-                                   // string[] teste = { "item1", "item2", "Item3" };
+                                    // string[] teste = { "item1", "item2", "Item3" };
                                     checkedListBox1.Items.Add(trozos[i]);
 
                                     listView1.Items.Add(trozos[i]);
@@ -248,11 +293,13 @@ namespace Cliente
 
                         if (quantidade == 1)
                         {
-                            MessageBox.Show(quantidade + " jugador conectado! (tu mismo)");
+                            label1.Text = quantidade + " jugador conectado! (tu mismo)";
+                            //MessageBox.Show(quantidade + " jugador conectado! (tu mismo)");
                         }
                         else
                         {
-                            MessageBox.Show(quantidade + " jugadores conectados!");
+                            label1.Text = quantidade + " jugadores conectados!";
+                            //MessageBox.Show(quantidade + " jugadores conectados!");
                         }
 
 
@@ -262,16 +309,19 @@ namespace Cliente
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Registrado com sucesso");
-                            
+                            label1.Text = "Registrado com sucesso";
+                            //MessageBox.Show("Registrado com sucesso");
+
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
                         {
-                            MessageBox.Show("Usuario ja existe");
+                            label1.Text = "Usuario ja existe";
+                            //MessageBox.Show("Usuario ja existe");
                         }
                         else
                         {
-                            MessageBox.Show("Erro ao registrar usuario");
+                            label1.Text = "Erro ao registrar usuario";
+                            //MessageBox.Show("Erro ao registrar usuario");
                         }
 
                         break;
@@ -285,23 +335,23 @@ namespace Cliente
                         // Resposta
                         // 7/nombre/respuesta/quieninvito/idbasedados
 
-                        dynamic result = MessageBox.Show(trozos[1]+"te ivitou para jugar, \n\t aceptar?", "Invitacion", MessageBoxButtons.YesNo);
+                        dynamic result = MessageBox.Show(trozos[1] + "te ivitou para jugar, \n\t aceptar?", "Invitacion", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
                             // Aceptou
-                            string mensaje = "7/" + textUser.Text + "/1/" + trozos[1]+"/"+trozos[2]; // logout
+                            string mensaje = "7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]; // logout
                             byte[] msg = Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
                         }
                         else
                         {
-                            string mensaje = "7/" + textUser.Text + "/0/" + trozos[1]+"/"+ trozos[2]; // logout
+                            string mensaje = "7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]; // logout
                             byte[] msg = Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
                             // Nao aceptou
                         }
                         // Responde aceitando ou recusando
-    
+
                         break;
                     case 7: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
@@ -312,17 +362,19 @@ namespace Cliente
                     case 8: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
 
-                        if(String.Compare(trozos[1], "1") == 0) // listo
+                        if (String.Compare(trozos[1], "1") == 0) // listo
                         {
-                            MessageBox.Show("Todos ya estan!");
+                            label1.Text = "Todos los jugadores ya estan";
+                            //MessageBox.Show("Todos ya estan!");
 
                         }
                         else if (String.Compare(trozos[1], "0") == 0)
                         {
-                            
+
                             MessageBox.Show(trozos[2].Split('\0')[0] + " acepto la invitacion! Pero aun faltan personas!");
-                        
-                        }else if (String.Compare(trozos[1], "2") == 0)
+
+                        }
+                        else if (String.Compare(trozos[1], "2") == 0)
                         {
                             dynamic result2 = MessageBox.Show("Ya estan todos, desea empezar?", "Empezar", MessageBoxButtons.YesNo);
                             if (result2 == DialogResult.Yes)
@@ -344,12 +396,12 @@ namespace Cliente
                             }
 
                         }
-                            break;
+                        break;
                     case 9: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
-                        
-                        MessageBox.Show("Invitaciones Inviadas!");
 
+                        //MessageBox.Show("Invitaciones Inviadas!");
+                        label1.Text = "Invitaciones Inviadas!";
                         // Responde aceitando ou recusando
 
                         break;
@@ -359,7 +411,8 @@ namespace Cliente
                         break;
 
                     default:
-                        MessageBox.Show("Mensagem recebida desconhecida");
+                        label1.Text = "Mensagem recebida desconhecida";
+                        //MessageBox.Show("Mensagem recebida desconhecida");
                         break;
                 }
 
@@ -469,6 +522,7 @@ namespace Cliente
             }
             else if(checkedListBox1.CheckedItems.Count == 0)
             {
+
                 MessageBox.Show("Selecione por lo menos un jugador!");
 
             }
@@ -515,12 +569,14 @@ namespace Cliente
         {
 
         }
+
+        /*
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
         }
         // ########
-
+        */
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -553,13 +609,14 @@ namespace Cliente
             if (Global.musica == 1)
             {
                 button2.Text = "Con Musiquita";
+                label1.Text = "Con Musiquita";
                 Global.splayer.Stop();
                 Global.musica = 0;
             }
             else
             {
                 button2.Text = "Sin Musiquita";
-                
+                label1.Text = "Sin Musiquita";
                 Global.splayer.PlayLooping();
                 Global.musica = 1;
 
@@ -575,7 +632,12 @@ namespace Cliente
 
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
         // Funcao para convidar
-        
+
     }
 }
