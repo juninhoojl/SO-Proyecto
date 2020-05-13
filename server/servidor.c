@@ -140,6 +140,53 @@ void *AtenderCliente (void *args_void){
 				sprintf(respuesta,"3/3%s",nombre); // Erro ao excluir
 			}
 			
+		}else if(codigo==4){ // Envia mensagens
+			
+			// Vai ter tamanho maximo de 150 a mensagem
+			// Assim que:
+			
+			// 4/nombre_quien_envia/0/mensagem -> todos os conectados
+			// 4/nombre_quien_envia/1/mensagem -> todos da partida
+			// Aloca espaco mensagem que tem maximo de 150 chars
+			// Falta separar 
+			char tipo_envio[2];
+			p = strtok(NULL, "/");
+			strcpy(tipo_envio, p);
+			int tipo_envios = atoi(tipo_envio);
+			
+			// Agora separa a mensagem em Si
+			char * texto_mensagem = (char*)malloc((MAXMENSAGEM+MAXNOME+5)*sizeof(char));
+			char * somente_mensagem = (char*)malloc((MAXMENSAGEM+1)*sizeof(char));
+			// Antes concatena assim:
+			// Metodo pode ser 0 1 2 3(no futuro)
+			// 10/quem_enviou/metodo/mensagem
+			p=strtok(NULL,"/");
+			strcpy(somente_mensagem, p);
+			sprintf(texto_mensagem,"10/%s/%d/%s",nombre,tipo_envios,somente_mensagem);
+			printf("Mensagem = %s\n",somente_mensagem);
+			free(somente_mensagem);
+			vetsockets = vetor_socket(lista);
+			
+			if(tipo_envios == 0){
+				printf("Mensagem para todos os conectados\n");
+				
+				i = 1;
+				
+				while(vetsockets[0]>0){
+					write(vetsockets[i],texto_mensagem, strlen(texto_mensagem));
+					vetsockets[0]-=1;
+					i++;
+				}
+			}
+			
+			free(vetsockets);
+			free(texto_mensagem);
+			// Depois de usar libera espaco
+			// Envia algo para quem enviou dizendo que a mensagem foi enviada
+			// Tem que mostrar quem que enviou a mensagem tambem e como foi enviada
+			strcpy(respuesta,"11/1");
+			
+			
 		}else if (codigo==5){ // insere USUARIO servico = 5/
 			
 			char senha[20];
@@ -192,30 +239,13 @@ void *AtenderCliente (void *args_void){
 			relaciona_jugador(conn, nombre, idgame);
 			// Adiciona quantidade de jogadores
 			
-			
-			
-			//node * usuario = busca(*lista, nombre);
-			//usuario->emjogo=0; // So vai entrar em jogo ate ficar completo
-			
 			alter_emjogo(lista,nombre,0);
-			
-			
-			//usuario->jugadores_partida=qjugadores+1; //
 			alter_jugadores_partida(lista,nombre,qjugadores+1);
-			
-			//usuario->jugadores_momento=1;
 			sum_jugadores_momento(lista,nombre); // Incrementa um nos jogadores
-			
-			
-			//usuario->partida=idgame;
-			
 			alter_idgame(lista, nombre, idgame);
 			// A cada resposta altera osvalores de quem criou a partida
 			
-			
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
-			
-			
 			// 6/quemchamou/idgame
 			char conviteres[MAXNOME+10];
 			sprintf(conviteres, "6/%s/%u",nombre,idgame);
@@ -230,7 +260,6 @@ void *AtenderCliente (void *args_void){
 				printf("Convidado %d = %s\n",i,convidado);
 				// Enviar convite para os convidados
 				write(get_socket(lista,convidado),conviteres, strlen(conviteres));
-			
 			}
 			
 			// atriubi a idgame no usuario que convidou
@@ -271,11 +300,6 @@ void *AtenderCliente (void *args_void){
 			// verifica se existe uma partida com essa id (fazer depois)
 			printf("Nome de quem respondeu = %s\n",nombre); 
 			printf("Nome do dono da partida = %s\n",donopartida);
-			
-			//node * usuario = busca(*lista, donopartida);
-			
-			//node * invitado = busca(*lista, nombre);
-			
 			if(existe_game(conn, idbdgames)){ // Se game existe
 				
 				if(respconvites == 1){ // Aceitou
@@ -286,14 +310,7 @@ void *AtenderCliente (void *args_void){
 					// Adiciona uma pessoa a mais no dono e se completou avisa o dono
 					// So vai entrar em jogo ate ficar completo
 					sum_jugadores_momento(lista,donopartida);
-					
-					//usuario->jugadores_momento+=1;
-					// Confere se completou as pessoas
-					//invitado->partida=idbdgames;
-					
 					alter_idgame(lista,nombre,idbdgames);
-					
-					
 					//if(usuario->jugadores_momento == usuario->jugadores_partida){
 					if(qtd_conectados_partida(lista, idbdgames), get_jugadores_momento(lista, donopartida)){	
 						printf("Todos ja estao prontos para comecar\n"); 
@@ -303,11 +320,7 @@ void *AtenderCliente (void *args_void){
 						momento=get_jugadores_momento(lista, donopartida);
 						
 						int * socketPartida;
-						
-						//socketPartida = vetorPartida(*lista, momento,idbdgames);
 						socketPartida = vetor_socket_partida(lista, idbdgames);
-						
-						
 						printf("No faltam pessoas, estan todos\n");
 						strcpy(contesta,"8/1/");// Estan todos
 						strcat(contesta,nombre);

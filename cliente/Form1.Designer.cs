@@ -43,6 +43,8 @@ namespace Cliente
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.buttonInvitar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.textBoxMensagem = new System.Windows.Forms.TextBox();
+            this.buttonEnvia = new System.Windows.Forms.Button();
             this.groupLogin.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,7 +97,6 @@ namespace Cliente
             this.groupLogin.Size = new System.Drawing.Size(168, 138);
             this.groupLogin.TabIndex = 3;
             this.groupLogin.TabStop = false;
-            //this.groupLogin.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // button1
             // 
@@ -141,15 +142,14 @@ namespace Cliente
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Location = new System.Drawing.Point(12, 185);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(168, 169);
+            this.checkedListBox1.Size = new System.Drawing.Size(168, 139);
             this.checkedListBox1.TabIndex = 7;
-            //this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // buttonInvitar
             // 
-            this.buttonInvitar.Location = new System.Drawing.Point(12, 360);
+            this.buttonInvitar.Location = new System.Drawing.Point(12, 330);
             this.buttonInvitar.Name = "buttonInvitar";
-            this.buttonInvitar.Size = new System.Drawing.Size(167, 23);
+            this.buttonInvitar.Size = new System.Drawing.Size(168, 23);
             this.buttonInvitar.TabIndex = 8;
             this.buttonInvitar.Text = "Invitar";
             this.buttonInvitar.UseVisualStyleBackColor = true;
@@ -167,7 +167,25 @@ namespace Cliente
             this.label1.TabIndex = 9;
             this.label1.Text = "Teste\\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // textBoxMensagem
+            // 
+            this.textBoxMensagem.Location = new System.Drawing.Point(735, 423);
+            this.textBoxMensagem.Multiline = true;
+            this.textBoxMensagem.Name = "textBoxMensagem";
+            this.textBoxMensagem.Size = new System.Drawing.Size(245, 110);
+            this.textBoxMensagem.TabIndex = 10;
+            this.textBoxMensagem.TextChanged += new System.EventHandler(this.textBoxMensagem_TextChanged);
+            // 
+            // buttonEnvia
+            // 
+            this.buttonEnvia.Location = new System.Drawing.Point(846, 539);
+            this.buttonEnvia.Name = "buttonEnvia";
+            this.buttonEnvia.Size = new System.Drawing.Size(134, 23);
+            this.buttonEnvia.TabIndex = 11;
+            this.buttonEnvia.Text = "button3";
+            this.buttonEnvia.UseVisualStyleBackColor = true;
+            this.buttonEnvia.Click += new System.EventHandler(this.buttonEnvia_Click);
             // 
             // Form1
             // 
@@ -177,6 +195,8 @@ namespace Cliente
             this.BackgroundImage = global::Cliente.Properties.Resources.gandalf;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(984, 586);
+            this.Controls.Add(this.buttonEnvia);
+            this.Controls.Add(this.textBoxMensagem);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonInvitar);
             this.Controls.Add(this.checkedListBox1);
@@ -188,7 +208,6 @@ namespace Cliente
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            //this.Load += new System.EventHandler(this.Form1_Load_1);
             this.groupLogin.ResumeLayout(false);
             this.groupLogin.PerformLayout();
             this.ResumeLayout(false);
@@ -211,6 +230,8 @@ namespace Cliente
         private CheckedListBox checkedListBox1;
         private Button buttonInvitar;
         private Label label1;
+        private TextBox textBoxMensagem;
+        private Button buttonEnvia;
     }
 }
 

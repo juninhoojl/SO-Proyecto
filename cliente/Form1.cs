@@ -60,6 +60,11 @@ namespace Cliente
             atender = new Thread(ts);
             atender.Start();
 
+            // Limita tamanho caixa de texto
+            textBoxMensagem.MaxLength = 150;
+            textPassword.MaxLength = 20;
+            textUser.MaxLength = 20;
+
         }
 
 
@@ -367,6 +372,18 @@ namespace Cliente
                         // Responde aceitando ou recusando
 
                         break;
+                    case 10: // Mensagens recebidas
+
+                        label1.Text = "Mensagem recebida!";
+
+                        MessageBox.Show("Recebeu mensagem de:"+trozos[1]);
+
+                        break;
+                    case 11: // Mensagens enviadas
+      
+                        label1.Text = "Mensagenes Inviadas!";
+
+                        break;
                     case 99: // No hace nada
 
                         // Responde aceitando ou recusando
@@ -473,12 +490,18 @@ namespace Cliente
 
         }
 
+
+    
         // 1- Logado corretamente
         // 2- Credenciais incorretas
         // 3- Erro ao logar
         // 0- Deslogado ok
         private void buttonLogin_Click(object sender, EventArgs e)
         {
+
+                // Confere se os tamanhos ok
+                // Vamos limitar em 20 por garantia
+
                 // Se logado pede logout
                 if (Global.logado == 1)
                 {
@@ -533,6 +556,36 @@ namespace Cliente
 
         }
 
+
+        private void buttonEnvia_Click(object sender, EventArgs e)
+        {
+            // Ao clicar envia mensagem
+            // Tem que ter as pessoas selecionadas tb
+            // 3 opcoes:
+            // Todos os conectados
+            // Todos da partida
+            // ou 1 pessoa especifica
+
+            // Envia para todos os conectados
+            EnviaMensagem("4/"+textUser.Text+"/0/"+textBoxMensagem.Text);
+
+        }
+
+        private void textBoxMensagem_TextChanged(object sender, EventArgs e)
+        {
+
+            if (String.IsNullOrEmpty(textBoxMensagem.Text) || String.IsNullOrWhiteSpace(textBoxMensagem.Text) || String.IsNullOrEmpty(textBoxMensagem.Text) || String.IsNullOrWhiteSpace(textBoxMensagem.Text))
+            {
+                buttonEnvia.Enabled = false;
+            }
+            else
+            {
+                buttonEnvia.Enabled = true;
+            }
+        }
+
+
+            
         // Funcao para convidar
 
     }
