@@ -20,8 +20,6 @@
 typedef struct Node{
     int socket;
     char username[MAXNOME];
-    struct Node* ante;
-    struct Node* prox;
     unsigned int partida;
     int jugadores_partida;
     int jugadores_momento;
@@ -32,7 +30,7 @@ typedef struct Node{
     struct Node * prev;
 }node;
 
-typedef struct Hnode {
+typedef struct Hnode{
     int tam;
     struct Node * first;
     struct Node * last;

@@ -69,7 +69,7 @@ int main(int argc, char *argv[]){
 	pthread_t thread;
 	
 	struct thread_args in;
-	in.b=10.0; // Numero qualquer
+	//in.b=10.0; // Numero qualquer
 	
 	node * cabeca = NULL;
 	

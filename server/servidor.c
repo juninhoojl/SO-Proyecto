@@ -415,6 +415,7 @@ void *AtenderCliente (void *args_void){
 				
 				printf("String conectados\n");
 				char * sconectados = string_conectados(lista);
+				
 				printf("\n%s\n",sconectados);
 				
 				vetsockets = vetor_socket(lista);
@@ -442,7 +443,7 @@ void *AtenderCliente (void *args_void){
 		}
 	}
 	// Se acabo el servicio para este cliente
-	close(suser); 
-	mysql_close (conn);
+	close(suser);
+	mysql_close(conn);
 	
 }

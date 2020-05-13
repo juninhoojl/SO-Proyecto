@@ -155,7 +155,7 @@ int compare_node(node * first, node * second){
 node * new_node(int socket, char name[MAXNOME]){
     
     node * newnode = (node*)malloc(sizeof(node));
-    
+	
     if(!newnode){
         printf("Memory allocation failed");
         exit(1);
@@ -168,7 +168,6 @@ node * new_node(int socket, char name[MAXNOME]){
     newnode->pontos = 0;
     strcpy(newnode->username, name);
     
-    newnode->socket = socket;
     newnode->prev = NULL;
     newnode->next = NULL;
     
