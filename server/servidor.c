@@ -8,6 +8,7 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 void *AtenderCliente (void *args_void){
 	
 	// Antes de tudo deve selecionar o head em um no aqui
+	
 	struct thread_args * args = args_void;
 	hnode * lista = args->lista;
 	
@@ -16,26 +17,20 @@ void *AtenderCliente (void *args_void){
 	int * vetsockets; // ponteiro vetor sockets
 	//node ** lista = args->lista;
 	show_list(lista);
-	//mostra(*lista);
-	//int * tamanho = args->tam;
-	int alterlista = 0;
-	
-	char peticion[512];
-	char respuesta[512];
-	int ret;
 
-	int logado=0;
-	int terminar =0;
-	int situacao=0;
-	
+	char peticion[512], respuesta[512];
+	int ret, logado=0, terminar=0, situacao=0, alterlista = 0;
+	int codigo;
+	char nombre[MAXNOME];
+	char *p;
 	MYSQL *conn;
 	conn=mysql_init(NULL);
+	char senha[MAXNOME];
 	
 	if(conn==NULL){
 		printf("Error ao criar conexao: %u %s\n",mysql_errno(conn), mysql_error(conn));
 		exit (1);
 	}
-	
 	
 	conn=mysql_real_connect(conn,SERVIDORDADOS,USUARIO,SENHA,BASE,0, NULL, 0);
 	
@@ -44,134 +39,88 @@ void *AtenderCliente (void *args_void){
 		exit(1);
 	}
 	
-	
-	// Laco para atender todas as peticoes desse cliente
-	while (terminar ==0){
+	while(terminar==0){
 		
-		// Ahora recibimos la petici?n
+		// Ahora recibimos la peticion
 		ret=read(suser, peticion, sizeof(peticion));
-		printf ("Recibido\n");
 		
 		// Tenemos que anadirle la marca de fin de string 
 		// para que no escriba lo que hay despues en el buffer
 		peticion[ret]='\0';
 		
-		
-		printf ("Peticion: %s\n",peticion);
-		
-		// vamos a ver que quieren
-		char *p = strtok( peticion, "/");
-		int codigo =  atoi (p);
-		// Ya tenemos el c?digo de la petici?n
-		char nombre[20];
-		
+		p = strtok(peticion,"/");
+		codigo = atoi(p);
 		// Se estiver logado pega os dados do mesmo jeito ao desconectar
-		if (codigo !=0){
-			
+		if(codigo !=0){
 			p = strtok( NULL, "/");
-			strcpy (nombre, p);
-			// Ya tenemos el nombre
-			printf ("Codigo: %d, Nome: %s\n", codigo, nombre);
+			strcpy(nombre, p);
+			printf("Codigo: %d, Nome: %s\n", codigo, nombre);
+			printf("Chegou ate aqui\n");
 		}
 		
-		if(codigo ==0){ // Solicita sair
+		if(codigo==0){ // Solicita sair
 			
+			printf("Solicitou desconectar (fechou form)");
 			// Se esta logado desloga
 			if(logado){
 				p = strtok( NULL, "/");
 				strcpy(nombre, p);
 				remove_node(lista, search_node(lista,nombre));
-				
-				//elimina(lista, nombre,tamanho);
-				// Atualizar
-				alterlista = 1;
-				
+				alterlista = 1; // Alteracao na lista
 				show_list(lista);
-				//mostra(*lista);
 				logado=0;
 			}
 			
 			terminar=1;
 			
-		}else if (codigo==1){ // Solicita login servico login = 1/
+		}else if(codigo==1){ // Solicita login servico login = 1/
 			
-			printf("SOlicitou login");
-			char senha[20];
+			situacao=0;
+			printf("Solicitou login");
 			p = strtok( NULL, "/");
-			int situacao=0;
 			strcpy(senha, p);
-			char *asenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
+			char * asenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof(char));
 			asenha = smd5(senha,asenha);
 			
-			printf("%s\n",asenha);
-			
-			// Nao existe
-			if (search_node(lista, nombre) != NULL){
+			// Esta ativo em outra sessao
+			if(search_node(lista, nombre) != NULL){
 				
-				
-				sprintf (respuesta, "4%s",nombre);
-				
+				sprintf(respuesta, "1/4/%s",nombre);
 				
 			}else{ // Existe faz tudo normal
 				
 				// Se usuario ja existe na lista nao pode logar de novo
 				situacao=loga_user(nombre,asenha,conn);
 				
-				if (situacao == 1){ // Login correto
+				if (situacao==1){ // Login correto
 					logado=1;
-
 					insert_end(lista, new_node(suser,nombre));
-					//insere(lista, suser, nombre,tamanho);
-					
-					show_list(lista);
-					
-					printf("Mostra aqui\n");
-					// Atualizar
 					alterlista = 1;
-					// Mostra
-					
 					show_list(lista);
-					//mostra(*lista);
-					//mostra(args->lista);
-					
-					sprintf (respuesta, "1/1%s",nombre); 
-				}else if (situacao == 3){  // Credenciais errados
-					sprintf (respuesta, "1/2%s",nombre);
-				}else if (situacao == 0){ // Erro ao logar
-					sprintf (respuesta, "1/0%s",nombre);
-				}else{ // Erro ao logar
-					
-					sprintf (respuesta, "1/3%s",nombre);
+					sprintf(respuesta, "1/1/%s",nombre); // Login correto
+				}else if (situacao==3){ 
+					sprintf(respuesta, "1/2/%s",nombre); // Credenciais incorretas
+				}else if (situacao==0){ 
+					sprintf(respuesta, "1/0/%s",nombre); // Erro ao logar
+				}else{ 
+					sprintf(respuesta, "1/3/%s",nombre); // Erro ao logar
 				}
-				
-				
 			}
 			
 			free(asenha);
 			
 		}else if(codigo==2){ // Solicita deslogar servico = 2/
+			
 			printf("Solicitou deslogar");
-			char senha[20];
-			p = strtok( NULL, "/");
-			int situacao=0;
-			strcpy(senha, p);
-			
-			
 			remove_node(lista, search_node(lista, nombre));
-			//elimina(lista, nombre,tamanho);
-			
-			// Atualizar
 			alterlista = 1;
-			show_list(lista);
-			
-			//mostra(*lista);
-			
 			logado=0;
+			printf("Desfaz login");
+			show_list(lista);
+			sprintf(respuesta, "2/1/%s",nombre); // Deslogin correto
 			
-			sprintf(respuesta, "2/0%s",nombre); // Login correto
 			
-		}else if(codigo==3){ // Solicita excluir USUARIO servico = 3/
-
+		}else if(codigo==3){ //Solicita excluir USUARIO servico = 3/
 			// Somente se estiver logado
 			if(logado){
 				situacao=remove_user(nombre,conn);
@@ -469,17 +418,19 @@ void *AtenderCliente (void *args_void){
 		}
 		
 		if(codigo !=0){ // Desconectar
-			printf ("Resposta: %s\n", respuesta);
+			printf("Codigo: %d => Reposta: %s\n",codigo,respuesta);
+			//printf ("Resposta: %s\n", respuesta);
 			// Enviamos a resposta
 			
-			write(suser,respuesta, strlen(respuesta));
+			write(suser,respuesta,strlen(respuesta));
 			
-		}if ((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 5)||(codigo== 6)){
+		}
+		
+		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 5)||(codigo== 6)){
 			
-			pthread_mutex_lock( &mutex ); // No me interrumpas ahora
-			contador += 1;
-			pthread_mutex_unlock( &mutex ); // Ya puedes interrumpirme
-			
+			pthread_mutex_lock(&mutex); // No me interrumpas ahora
+			contador+=1;
+			pthread_mutex_unlock(&mutex); // Ya puedes interrumpirme
 			
 			
 			if(alterlista && lista->tam > 0){

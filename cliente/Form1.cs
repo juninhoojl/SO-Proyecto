@@ -48,15 +48,17 @@ namespace Cliente
         // Conecta ao carregar
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            /*
             // PRODUCION ###########
             // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-             IPAddress direc = IPAddress.Parse("10.211.55.9");
+            IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
-
+            */
             //listView1.Items.Clear();
             //listView1.Enabled = false;
             buttonLogin.Enabled = false;
@@ -69,6 +71,8 @@ namespace Cliente
 
 
             //Creamos el socket 
+            /*
+
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
@@ -89,7 +93,10 @@ namespace Cliente
                 return;
             }
 
-            
+            */
+
+
+            ConectServer();
 
 
             ThreadStart ts = delegate { AtenderServidor(); };
@@ -99,18 +106,55 @@ namespace Cliente
 
         }
 
-        private void AtenderServidor()
+        private int ConectServer()
         {
 
+            // PRODUCION ###########
+            // IPAddress direc = IPAddress.Parse("147.83.117.22");
+
+            // LOCAL ###########
+            IPAddress direc = IPAddress.Parse("10.211.55.9");
+            // ########### ###########
+
+            IPEndPoint ipep = new IPEndPoint(direc, 50004);
+
+
+            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            try
+            {
+                // Tentamos conectar usando socket
+                server.Connect(ipep);
+
+                label1.Text = "Conectado al servidor: " + direc;
+                MessageBox.Show("Conectado");
+                return 0;
+            }
+            catch (SocketException)
+            {
+                dynamic result = MessageBox.Show("No he podido conectar con el servidor\n\t Cierrar aplicacion?", "GameSO", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+                // Se nao foi possivel
+                return 1;
+            }
+
+            
+        }
+
+
+        private void AtenderServidor()
+        {
+            byte[] msg2;
             while (true)
             {
                 //Recibimos la respuesta del servidor
-                byte[] msg2 = new byte[200];
-
+                msg2 = new byte[200];
                 // Limpa toda vez que chama esse botao e preenche do zero
 
-
                 server.Receive(msg2);
+
                 string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
 
                 int codigo = Convert.ToInt32(trozos[0]); // Antes da barra
@@ -120,10 +164,9 @@ namespace Cliente
 
                     case 1: // Resposta ao login
 
-                        if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
+                        if (String.Compare(trozos[1], "1") == 0)
                         {
                             label1.Text = "Logueado con sucesso";
-                            //MessageBox.Show("Logado com sucesso");
                             Global.logado = 1;
                             textUser.Enabled = false;
                             textPassword.Enabled = false;
@@ -132,55 +175,44 @@ namespace Cliente
                             buttonRegistra.Text = "Deletar";
                             buttonLogin.Text = "Logout";
 
-
-                            //buttonConectados.PerformClick();
-
                         }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
+                        else if (String.Compare(trozos[1], "2") == 0)
                         {
                             label1.Text = "Usuario o contrasena incorrectos";
-                            //MessageBox.Show("Usuario ou senha incorretos");
                         }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "0" + textUser.Text) == 0)
+                        else if (String.Compare(trozos[1], "0") == 0)
                         {
                             label1.Text = "Usuario no existe";
-                           // MessageBox.Show("Usuario nao existe");
                         }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "4" + textUser.Text) == 0)
+                        else if (String.Compare(trozos[1], "4") == 0)
                         {
                             label1.Text = "Usuario ya logueado en otra secion";
-                            //MessageBox.Show("Usuario esta ativo em outra sessao, nao foi possivel logar");
                         }
                         else
                         {
                             label1.Text = "Erro al hacer el login";
-                            //MessageBox.Show("Erro ao efetuar login");
                         }
 
                         break;
 
                     case 2: // Resposta deslogin
-                        if (String.Compare(trozos[1].Split('\0')[0], "0" + textUser.Text) == 0)
+                        if (String.Compare(trozos[1], "1") == 0)
                         {
                             label1.Text = "Delogueado con sucesso";
-                            //MessageBox.Show("Deslogado com sucesso");
                             Global.logado = 0;
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
                             listView1.Items.Clear();
                             checkedListBox1.Items.Clear();
-                            //listView1.Enabled = false;
                             buttonLogin.Text = "Login";
                             buttonRegistra.Text = "Registrar";
                             button1.Enabled = true;
                             textPassword.Text = "";
                             textUser.Text = "";
-
                         }
                         else
                         {
                             label1.Text = "Erro al desloguear";
-                            //MessageBox.Show("Erro ao deslogar");
                         }
 
                         break;
@@ -226,10 +258,10 @@ namespace Cliente
                         checkedListBox1.Items.Clear();
 
                         int quantidade = Convert.ToInt32(trozos[1]);
-                        trozos[quantidade+1] = trozos[quantidade+1].Split('\0')[0];
+                        trozos[quantidade + 1] = trozos[quantidade + 1].Split('\0')[0];
 
                         // a partir do 2
-                        for (int i=2; i < quantidade+2; i++)
+                        for (int i = 2; i < quantidade + 2; i++)
                         {
 
                             if (trozos[i].Trim() != "")
@@ -239,15 +271,15 @@ namespace Cliente
                                 {
                                     listView1.Items.Add(trozos[i] + " (tu)");
                                     // string[] teste = { "item1", "item2", "Item3" };
-                                    
+
 
                                     //checkedListBox1.Items.Add(trozos[i] + " (tu)");
-                                    
+
                                 }
                                 else
                                 {
 
-                                   // string[] teste = { "item1", "item2", "Item3" };
+                                    // string[] teste = { "item1", "item2", "Item3" };
                                     checkedListBox1.Items.Add(trozos[i]);
 
                                     listView1.Items.Add(trozos[i]);
@@ -277,7 +309,7 @@ namespace Cliente
                         {
                             label1.Text = "Registrado com sucesso";
                             //MessageBox.Show("Registrado com sucesso");
-                            
+
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
                         {
@@ -301,23 +333,23 @@ namespace Cliente
                         // Resposta
                         // 7/nombre/respuesta/quieninvito/idbasedados
 
-                        dynamic result = MessageBox.Show(trozos[1]+"te ivitou para jugar, \n\t aceptar?", "Invitacion", MessageBoxButtons.YesNo);
+                        dynamic result = MessageBox.Show(trozos[1] + "te ivitou para jugar, \n\t aceptar?", "Invitacion", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
                             // Aceptou
-                            string mensaje = "7/" + textUser.Text + "/1/" + trozos[1]+"/"+trozos[2]; // logout
+                            string mensaje = "7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]; // logout
                             byte[] msg = Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
                         }
                         else
                         {
-                            string mensaje = "7/" + textUser.Text + "/0/" + trozos[1]+"/"+ trozos[2]; // logout
+                            string mensaje = "7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]; // logout
                             byte[] msg = Encoding.ASCII.GetBytes(mensaje);
                             server.Send(msg);
                             // Nao aceptou
                         }
                         // Responde aceitando ou recusando
-    
+
                         break;
                     case 7: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
@@ -328,7 +360,7 @@ namespace Cliente
                     case 8: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
 
-                        if(String.Compare(trozos[1], "1") == 0) // listo
+                        if (String.Compare(trozos[1], "1") == 0) // listo
                         {
                             label1.Text = "Todos los jugadores ya estan";
                             //MessageBox.Show("Todos ya estan!");
@@ -336,10 +368,11 @@ namespace Cliente
                         }
                         else if (String.Compare(trozos[1], "0") == 0)
                         {
-                            
+
                             MessageBox.Show(trozos[2].Split('\0')[0] + " acepto la invitacion! Pero aun faltan personas!");
-                        
-                        }else if (String.Compare(trozos[1], "2") == 0)
+
+                        }
+                        else if (String.Compare(trozos[1], "2") == 0)
                         {
                             dynamic result2 = MessageBox.Show("Ya estan todos, desea empezar?", "Empezar", MessageBoxButtons.YesNo);
                             if (result2 == DialogResult.Yes)
@@ -361,10 +394,10 @@ namespace Cliente
                             }
 
                         }
-                            break;
+                        break;
                     case 9: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
-                        
+
                         //MessageBox.Show("Invitaciones Inviadas!");
                         label1.Text = "Invitaciones Inviadas!";
                         // Responde aceitando ou recusando
@@ -511,8 +544,8 @@ namespace Cliente
                     string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
 
                     byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-
-                    server.Send(msg);
+                MessageBox.Show("Mensagem deslogin: "+ mensaje);
+                server.Send(msg);
 
                 }
                 else // Efetua login
@@ -534,12 +567,14 @@ namespace Cliente
         {
 
         }
+
+        /*
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
         }
         // ########
-
+        */
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
