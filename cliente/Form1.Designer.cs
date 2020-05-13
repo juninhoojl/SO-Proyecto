@@ -45,19 +45,23 @@ namespace Cliente
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxMensagem = new System.Windows.Forms.TextBox();
             this.buttonEnvia = new System.Windows.Forms.Button();
+            this.caixaMensagens = new System.Windows.Forms.RichTextBox();
+            this.limpia_Chat = new System.Windows.Forms.Button();
             this.groupLogin.SuspendLayout();
             this.SuspendLayout();
             // 
             // textPassword
             // 
+            this.textPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textPassword.Location = new System.Drawing.Point(6, 45);
             this.textPassword.Name = "textPassword";
-            this.textPassword.Size = new System.Drawing.Size(121, 20);
+            this.textPassword.Size = new System.Drawing.Size(121, 22);
             this.textPassword.TabIndex = 1;
             this.textPassword.TextChanged += new System.EventHandler(this.textPassword_TextChanged_1);
             // 
             // buttonLogin
             // 
+            this.buttonLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLogin.Location = new System.Drawing.Point(6, 71);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(153, 23);
@@ -68,14 +72,16 @@ namespace Cliente
             // 
             // textUser
             // 
+            this.textUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textUser.Location = new System.Drawing.Point(6, 19);
             this.textUser.Name = "textUser";
-            this.textUser.Size = new System.Drawing.Size(153, 20);
+            this.textUser.Size = new System.Drawing.Size(153, 22);
             this.textUser.TabIndex = 0;
             this.textUser.TextChanged += new System.EventHandler(this.textUser_TextChanged_1);
             // 
             // buttonRegistra
             // 
+            this.buttonRegistra.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonRegistra.Location = new System.Drawing.Point(6, 100);
             this.buttonRegistra.Name = "buttonRegistra";
             this.buttonRegistra.Size = new System.Drawing.Size(153, 23);
@@ -100,6 +106,7 @@ namespace Cliente
             // 
             // button1
             // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Location = new System.Drawing.Point(133, 45);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(26, 21);
@@ -114,10 +121,11 @@ namespace Cliente
             this.listView1.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
+            this.listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(204, 213);
+            this.listView1.Location = new System.Drawing.Point(12, 359);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(168, 185);
+            this.listView1.Size = new System.Drawing.Size(168, 191);
             this.listView1.TabIndex = 5;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -125,10 +133,11 @@ namespace Cliente
             // columnHeader1
             // 
             this.columnHeader1.Text = "Jugadores";
-            this.columnHeader1.Width = 140;
+            this.columnHeader1.Width = 161;
             // 
             // button2
             // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.Location = new System.Drawing.Point(12, 156);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(168, 23);
@@ -139,6 +148,7 @@ namespace Cliente
             // 
             // checkedListBox1
             // 
+            this.checkedListBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Location = new System.Drawing.Point(12, 185);
             this.checkedListBox1.Name = "checkedListBox1";
@@ -147,6 +157,7 @@ namespace Cliente
             // 
             // buttonInvitar
             // 
+            this.buttonInvitar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonInvitar.Location = new System.Drawing.Point(12, 330);
             this.buttonInvitar.Name = "buttonInvitar";
             this.buttonInvitar.Size = new System.Drawing.Size(168, 23);
@@ -158,34 +169,57 @@ namespace Cliente
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(-8, 566);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(-2, 570);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 2);
             this.label1.MinimumSize = new System.Drawing.Size(1000, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1000, 20);
+            this.label1.Size = new System.Drawing.Size(1000, 16);
             this.label1.TabIndex = 9;
             this.label1.Text = "Teste\\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textBoxMensagem
             // 
-            this.textBoxMensagem.Location = new System.Drawing.Point(735, 423);
+            this.textBoxMensagem.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxMensagem.Location = new System.Drawing.Point(780, 340);
             this.textBoxMensagem.Multiline = true;
             this.textBoxMensagem.Name = "textBoxMensagem";
-            this.textBoxMensagem.Size = new System.Drawing.Size(245, 110);
+            this.textBoxMensagem.Size = new System.Drawing.Size(196, 75);
             this.textBoxMensagem.TabIndex = 10;
             this.textBoxMensagem.TextChanged += new System.EventHandler(this.textBoxMensagem_TextChanged);
             // 
             // buttonEnvia
             // 
-            this.buttonEnvia.Location = new System.Drawing.Point(846, 539);
+            this.buttonEnvia.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEnvia.Location = new System.Drawing.Point(780, 421);
             this.buttonEnvia.Name = "buttonEnvia";
-            this.buttonEnvia.Size = new System.Drawing.Size(134, 23);
+            this.buttonEnvia.Size = new System.Drawing.Size(196, 23);
             this.buttonEnvia.TabIndex = 11;
-            this.buttonEnvia.Text = "button3";
+            this.buttonEnvia.Text = "Enviar";
             this.buttonEnvia.UseVisualStyleBackColor = true;
             this.buttonEnvia.Click += new System.EventHandler(this.buttonEnvia_Click);
+            // 
+            // caixaMensagens
+            // 
+            this.caixaMensagens.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.caixaMensagens.Location = new System.Drawing.Point(780, 9);
+            this.caixaMensagens.Name = "caixaMensagens";
+            this.caixaMensagens.ReadOnly = true;
+            this.caixaMensagens.Size = new System.Drawing.Size(196, 296);
+            this.caixaMensagens.TabIndex = 12;
+            this.caixaMensagens.Text = "";
+            // 
+            // limpia_Chat
+            // 
+            this.limpia_Chat.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.limpia_Chat.Location = new System.Drawing.Point(780, 311);
+            this.limpia_Chat.Name = "limpia_Chat";
+            this.limpia_Chat.Size = new System.Drawing.Size(196, 23);
+            this.limpia_Chat.TabIndex = 13;
+            this.limpia_Chat.Text = "Limpia Chat";
+            this.limpia_Chat.UseVisualStyleBackColor = true;
+            this.limpia_Chat.Click += new System.EventHandler(this.limpia_Chat_Click);
             // 
             // Form1
             // 
@@ -195,6 +229,8 @@ namespace Cliente
             this.BackgroundImage = global::Cliente.Properties.Resources.gandalf;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(984, 586);
+            this.Controls.Add(this.limpia_Chat);
+            this.Controls.Add(this.caixaMensagens);
             this.Controls.Add(this.buttonEnvia);
             this.Controls.Add(this.textBoxMensagem);
             this.Controls.Add(this.label1);
@@ -232,6 +268,8 @@ namespace Cliente
         private Label label1;
         private TextBox textBoxMensagem;
         private Button buttonEnvia;
+        private RichTextBox caixaMensagens;
+        private Button limpia_Chat;
     }
 }
 

@@ -59,7 +59,7 @@ namespace Cliente
             ThreadStart ts = delegate { AtenderServidor(); };
             atender = new Thread(ts);
             atender.Start();
-
+            buttonEnvia.Enabled = false;
             // Limita tamanho caixa de texto
             textBoxMensagem.MaxLength = 150;
             textPassword.MaxLength = 20;
@@ -147,6 +147,7 @@ namespace Cliente
                         {
                             label1.Text = "Logueado con sucesso";
                             Global.logado = 1;
+                            buttonEnvia.Enabled = true;
                             textUser.Enabled = false;
                             textPassword.Enabled = false;
                             //listView1.Enabled = true;
@@ -179,6 +180,7 @@ namespace Cliente
                         {
                             label1.Text = "Delogueado con sucesso";
                             Global.logado = 0;
+                            buttonEnvia.Enabled = false;
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
                             listView1.Items.Clear();
@@ -209,6 +211,7 @@ namespace Cliente
                             listView1.Items.Clear();
                             checkedListBox1.Items.Clear();
                             //listView1.Enabled = false;
+                            buttonEnvia.Enabled = false;
                             buttonRegistra.Text = "Registrar";
                             buttonLogin.Text = "Login";
                             textPassword.Text = "";
@@ -375,8 +378,19 @@ namespace Cliente
                     case 10: // Mensagens recebidas
 
                         label1.Text = "Mensagem recebida!";
+                        
+                        // MessageBox.Show("Recebeu mensagem de:"+trozos[1]);
+                        if(String.Compare(trozos[1], textUser.Text) == 0) // Ele mesmo
+                        {
+                            caixaMensagens.Text = caixaMensagens.Text + "\n\n" + "Tu:\n" + trozos[3] ;
 
-                        MessageBox.Show("Recebeu mensagem de:"+trozos[1]);
+                        }
+                        else
+                        {
+                            caixaMensagens.Text = caixaMensagens.Text + "\n\n" + trozos[1] + ":\n" + trozos[3];
+
+
+                        }
 
                         break;
                     case 11: // Mensagens enviadas
@@ -427,9 +441,11 @@ namespace Cliente
             {
                 buttonLogin.Enabled = false;
                 buttonRegistra.Enabled = false;
+                buttonEnvia.Enabled = true;
             }
             else
             {
+                buttonEnvia.Enabled = false;
                 buttonLogin.Enabled = true;
                 buttonRegistra.Enabled = true;
             }
@@ -568,7 +584,7 @@ namespace Cliente
 
             // Envia para todos os conectados
             EnviaMensagem("4/"+textUser.Text+"/0/"+textBoxMensagem.Text);
-
+            textBoxMensagem.Text = "";
         }
 
         private void textBoxMensagem_TextChanged(object sender, EventArgs e)
@@ -580,12 +596,26 @@ namespace Cliente
             }
             else
             {
-                buttonEnvia.Enabled = true;
+                if(Global.logado == 1)
+                {
+                    buttonEnvia.Enabled = true;
+                }
+               
             }
         }
 
+        private void label2_Click(object sender, EventArgs e)
+        {
 
-            
+        }
+
+        private void limpia_Chat_Click(object sender, EventArgs e)
+        {
+            caixaMensagens.Text = "";
+        }
+
+
+
         // Funcao para convidar
 
     }
