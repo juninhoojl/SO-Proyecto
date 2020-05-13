@@ -16,8 +16,8 @@
 struct thread_args{
 	
 	int a;
-	double b;
-	int * tam;
+	//double b;
+	//int * tam;
 	hnode * lista;
 	
 };
