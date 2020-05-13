@@ -43,69 +43,25 @@ namespace Cliente
 
         }
 
-
-
         // Conecta ao carregar
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            /*
-            // PRODUCION ###########
-            // IPAddress direc = IPAddress.Parse("147.83.117.22");
-
-            // LOCAL ###########
-
-              IPAddress direc = IPAddress.Parse("192.168.1.21");
-
-
-            IPEndPoint ipep = new IPEndPoint(direc, 50004);
-            */
-            //listView1.Items.Clear();
-            //listView1.Enabled = false;
             buttonLogin.Enabled = false;
             buttonRegistra.Enabled = false;
             // Set to no text.
             textPassword.Text = "";
             // The password character is an asterisk.
             textPassword.UseSystemPasswordChar = true;
-            // textPassword.PasswordChar = '*';
-
-
-            //Creamos el socket 
-            /*
-
-            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            try
-            {
-                // Tentamos conectar usando socket
-                server.Connect(ipep);
-
-                label1.Text = "Conectado al servidor: "+ direc;
-                MessageBox.Show("Conectado");
-            }
-            catch (SocketException)
-            {
-                dynamic result = MessageBox.Show("No he podido conectar con el servidor\n\t Cierrar aplicacion?", "GameSO", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    Application.Exit();
-                }
-                // Se nao foi possivel
-                return;
-            }
-
-            */
-
 
             ConectServer();
-
 
             ThreadStart ts = delegate { AtenderServidor(); };
             atender = new Thread(ts);
             atender.Start();
 
-
         }
+
 
         private int ConectServer()
         {
@@ -126,7 +82,9 @@ namespace Cliente
                 // Tentamos conectar usando socket
                 server.Connect(ipep);
 
-                label1.Text = "Conectado al servidor: " + direc;
+                AlteraBanner("Conectado al servidor: " + direc);
+
+                //label1.Text = "Conectado al servidor: " + direc;
                 MessageBox.Show("Conectado");
                 return 0;
             }
@@ -142,6 +100,20 @@ namespace Cliente
             }
 
             
+        }
+
+
+        private void EnviaMensagem(String mensagem)
+        {
+            //string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
+            byte[] msg = Encoding.ASCII.GetBytes(mensagem);
+            server.Send(msg);
+        }
+
+        private void AlteraBanner(String texto)
+        {
+            label1.Text = texto;
+
         }
 
 
@@ -339,15 +311,11 @@ namespace Cliente
                         if (result == DialogResult.Yes)
                         {
                             // Aceptou
-                            string mensaje = "7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]; // logout
-                            byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-                            server.Send(msg);
+                            EnviaMensagem("7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]);
                         }
                         else
                         {
-                            string mensaje = "7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]; // logout
-                            byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-                            server.Send(msg);
+                            EnviaMensagem("7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]);
                             // Nao aceptou
                         }
                         // Responde aceitando ou recusando
@@ -381,18 +349,12 @@ namespace Cliente
                             {
 
                                 MessageBox.Show("Eligiste empezar!");
-                                // Aceptou
-                                // string mensaje = "7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]; // logout
-                                //byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-                                //server.Send(msg);
+                                // Enviar mensagem para o servidor dizendo que comecou
                             }
                             else
                             {
                                 MessageBox.Show("Eligiste no empezar!");
-                                //string mensaje = "7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]; // logout
-                                //byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-                                // server.Send(msg);
-                                // Nao aceptou
+                                // Enviar mensagem para o servidor dizendo que nao comecou
                             }
 
                         }
@@ -468,27 +430,12 @@ namespace Cliente
                     dynamic result = MessageBox.Show("Seguro que quieres\n\t borrar usuario?", "GameSO", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes) // Somente se quiser deletar
                     {
-
-                        string mensaje = "3/" + textUser.Text + "/" + textPassword.Text;
-
-                        // Enviamos ao servidor a mensagem
-                        byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-
-                        server.Send(msg);
-
+                        EnviaMensagem("3/" + textUser.Text + "/" + textPassword.Text);
                     }
                 }
                 else
                 {
-
-                    // Mensagem Login
-                    string mensaje = "5/" + textUser.Text + "/" + textPassword.Text;
-
-                    // Enviamos ao servidor a mensagem
-                    byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-
-                    server.Send(msg);
-
+                    EnviaMensagem("5/" + textUser.Text + "/" + textPassword.Text);
                 }
 
             // Remove usuario
@@ -505,18 +452,10 @@ namespace Cliente
                 {
 
                     invitados += checkedListBox1.Items[i] + "/";
-                    // The indexChecked variable contains the index of the item.
-                    //MessageBox.Show("Index#: " + indexChecked.ToString() + ", is checked. Checked state is:" +
-                    //                checkedListBox1.GetItemCheckState(indexChecked).ToString() + ".");
-
 
                 }
-                invitados = invitados.TrimEnd(',');
-                // MessageBox.Show(invitados);
 
-                byte[] msg = Encoding.ASCII.GetBytes(invitados);
-
-                server.Send(msg);
+                EnviaMensagem(invitados.TrimEnd(','));
 
 
             }
@@ -543,51 +482,20 @@ namespace Cliente
                 // Se logado pede logout
                 if (Global.logado == 1)
                 {
-                    string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
-
-                    byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-
-                    server.Send(msg);
-
+                    EnviaMensagem("2/" + textUser.Text + "/" + textPassword.Text);
                 }
                 else // Efetua login
                 {
                     // Mensagem Login
-                    string mensaje = "1/" + textUser.Text + "/" + textPassword.Text;
-
-                    // Enviamos ao servidor a mensagem
-                    byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-
-                    server.Send(msg);
-
+                    EnviaMensagem("1/" + textUser.Text + "/" + textPassword.Text);
                 }
- 
         }
-
-        // PARA REMOVER DEPOIS
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        /*
-        private void Form1_Load_1(object sender, EventArgs e)
-        {
-
-        }
-        // ########
-        */
-
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-
-            string mensaje = "0/" + textUser.Text + "/" + textPassword.Text;
-
-            // Enviamos ao servidor a mensagem
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-
-            server.Send(msg);
+               
+            // Enviamos ao servidor a mensagem de desconexao
+            EnviaMensagem("0/" + textUser.Text + "/" + textPassword.Text);
 
             atender.Abort();
 
@@ -622,19 +530,6 @@ namespace Cliente
                 Global.musica = 1;
 
             }
-
-        }
-
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-
-
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
 
         }
 

@@ -95,7 +95,7 @@ namespace Cliente
             this.groupLogin.Size = new System.Drawing.Size(168, 138);
             this.groupLogin.TabIndex = 3;
             this.groupLogin.TabStop = false;
-            this.groupLogin.Enter += new System.EventHandler(this.groupBox1_Enter);
+            //this.groupLogin.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // button1
             // 
@@ -143,7 +143,7 @@ namespace Cliente
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(168, 169);
             this.checkedListBox1.TabIndex = 7;
-            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
+            //this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // buttonInvitar
             // 
@@ -167,7 +167,7 @@ namespace Cliente
             this.label1.TabIndex = 9;
             this.label1.Text = "Teste\\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            //this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // Form1
             // 
