@@ -52,7 +52,7 @@ namespace Cliente
             // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-              IPAddress direc = IPAddress.Parse("10.211.55.9");
+              IPAddress direc = IPAddress.Parse("192.168.1.21");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
