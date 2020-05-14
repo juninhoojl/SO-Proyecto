@@ -79,8 +79,6 @@ int get_socket(hnode * cabeca, char name[MAXNOME]);
 
 int get_pontos(hnode * cabeca, char name[MAXNOME]);
 
-
-
 int get_jugadores_momento(hnode * cabeca, char name[MAXNOME]);
 
 int * vetor_socket(hnode * cabeca); // Retorna vetor de sockets
@@ -107,8 +105,5 @@ char * string_conectados_indicador_jogo(hnode * cabeca);
 
 // Reseta valores de um usuario apos sair de uma partida
 void retira_partida(hnode * cabeca, char name[MAXNOME]);
-
-unsigned int get_partida(hnode * cabeca, char name[MAXNOME]);
-
 
 #endif /* dlinkedlist_h */
