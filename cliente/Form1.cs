@@ -21,10 +21,14 @@ namespace Cliente
         // int logado = 0;
         Socket server;
         Thread atender;
+        delegate void DelegadoParaEscribir(string mensaje);
+
+
+
         public Form1()
         {
 
-            CheckForIllegalCrossThreadCalls = false;
+            //CheckForIllegalCrossThreadCalls = false;
 
             InitializeComponent();
             Load += new EventHandler(Form1_Load);
@@ -43,23 +47,27 @@ namespace Cliente
 
         }
 
+        //Funcion cross threa
+        public void PonContador (string contador)
+        {
+            label1.Text = contador;
+        }
 
 
         // Conecta ao carregar
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            /*
+            
             // PRODUCION ###########
-            // IPAddress direc = IPAddress.Parse("147.83.117.22");
+            //IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
 
-              IPAddress direc = IPAddress.Parse("192.168.1.21");
+             IPAddress direc = IPAddress.Parse("192.168.1.17");
 
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
-            */
             //listView1.Items.Clear();
             //listView1.Enabled = false;
             buttonLogin.Enabled = false;
@@ -301,6 +309,8 @@ namespace Cliente
                             label1.Text = quantidade + " jugadores conectados!";
                             //MessageBox.Show(quantidade + " jugadores conectados!");
                         }
+                        DelegadoParaEscribir delegado = new DelegadoParaEscribir(PonContador);
+                        label1.Invoke(delegado, new object[] { quantidade + "jugadores conectados" });
 
 
                         break;
@@ -408,11 +418,13 @@ namespace Cliente
                     case 99: // No hace nada
 
                         // Responde aceitando ou recusando
+                        
                         break;
 
                     default:
                         label1.Text = "Mensagem recebida desconhecida";
                         //MessageBox.Show("Mensagem recebida desconhecida");
+                        
                         break;
                 }
 
