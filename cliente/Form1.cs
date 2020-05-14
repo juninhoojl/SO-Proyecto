@@ -38,8 +38,8 @@ namespace Cliente
 
             // Set the start position of the form to the center of the screen.
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.MinimumSize = new Size(1000, 625);
-            this.MaximumSize = new Size(1000, 625);
+            this.MinimumSize = new Size(1100, 700);
+            this.MaximumSize = new Size(1100, 700);
 
         }
 
@@ -64,6 +64,7 @@ namespace Cliente
             textBoxMensagem.MaxLength = 150;
             textPassword.MaxLength = 20;
             textUser.MaxLength = 20;
+            radioTodos.Checked = true;
 
         }
 
@@ -238,7 +239,7 @@ namespace Cliente
                         //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                         listView1.Items.Clear();
                         checkedListBox1.Items.Clear();
-
+                        comboUsers.Items.Clear();
                         int quantidade = Convert.ToInt32(trozos[1]);
                         trozos[quantidade + 1] = trozos[quantidade + 1].Split('\0')[0];
 
@@ -263,7 +264,7 @@ namespace Cliente
 
                                     // string[] teste = { "item1", "item2", "Item3" };
                                     checkedListBox1.Items.Add(trozos[i]);
-
+                                    comboUsers.Items.Add(trozos[i]);
                                     listView1.Items.Add(trozos[i]);
                                 }
 
@@ -331,7 +332,25 @@ namespace Cliente
                         break;
                     case 7: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
-                        MessageBox.Show("La partida ya no esta disponible mas!");
+
+                        if (String.Compare(trozos[1], "1") == 0) // Foi inserido na partida
+                        {
+                            AlteraBanner("Voce foi inserido na partida");
+                            Global.partida = 1;
+                            // Habilita o radiobox para partida
+                            // Fazer caso que sai da partida (da para reaproveitar botao convida)
+
+
+
+                            //MessageBox.Show("Todos ya estan!");
+
+                        }
+                        else // Nao foi inserido
+                        {
+
+                            MessageBox.Show("La partida ya no esta disponible mas!");
+                        }
+                       
                         // Responde aceitando ou recusando
 
                         break;
@@ -416,6 +435,7 @@ namespace Cliente
         {
             public static string texto = "Hello";
             public static int logado = 0;
+            public static int partida = 0;
             public static int musica = 0;
 
        
@@ -583,8 +603,33 @@ namespace Cliente
             // ou 1 pessoa especifica
 
             // Envia para todos os conectados
-            EnviaMensagem("4/"+textUser.Text+"/0/"+textBoxMensagem.Text);
+
+            string mensagem = "";
+            mensagem = "4/" + textUser.Text + "/0/" + textBoxMensagem.Text;
+
+            /*
+            if (radioTodos.Checked == true)
+            {
+                mensagem="4/" + textUser.Text + "/0/" + textBoxMensagem.Text;
+            }
+            else if (radioPartida.Checked == true)
+            {
+                mensagem="4/" + textUser.Text + "/1/" + textBoxMensagem.Text;
+                
+            }
+            else if (radioOutro.Checked == true) // ecolhe pessoa 
+            {
+                mensagem= "4/" + textUser.Text + "/2/" + comboUsers.SelectedItem + textBoxMensagem.Text;
+               
+                return;
+            }
+
+    */
+            // Aqui envia
+
+            EnviaMensagem(mensagem);
             textBoxMensagem.Text = "";
+
         }
 
         private void textBoxMensagem_TextChanged(object sender, EventArgs e)
@@ -596,6 +641,7 @@ namespace Cliente
             }
             else
             {
+
                 if(Global.logado == 1)
                 {
                     buttonEnvia.Enabled = true;
@@ -604,15 +650,30 @@ namespace Cliente
             }
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
 
-        }
 
         private void limpia_Chat_Click(object sender, EventArgs e)
         {
             caixaMensagens.Text = "";
         }
+
+
+        // A cada vez que recarrega a lista vai descelecionar o otro(combobox se o item atual nao existir e se estiver selecionado)
+        // So vai habilitar selecionar outro se tiver mais de um usuario selecionado (pq senao vai ficar vazio)
+        private void radioOutro_CheckedChanged(object sender, EventArgs e)
+        {
+            // Vai habilitar o checkbox
+
+
+
+        }
+
+        private void comboUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
 
 
 

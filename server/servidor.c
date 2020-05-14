@@ -145,6 +145,7 @@ void *AtenderCliente (void *args_void){
 			// Vai ter tamanho maximo de 150 a mensagem
 			// Assim que:
 			
+			printf("Entrou aqui em envia mensagem");
 			// 4/nombre_quien_envia/0/mensagem -> todos os conectados
 			// 4/nombre_quien_envia/1/mensagem -> todos da partida
 			// Aloca espaco mensagem que tem maximo de 150 chars
@@ -153,22 +154,56 @@ void *AtenderCliente (void *args_void){
 			p = strtok(NULL, "/");
 			strcpy(tipo_envio, p);
 			int tipo_envios = atoi(tipo_envio);
-			
+			char quien_recibe[MAXNOME];
 			// Agora separa a mensagem em Si
 			char * texto_mensagem = (char*)malloc((MAXMENSAGEM+MAXNOME+5)*sizeof(char));
 			char * somente_mensagem = (char*)malloc((MAXMENSAGEM+1)*sizeof(char));
 			// Antes concatena assim:
 			// Metodo pode ser 0 1 2 3(no futuro)
 			// 10/quem_enviou/metodo/mensagem
+			// 10/quem_enviou/metodo/mensagem
+			// se o codigo igual a 2 tira a pessoa antes
+			if(tipo_envios == 2){
+				p=strtok(NULL,"/");
+				strcpy(quien_recibe, p);
+			}
+			
+			p=strtok(NULL,"/");
+			strcpy(somente_mensagem, p);
+			
 			p=strtok(NULL,"/");
 			strcpy(somente_mensagem, p);
 			sprintf(texto_mensagem,"10/%s/%d/%s",nombre,tipo_envios,somente_mensagem);
 			printf("Mensagem = %s\n",somente_mensagem);
 			free(somente_mensagem);
-			vetsockets = vetor_socket(lista);
 			
+			
+			printf("Mensagem para todos os conectados\n");
+			vetsockets = vetor_socket(lista);
+			i = 1;
+			
+			while(vetsockets[0]>0){
+				write(vetsockets[i],texto_mensagem, strlen(texto_mensagem));
+				vetsockets[0]-=1;
+				i++;
+			}
+			
+			/*
 			if(tipo_envios == 0){
 				printf("Mensagem para todos os conectados\n");
+				vetsockets = vetor_socket(lista);
+				i = 1;
+				
+				while(vetsockets[0]>0){
+					write(vetsockets[i],texto_mensagem, strlen(texto_mensagem));
+					vetsockets[0]-=1;
+					i++;
+				}
+				
+			}else if(tipo_envios == 1){
+				printf("Mensagem para todos da partida\n");
+				
+				vetsockets = vetor_socket_partida(lista, get_partida(lista,nombre));
 				
 				i = 1;
 				
@@ -177,14 +212,25 @@ void *AtenderCliente (void *args_void){
 					vetsockets[0]-=1;
 					i++;
 				}
+				
+			}else if(tipo_envios == 2){ // Contato especifico
+				
+				printf("Mensagem para pessoa especifica\n");
+				// Se a pessoa ainda existir
+				
+				write(get_socket(lista,quien_recibe),texto_mensagem, strlen(texto_mensagem));
+				
+				
 			}
 			
+			*/
+			strcpy(respuesta,"11/1");
 			free(vetsockets);
 			free(texto_mensagem);
 			// Depois de usar libera espaco
 			// Envia algo para quem enviou dizendo que a mensagem foi enviada
 			// Tem que mostrar quem que enviou a mensagem tambem e como foi enviada
-			strcpy(respuesta,"11/1");
+			
 			
 			
 		}else if (codigo==5){ // insere USUARIO servico = 5/
@@ -385,7 +431,7 @@ void *AtenderCliente (void *args_void){
 			}else{ // Avisa que soliciotu por ele que nao esta disponivel mais
 				
 				// 7/0
-				// Aqui avisa que entrou na partida
+				
 				sprintf(respuesta,"7/0");// Nao existe mais a partida que deseja entrar
 				
 			}
@@ -403,13 +449,13 @@ void *AtenderCliente (void *args_void){
 			// Ate aqui ja tenho quem criou o jogo
 			// Agora relaciono o criador do jogo
 			// A cada resposta altera osvalores de quem criou a partida
-			strcpy(respuesta,"99/1");
+			strcpy(respuesta,"7/1");
 			
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
 		}
 		
 		if(codigo !=0 ){ // Desconectar
-			printf("Codigo: %d => Reposta: %s\n",codigo,respuesta);
+			printf("Codigo: %d => Resposta: %s\n",codigo,respuesta);
 			//printf ("Resposta: %s\n", respuesta);
 			// Enviamos a resposta
 			

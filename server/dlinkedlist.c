@@ -421,7 +421,13 @@ int get_socket(hnode * cabeca, char name[MAXNOME]){
     return search_node(cabeca,name)->socket;
 }
 
-
+unsigned int get_partida(hnode * cabeca, char name[MAXNOME]){
+	
+	return search_node(cabeca,name)->partida;
+	
+	
+}
+	
 int get_pontos(hnode * cabeca, char name[MAXNOME]){
     
     return search_node(cabeca,name)->pontos;
