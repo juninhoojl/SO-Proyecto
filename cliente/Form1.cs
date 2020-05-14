@@ -65,6 +65,7 @@ namespace Cliente
             textPassword.MaxLength = 20;
             textUser.MaxLength = 20;
             radioTodos.Checked = true;
+            comboUsers.Enabled = false;
             radioOutro.Enabled = false;
             radioPartida.Enabled = false;
 
@@ -345,6 +346,9 @@ namespace Cliente
                             AlteraBanner("Voce foi inserido na partida");
                             Global.partida = 1;
                             radioPartida.Enabled = true;
+                            checkedListBox1.Enabled = false;
+                            buttonLogin.Enabled = false;
+                            buttonRegistra.Enabled = false;
                             // Habilita o radiobox para partida
                             // Fazer caso que sai da partida (da para reaproveitar botao convida)
 
@@ -397,7 +401,12 @@ namespace Cliente
 
                         //MessageBox.Show("Invitaciones Inviadas!");
                         label1.Text = "Invitaciones Inviadas!";
+                        radioPartida.Enabled = true;
+                        checkedListBox1.Enabled = false;
+                        buttonLogin.Enabled = false;
+                        buttonRegistra.Enabled = false;
                         // Responde aceitando ou recusando
+                        // Aqui vai mudar o valor do invitar para sair
 
                         break;
                     case 10: // Mensagens recebidas

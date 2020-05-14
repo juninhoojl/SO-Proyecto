@@ -201,6 +201,7 @@ void *AtenderCliente (void *args_void){
 			}else{ // uma pessoa so
 				int socket_especifica = get_socket(lista,persona_especifica);
 				write(socket_especifica,texto_mensagem, strlen(texto_mensagem));
+				write(suser,texto_mensagem, strlen(texto_mensagem));
 			}
 			
 			free(texto_mensagem);
@@ -406,7 +407,7 @@ void *AtenderCliente (void *args_void){
 				
 				// 7/0
 				// Aqui avisa que entrou na partida
-				sprintf(respuesta,"7/0");// Nao existe mais a partida que deseja entrar
+				sprintf(respuesta,"7/0/nombre");// Nao existe mais a partida que deseja entrar
 				
 			}
 			// Vai verificar se aceitou ou nao e alterar a quantidade de conectados
@@ -423,10 +424,27 @@ void *AtenderCliente (void *args_void){
 			// Ate aqui ja tenho quem criou o jogo
 			// Agora relaciono o criador do jogo
 			// A cada resposta altera osvalores de quem criou a partida
-			strcpy(respuesta,"99/1");
+			strcpy(respuesta,"7/1/nombre"); // Aceita iniciar a partida
 			
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
+		}else if(codigo==8){
+			
+			
+			
+			printf(" AQUI VAI SER QUANDO ACEITA INICIAR A PARTIDA");
+			
+			
+			
+		}else if(codigo==9){
+			
+			
+			
+			printf(" AQUI VAI SER PARA SAIR DA PARTIDA");
+			
+			
+			
 		}
+		
 		
 		if(codigo !=0 ){ // Desconectar
 			printf("Codigo: %d => Reposta: %s\n",codigo,respuesta);
