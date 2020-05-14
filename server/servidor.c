@@ -150,10 +150,10 @@ void *AtenderCliente (void *args_void){
 			// Aloca espaco mensagem que tem maximo de 150 chars
 			// Falta separar 
 			char tipo_envio[2];
+			char persona_especifica[MAXNOME];
 			p = strtok(NULL, "/");
 			strcpy(tipo_envio, p);
 			int tipo_envios = atoi(tipo_envio);
-			
 			// Agora separa a mensagem em Si
 			char * texto_mensagem = (char*)malloc((MAXMENSAGEM+MAXNOME+5)*sizeof(char));
 			char * somente_mensagem = (char*)malloc((MAXMENSAGEM+1)*sizeof(char));
@@ -162,9 +162,19 @@ void *AtenderCliente (void *args_void){
 			// 10/quem_enviou/metodo/mensagem
 			
 			if(tipo_envios == 0){
+				printf("Mensagem para todos os conectados\n");
+				
 				vetsockets = vetor_socket(lista);
-			}else{
+				
+			}else if(tipo_envios == 1){
+				printf("Mensagem para todos da partida");
 				vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
+				
+			}else{// tipo 2 coleta pessoa aqui
+				printf("Mensagem para pessoa especifica");
+				p=strtok(NULL,"/");
+				strcpy(persona_especifica, p);
+				
 			}
 			
 			
@@ -172,11 +182,11 @@ void *AtenderCliente (void *args_void){
 			strcpy(somente_mensagem, p);
 			sprintf(texto_mensagem,"10/%s/%d/%s",nombre,tipo_envios,somente_mensagem);
 			printf("Mensagem = %s\n",somente_mensagem);
+			
 			free(somente_mensagem);
 			
 			
-			if(tipo_envios == 0){
-				printf("Mensagem para todos os conectados\n");
+			if(tipo_envios == 0 || tipo_envios == 1){
 				
 				i = 1;
 				
@@ -186,27 +196,15 @@ void *AtenderCliente (void *args_void){
 					i++;
 				}
 				
-			}else if(tipo_envios == 1){
+				free(vetsockets);
 				
-				
-				printf("Mensagem para todos da partidan");
-				
-				i = 1;
-				
-				while(vetsockets[0]>0){
-					write(vetsockets[i],texto_mensagem, strlen(texto_mensagem));
-					vetsockets[0]-=1;
-					i++;
-				}
-				
+			}else{ // uma pessoa so
+				int socket_especifica = get_socket(lista,persona_especifica);
+				write(socket_especifica,texto_mensagem, strlen(texto_mensagem));
 			}
 			
-			free(vetsockets);
 			free(texto_mensagem);
-			// Depois de usar libera espaco
-			// Envia algo para quem enviou dizendo que a mensagem foi enviada
-			// Tem que mostrar quem que enviou a mensagem tambem e como foi enviada
-			strcpy(respuesta,"11/1");
+			strcpy(respuesta,"11/1"); // Mensagens enviadas
 			
 			
 		}else if (codigo==5){ // insere USUARIO servico = 5/

@@ -618,9 +618,11 @@ namespace Cliente
             }
             else if (radioOutro.Checked == true) // ecolhe pessoa 
             {
-                mensagem= "4/" + textUser.Text + "/2/" + comboUsers.SelectedItem + textBoxMensagem.Text;
-               
-                return;
+
+                
+                mensagem= "4/" + textUser.Text + "/2/" + comboUsers.SelectedItem +"/"+ textBoxMensagem.Text;
+                AlteraBanner(mensagem);
+                
             }
 
             // Aqui envia
