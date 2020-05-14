@@ -385,6 +385,8 @@ namespace Cliente
                             label1.Text = "Juego ha acabado";
                             buttonInvitar.Text = "Invitar";
                             // Juego empeza ahora
+                            radioTodos.Checked = true;
+                            comboUsers.Enabled = false;
                             Global.partida = 0;
                             checkedListBox1.Enabled = true;
                             buttonRegistra.Enabled = true;
@@ -415,6 +417,7 @@ namespace Cliente
                         checkedListBox1.Enabled = false;
                         buttonLogin.Enabled = false;
                         buttonRegistra.Enabled = false;
+
                         // Responde aceitando ou recusando
                         // Aqui vai mudar o valor do invitar para sair
 
