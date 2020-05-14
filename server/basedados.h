@@ -26,6 +26,7 @@
 #define CHARSNOME 25
 #define TAMUSERNAME CHARSNOME+1
 #define PORTA 50004
+#define MAXMENSAGEM 150
 
 int insere_Player(char nome_arq[], MYSQL *conn);
 

@@ -42,10 +42,11 @@ namespace Cliente
 
             // Set the start position of the form to the center of the screen.
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.MinimumSize = new Size(1000, 625);
-            this.MaximumSize = new Size(1000, 625);
+            this.MinimumSize = new Size(1100, 700);
+            this.MaximumSize = new Size(1100, 700);
 
         }
+
 
         //Funcion cross threa
         public void PonContador (string contador)
@@ -70,50 +71,31 @@ namespace Cliente
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
             //listView1.Items.Clear();
             //listView1.Enabled = false;
+
             buttonLogin.Enabled = false;
             buttonRegistra.Enabled = false;
             // Set to no text.
             textPassword.Text = "";
             // The password character is an asterisk.
             textPassword.UseSystemPasswordChar = true;
-            // textPassword.PasswordChar = '*';
-
-
-            //Creamos el socket 
-            /*
-
-            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            try
-            {
-                // Tentamos conectar usando socket
-                server.Connect(ipep);
-
-                label1.Text = "Conectado al servidor: "+ direc;
-                MessageBox.Show("Conectado");
-            }
-            catch (SocketException)
-            {
-                dynamic result = MessageBox.Show("No he podido conectar con el servidor\n\t Cierrar aplicacion?", "GameSO", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    Application.Exit();
-                }
-                // Se nao foi possivel
-                return;
-            }
-
-            */
-
 
             ConectServer();
-
 
             ThreadStart ts = delegate { AtenderServidor(); };
             atender = new Thread(ts);
             atender.Start();
-
+            buttonEnvia.Enabled = false;
+            // Limita tamanho caixa de texto
+            textBoxMensagem.MaxLength = 150;
+            textPassword.MaxLength = 20;
+            textUser.MaxLength = 20;
+            radioTodos.Checked = true;
+            comboUsers.Enabled = false;
+            radioOutro.Enabled = false;
+            radioPartida.Enabled = false;
 
         }
+
 
         private int ConectServer()
         {
@@ -134,7 +116,9 @@ namespace Cliente
                 // Tentamos conectar usando socket
                 server.Connect(ipep);
 
-                label1.Text = "Conectado al servidor: " + direc;
+                AlteraBanner("Conectado al servidor: " + direc);
+
+                //label1.Text = "Conectado al servidor: " + direc;
                 MessageBox.Show("Conectado");
                 return 0;
             }
@@ -150,6 +134,20 @@ namespace Cliente
             }
 
             
+        }
+
+
+        private void EnviaMensagem(String mensagem)
+        {
+            //string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
+            byte[] msg = Encoding.ASCII.GetBytes(mensagem);
+            server.Send(msg);
+        }
+
+        private void AlteraBanner(String texto)
+        {
+            label1.Text = texto;
+
         }
 
 
@@ -178,6 +176,7 @@ namespace Cliente
                         {
                             label1.Text = "Logueado con sucesso";
                             Global.logado = 1;
+                            buttonEnvia.Enabled = true;
                             textUser.Enabled = false;
                             textPassword.Enabled = false;
                             //listView1.Enabled = true;
@@ -210,6 +209,7 @@ namespace Cliente
                         {
                             label1.Text = "Delogueado con sucesso";
                             Global.logado = 0;
+                            buttonEnvia.Enabled = false;
                             textUser.Enabled = true;
                             textPassword.Enabled = true;
                             listView1.Items.Clear();
@@ -240,6 +240,7 @@ namespace Cliente
                             listView1.Items.Clear();
                             checkedListBox1.Items.Clear();
                             //listView1.Enabled = false;
+                            buttonEnvia.Enabled = false;
                             buttonRegistra.Text = "Registrar";
                             buttonLogin.Text = "Login";
                             textPassword.Text = "";
@@ -266,10 +267,12 @@ namespace Cliente
                         //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
                         listView1.Items.Clear();
                         checkedListBox1.Items.Clear();
-
+                        comboUsers.Items.Clear();
                         int quantidade = Convert.ToInt32(trozos[1]);
                         trozos[quantidade + 1] = trozos[quantidade + 1].Split('\0')[0];
-
+                        radioOutro.Enabled = false;
+                        comboUsers.Enabled = false;
+                        radioTodos.Checked = true;
                         // a partir do 2
                         for (int i = 2; i < quantidade + 2; i++)
                         {
@@ -291,8 +294,10 @@ namespace Cliente
 
                                     // string[] teste = { "item1", "item2", "Item3" };
                                     checkedListBox1.Items.Add(trozos[i]);
-
+                                    comboUsers.Items.Add(trozos[i]);
                                     listView1.Items.Add(trozos[i]);
+                                    comboUsers.SelectedIndex = 0;
+                                    radioOutro.Enabled = true;
                                 }
 
                             }
@@ -316,6 +321,7 @@ namespace Cliente
                         break;
 
                     case 5: // Resposta insere usuario
+                        // Alterar esses casos
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
                         {
@@ -349,15 +355,11 @@ namespace Cliente
                         if (result == DialogResult.Yes)
                         {
                             // Aceptou
-                            string mensaje = "7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]; // logout
-                            byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-                            server.Send(msg);
+                            EnviaMensagem("7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]);
                         }
                         else
                         {
-                            string mensaje = "7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]; // logout
-                            byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-                            server.Send(msg);
+                            EnviaMensagem("7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]);
                             // Nao aceptou
                         }
                         // Responde aceitando ou recusando
@@ -365,7 +367,27 @@ namespace Cliente
                         break;
                     case 7: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
-                        MessageBox.Show("La partida ya no esta disponible mas!");
+
+                        if (String.Compare(trozos[1], "1") == 0) // Foi inserido na partida
+                        {
+                            AlteraBanner("Voce foi inserido na partida");
+                            Global.partida = 1;
+                            radioPartida.Enabled = true;
+                            checkedListBox1.Enabled = false;
+                            buttonLogin.Enabled = false;
+                            buttonRegistra.Enabled = false;
+                            // Habilita o radiobox para partida
+                            // Fazer caso que sai da partida (da para reaproveitar botao convida)
+
+                            //MessageBox.Show("Todos ya estan!");
+
+                        }
+                        else // Nao foi inserido
+                        {
+
+                            MessageBox.Show("La partida ya no esta disponible mas!");
+                        }
+                       
                         // Responde aceitando ou recusando
 
                         break;
@@ -391,18 +413,12 @@ namespace Cliente
                             {
 
                                 MessageBox.Show("Eligiste empezar!");
-                                // Aceptou
-                                // string mensaje = "7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]; // logout
-                                //byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-                                //server.Send(msg);
+                                // Enviar mensagem para o servidor dizendo que comecou
                             }
                             else
                             {
                                 MessageBox.Show("Eligiste no empezar!");
-                                //string mensaje = "7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]; // logout
-                                //byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-                                // server.Send(msg);
-                                // Nao aceptou
+                                // Enviar mensagem para o servidor dizendo que nao comecou
                             }
 
                         }
@@ -412,7 +428,35 @@ namespace Cliente
 
                         //MessageBox.Show("Invitaciones Inviadas!");
                         label1.Text = "Invitaciones Inviadas!";
+                        radioPartida.Enabled = true;
+                        checkedListBox1.Enabled = false;
+                        buttonLogin.Enabled = false;
+                        buttonRegistra.Enabled = false;
                         // Responde aceitando ou recusando
+                        // Aqui vai mudar o valor do invitar para sair
+
+                        break;
+                    case 10: // Mensagens recebidas
+
+                        label1.Text = "Mensagem recebida!";
+                        
+                        // MessageBox.Show("Recebeu mensagem de:"+trozos[1]);
+                        if(String.Compare(trozos[1], textUser.Text) == 0) // Ele mesmo
+                        {
+                            caixaMensagens.Text = caixaMensagens.Text + "\n\n" + "Tu:\n" + trozos[3] ;
+
+                        }
+                        else
+                        {
+                            caixaMensagens.Text = caixaMensagens.Text + "\n\n" + trozos[1] + ":\n" + trozos[3];
+
+
+                        }
+
+                        break;
+                    case 11: // Mensagens enviadas
+      
+                        label1.Text = "Mensagenes Inviadas!";
 
                         break;
                     case 99: // No hace nada
@@ -435,6 +479,7 @@ namespace Cliente
         {
             public static string texto = "Hello";
             public static int logado = 0;
+            public static int partida = 0;
             public static int musica = 0;
 
        
@@ -460,9 +505,11 @@ namespace Cliente
             {
                 buttonLogin.Enabled = false;
                 buttonRegistra.Enabled = false;
+                buttonEnvia.Enabled = true;
             }
             else
             {
+                buttonEnvia.Enabled = false;
                 buttonLogin.Enabled = true;
                 buttonRegistra.Enabled = true;
             }
@@ -480,27 +527,12 @@ namespace Cliente
                     dynamic result = MessageBox.Show("Seguro que quieres\n\t borrar usuario?", "GameSO", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes) // Somente se quiser deletar
                     {
-
-                        string mensaje = "3/" + textUser.Text + "/" + textPassword.Text;
-
-                        // Enviamos ao servidor a mensagem
-                        byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-
-                        server.Send(msg);
-
+                        EnviaMensagem("3/" + textUser.Text + "/" + textPassword.Text);
                     }
                 }
                 else
                 {
-
-                    // Mensagem Login
-                    string mensaje = "5/" + textUser.Text + "/" + textPassword.Text;
-
-                    // Enviamos ao servidor a mensagem
-                    byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-
-                    server.Send(msg);
-
+                    EnviaMensagem("5/" + textUser.Text + "/" + textPassword.Text);
                 }
 
             // Remove usuario
@@ -517,18 +549,10 @@ namespace Cliente
                 {
 
                     invitados += checkedListBox1.Items[i] + "/";
-                    // The indexChecked variable contains the index of the item.
-                    //MessageBox.Show("Index#: " + indexChecked.ToString() + ", is checked. Checked state is:" +
-                    //                checkedListBox1.GetItemCheckState(indexChecked).ToString() + ".");
-
 
                 }
-                invitados = invitados.TrimEnd(',');
-                // MessageBox.Show(invitados);
 
-                byte[] msg = Encoding.ASCII.GetBytes(invitados);
-
-                server.Send(msg);
+                EnviaMensagem(invitados.TrimEnd(','));
 
 
             }
@@ -546,60 +570,35 @@ namespace Cliente
 
         }
 
+
+    
         // 1- Logado corretamente
         // 2- Credenciais incorretas
         // 3- Erro ao logar
         // 0- Deslogado ok
         private void buttonLogin_Click(object sender, EventArgs e)
         {
+
+                // Confere se os tamanhos ok
+                // Vamos limitar em 20 por garantia
+
                 // Se logado pede logout
                 if (Global.logado == 1)
                 {
-                    string mensaje = "2/" + textUser.Text + "/" + textPassword.Text; // logout
-
-                    byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-
-                    server.Send(msg);
-
+                    EnviaMensagem("2/" + textUser.Text + "/" + textPassword.Text);
                 }
                 else // Efetua login
                 {
                     // Mensagem Login
-                    string mensaje = "1/" + textUser.Text + "/" + textPassword.Text;
-
-                    // Enviamos ao servidor a mensagem
-                    byte[] msg = Encoding.ASCII.GetBytes(mensaje);
-
-                    server.Send(msg);
-
+                    EnviaMensagem("1/" + textUser.Text + "/" + textPassword.Text);
                 }
- 
         }
-
-        // PARA REMOVER DEPOIS
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        /*
-        private void Form1_Load_1(object sender, EventArgs e)
-        {
-
-        }
-        // ########
-        */
-
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-
-            string mensaje = "0/" + textUser.Text + "/" + textPassword.Text;
-
-            // Enviamos ao servidor a mensagem
-            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-
-            server.Send(msg);
+               
+            // Enviamos ao servidor a mensagem de desconexao
+            EnviaMensagem("0/" + textUser.Text + "/" + textPassword.Text);
 
             atender.Abort();
 
@@ -637,23 +636,96 @@ namespace Cliente
 
         }
 
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void buttonEnvia_Click(object sender, EventArgs e)
+        {
+            // Ao clicar envia mensagem
+            // Tem que ter as pessoas selecionadas tb
+            // 3 opcoes:
+            // Todos os conectados
+            // Todos da partida
+            // ou 1 pessoa especifica
+
+            // Envia para todos os conectados
+
+            string mensagem = "";
+
+            if (radioTodos.Checked == true)
+            {
+                mensagem="4/" + textUser.Text + "/0/" + textBoxMensagem.Text;
+            }
+            else if (radioPartida.Checked == true)
+            {
+                mensagem="4/" + textUser.Text + "/1/" + textBoxMensagem.Text;
+                
+            }
+            else if (radioOutro.Checked == true) // ecolhe pessoa 
+            {
+
+                
+                mensagem= "4/" + textUser.Text + "/2/" + comboUsers.SelectedItem +"/"+ textBoxMensagem.Text;
+                AlteraBanner(mensagem);
+                
+            }
+
+            // Aqui envia
+
+            EnviaMensagem(mensagem);
+            textBoxMensagem.Text = "";
+
+        }
+
+        private void textBoxMensagem_TextChanged(object sender, EventArgs e)
         {
 
+            if (String.IsNullOrEmpty(textBoxMensagem.Text) || String.IsNullOrWhiteSpace(textBoxMensagem.Text) || String.IsNullOrEmpty(textBoxMensagem.Text) || String.IsNullOrWhiteSpace(textBoxMensagem.Text))
+            {
+                buttonEnvia.Enabled = false;
+            }
+            else
+            {
 
+                if(Global.logado == 1)
+                {
+                    buttonEnvia.Enabled = true;
+                }
+               
+            }
+        }
+
+
+
+        private void limpia_Chat_Click(object sender, EventArgs e)
+        {
+            caixaMensagens.Text = "";
+        }
+
+
+        // A cada vez que recarrega a lista vai descelecionar o otro(combobox se o item atual nao existir e se estiver selecionado)
+        // So vai habilitar selecionar outro se tiver mais de um usuario selecionado (pq senao vai ficar vazio)
+        private void radioOutro_CheckedChanged(object sender, EventArgs e)
+        {
+            // Vai habilitar o checkbox
+            if (radioOutro.Checked)
+            {
+                comboUsers.Enabled = true;
+                comboUsers.Enabled = true;
+            }
+            else
+            {
+
+                comboUsers.Enabled = false;
+                comboUsers.Enabled = false;
+
+            }
+        }
+        private void comboUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void Form1_Load_1(object sender, EventArgs e)
-        {
-
-        }
 
         // Funcao para convidar
 
