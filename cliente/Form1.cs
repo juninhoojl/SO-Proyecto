@@ -21,14 +21,10 @@ namespace Cliente
         // int logado = 0;
         Socket server;
         Thread atender;
-        delegate void DelegadoParaEscribir(string mensaje);
-
-
-
         public Form1()
         {
 
-            //CheckForIllegalCrossThreadCalls = false;
+            CheckForIllegalCrossThreadCalls = false;
 
             InitializeComponent();
             Load += new EventHandler(Form1_Load);
@@ -47,30 +43,9 @@ namespace Cliente
 
         }
 
-
-        //Funcion cross threa
-        public void PonContador (string contador)
-        {
-            label1.Text = contador;
-        }
-
-
         // Conecta ao carregar
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            
-            // PRODUCION ###########
-            //IPAddress direc = IPAddress.Parse("147.83.117.22");
-
-            // LOCAL ###########
-
-             IPAddress direc = IPAddress.Parse("192.168.1.17");
-
-
-            IPEndPoint ipep = new IPEndPoint(direc, 50004);
-            //listView1.Items.Clear();
-            //listView1.Enabled = false;
 
             buttonLogin.Enabled = false;
             buttonRegistra.Enabled = false;
@@ -314,8 +289,6 @@ namespace Cliente
                             label1.Text = quantidade + " jugadores conectados!";
                             //MessageBox.Show(quantidade + " jugadores conectados!");
                         }
-                        DelegadoParaEscribir delegado = new DelegadoParaEscribir(PonContador);
-                        label1.Invoke(delegado, new object[] { quantidade + "jugadores conectados" });
 
 
                         break;
@@ -408,18 +381,15 @@ namespace Cliente
                         }
                         else if (String.Compare(trozos[1], "2") == 0)
                         {
-                            dynamic result2 = MessageBox.Show("Ya estan todos, desea empezar?", "Empezar", MessageBoxButtons.YesNo);
-                            if (result2 == DialogResult.Yes)
-                            {
 
-                                MessageBox.Show("Eligiste empezar!");
-                                // Enviar mensagem para o servidor dizendo que comecou
-                            }
-                            else
-                            {
-                                MessageBox.Show("Eligiste no empezar!");
-                                // Enviar mensagem para o servidor dizendo que nao comecou
-                            }
+                             // Juego empeza ahora
+                             MessageBox.Show("Juego ha empezado");
+                     
+                        }else if(String.Compare(trozos[1], "3") == 0)
+                        {
+
+                            // juego acaba
+                            MessageBox.Show("Juego ha acabado");
 
                         }
                         break;
@@ -462,13 +432,11 @@ namespace Cliente
                     case 99: // No hace nada
 
                         // Responde aceitando ou recusando
-                        
                         break;
 
                     default:
                         label1.Text = "Mensagem recebida desconhecida";
                         //MessageBox.Show("Mensagem recebida desconhecida");
-                        
                         break;
                 }
 
@@ -541,6 +509,11 @@ namespace Cliente
 
         private void buttonInvitar_Click(object sender, EventArgs e)
         {
+
+
+            // primeiro confere se a pessoa esta em jogo ou nao, se estiver
+            // envia dizendo que acabou
+
 
             if (checkedListBox1.CheckedItems.Count > 0 && checkedListBox1.CheckedItems.Count <= 5)
             {
@@ -724,6 +697,8 @@ namespace Cliente
 
 
         }
+
+
 
 
 
