@@ -327,121 +327,74 @@ void *AtenderCliente (void *args_void){
 					
 					// relaciona a pessoa com a partida
 					relaciona_jugador(conn, nombre, idbdgames);
-					
-					// Adiciona uma pessoa a mais no dono e se completou avisa o dono
-					// So vai entrar em jogo ate ficar completo
 					sum_jugadores_momento(lista,donopartida);
 					alter_idgame(lista,nombre,idbdgames);
+					
 					//if(usuario->jugadores_momento == usuario->jugadores_partida){
-					if(qtd_conectados_partida(lista, idbdgames), get_jugadores_momento(lista, donopartida)){	
-						printf("Todos ja estao prontos para comecar\n"); 
-						// Envia para dono da partida que pode comecar
-						// Adiciona todos 
-						//momento=usuario->jugadores_momento;
-						momento=get_jugadores_momento(lista, donopartida);
+					if(qtd_conectados_partida(lista, idbdgames) == get_jugadores_momento(lista, donopartida)){
 						
-						int * socketPartida;
-						socketPartida = vetor_socket_partida(lista, idbdgames);
-						printf("No faltam pessoas, estan todos\n");
-						strcpy(contesta,"8/1/");// Estan todos
+						printf("Todos ja estao prontos para comecar\n");						
+						strcpy(contesta,"8/1/");// Estan todos y juego empeza
 						strcat(contesta,nombre);
 						
-						i=1;
-						while(socketPartida[0]>0){
-							
-							write(socketPartida[i],contesta, strlen(contesta));
-							socketPartida[0]-=1;
-							i+=1;
-						}
-						strcpy(contesta,"8/2");// Estan todos puedes empezar
-						
-						// Envia al servidor que puedes empezar si quieres
-						//write(usuario->socket,contesta, strlen(contesta));
-						write(get_socket(lista,donopartida),contesta, strlen(contesta));					}else{
-						//momento=usuario->jugadores_momento;
-						momento=qtd_conectados_partida(lista, idbdgames);
-						
-						int * socketPartida;
-						
-						//socketPartida = vetorPartida(*lista, momento,idbdgames);
-						socketPartida = vetor_socket_partida(lista, idbdgames);
-						
+					}else{ // Ainda faltam pessoas
 						
 						printf("Ainda faltam pessoas\n");
 						strcpy(contesta,"8/0/");// faltan personas
 						strcat(contesta,nombre);
 						
-						i = 1;
-						
-						
-						while(socketPartida[0]>0){
-							
-							write(socketPartida[i],contesta, strlen(contesta));
-							i+=1;
-							socketPartida[0]-=1;
-						}
 					}
 					
-					
-					// Pode fazer para avisar que entrou na partida tambem
-					// Insere e avisa o dono que entrou
-					//write(getsocket(*lista,convidado),conviteres, strlen(conviteres));
-					
-					
 				}else{ // Recusou
-					
-					// int deleta_game(MYSQL *conn, unsigned int id_game);
-					
 					// Vai avisar todos que alguem nao aceitou e excuir
 					deleta_game(conn, idbdgames);
-					
 					printf("Usuario %s nao aceitou, partida deletada\n",nombre);
-					// int existe_game(MYSQL *conn, unsigned int id_game);
-					// DELETE FROM Game Where ID=IDGAME
-					
-					// Se recusou envia para todos que estao na partida que nao aceitou e deleta da base
-					
+					strcpy(contesta,"8/3/");// faltan personas
+					strcat(contesta,nombre);
+					// envia que acabou
+					// Vai enviar para todos que a partida acabou
 				}
+				
+				// Envia a mensagem aqui independente do que foi
+				vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
+				i = 1;
+				
+				while(vetsockets[0]>0){
+					write(vetsockets[i],contesta, strlen(contesta));
+					vetsockets[0]-=1;
+					i++;
+				}
+				
+				free(vetsockets);
+				
+				// Avisa a pessoa que ela foi inserida na partida
+				strcpy(respuesta,"7/1/nombre"); // Aceita iniciar a partida
 				
 			}else{ // Avisa que soliciotu por ele que nao esta disponivel mais
 				
-				// 7/0
-				// Aqui avisa que entrou na partida
 				sprintf(respuesta,"7/0/nombre");// Nao existe mais a partida que deseja entrar
 				
 			}
-			// Vai verificar se aceitou ou nao e alterar a quantidade de conectados
-			
-			// Caso se a pessoa aceitou depois que nao existe mais, para isso vai verificar se existe na BASE
-			// de dados uma prtida com o id, se nao existe avisa que nao existe mais, se existe
-			// altera o dono da partida e verifica se esta cheio e envia para ele que pode comecar
-			
-			
-			// Ya tenemos el nombre
-			
-			// Cria partida insere quem convidou e faz loop com os outros
-			// Cria partida e devolve id
-			// Ate aqui ja tenho quem criou o jogo
-			// Agora relaciono o criador do jogo
-			// A cada resposta altera osvalores de quem criou a partida
-			strcpy(respuesta,"7/1/nombre"); // Aceita iniciar a partida
 			
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
 		}else if(codigo==8){
 			
+			printf("Solicitou acabar partida");
+			vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
+			char contesta[7+MAXNOME];
+			strcpy(contesta,"8/2/");// Estan todos y juego empeza
+			strcat(contesta,nombre);
 			
+			i = 1;
+			while(vetsockets[0]>0){
+				write(vetsockets[i], contesta, strlen( contesta));
+				vetsockets[0]-=1;
+				i++;
+			}
 			
-			printf(" AQUI VAI SER QUANDO ACEITA INICIAR A PARTIDA");
+			free(vetsockets);
 			
-			
-			
-		}else if(codigo==9){
-			
-			
-			
-			printf(" AQUI VAI SER PARA SAIR DA PARTIDA");
-			
-			
+			// envia isso para todos se for codigo 2
 			
 		}
 		
@@ -455,7 +408,7 @@ void *AtenderCliente (void *args_void){
 			
 		}
 		
-		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)){
+		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)||(codigo== 7)||(codigo== 8)){
 			
 			pthread_mutex_lock(&mutex); // No me interrumpas ahora
 			contador+=1;

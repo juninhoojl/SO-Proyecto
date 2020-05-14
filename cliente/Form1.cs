@@ -345,6 +345,7 @@ namespace Cliente
                         {
                             AlteraBanner("Voce foi inserido na partida");
                             Global.partida = 1;
+                            buttonInvitar.Text = "Acabar Partida";
                             radioPartida.Enabled = true;
                             checkedListBox1.Enabled = false;
                             buttonLogin.Enabled = false;
@@ -365,39 +366,51 @@ namespace Cliente
 
                         break;
                     case 8: // Convite para jogar
-                            // Nao existe mais o jogo que tentou entrar
 
-                        if (String.Compare(trozos[1], "1") == 0) // listo
+                        // Acepto pero aun faltan personas
+                        if (String.Compare(trozos[1], "0") == 0)
                         {
-                            label1.Text = "Todos los jugadores ya estan";
-                            //MessageBox.Show("Todos ya estan!");
+                            label1.Text = trozos[2].Split('\0')[0] + " acepto la invitacion! Pero aun faltan personas!";
 
                         }
-                        else if (String.Compare(trozos[1], "0") == 0)
+                        else if (String.Compare(trozos[1], "1") == 0) // Empezo
                         {
-
-                            MessageBox.Show(trozos[2].Split('\0')[0] + " acepto la invitacion! Pero aun faltan personas!");
+                            MessageBox.Show("Juego ha empezado");
+                            label1.Text = "Juego ha empezado";
 
                         }
-                        else if (String.Compare(trozos[1], "2") == 0)
+                        else if (String.Compare(trozos[1], "2") == 0) // Acabo
                         {
-
-                             // Juego empeza ahora
-                             MessageBox.Show("Juego ha empezado");
-                     
-                        }else if(String.Compare(trozos[1], "3") == 0)
-                        {
-
-                            // juego acaba
                             MessageBox.Show("Juego ha acabado");
+                            label1.Text = "Juego ha acabado";
+                            buttonInvitar.Text = "Invitar";
+                            // Juego empeza ahora
+                            Global.partida = 0;
+                            checkedListBox1.Enabled = true;
+                            buttonRegistra.Enabled = true;
+                            buttonLogin.Enabled = true;
+
+                            // Habilita as coisas de novo
 
                         }
+                        else if (String.Compare(trozos[1], "3") == 0)
+                        {
+                            MessageBox.Show(trozos[2]+"no acepto, partida ha sido cancelado");
+                            label1.Text = trozos[2] + "no acepto, partida ha sido cancelado";
+                            // Juego empeza ahora
+                            Global.partida = 0;
+                            // Habilita as coisas de novo
+
+                        }
+
                         break;
                     case 9: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
 
                         //MessageBox.Show("Invitaciones Inviadas!");
                         label1.Text = "Invitaciones Inviadas!";
+                        Global.partida = 1;
+                        buttonInvitar.Text = "Acabar Partida";
                         radioPartida.Enabled = true;
                         checkedListBox1.Enabled = false;
                         buttonLogin.Enabled = false;
@@ -513,33 +526,42 @@ namespace Cliente
 
             // primeiro confere se a pessoa esta em jogo ou nao, se estiver
             // envia dizendo que acabou
-
-
-            if (checkedListBox1.CheckedItems.Count > 0 && checkedListBox1.CheckedItems.Count <= 5)
-            {
-                string invitados = "6/"+textUser.Text+"/"+checkedListBox1.CheckedItems.Count.ToString()+"/";
-                foreach (int i in checkedListBox1.CheckedIndices)
-                {
-
-                    invitados += checkedListBox1.Items[i] + "/";
-
-                }
-
-                EnviaMensagem(invitados.TrimEnd(','));
-
-
-            }
-            else if(checkedListBox1.CheckedItems.Count == 0)
+            if(Global.partida == 1)
             {
 
-                MessageBox.Show("Selecione por lo menos un jugador!");
-
+                EnviaMensagem("8/" + textUser.Text + "/1/");
             }
             else
             {
-                MessageBox.Show("Selecione no mas que 5 jugadore!");
+                if (checkedListBox1.CheckedItems.Count > 0 && checkedListBox1.CheckedItems.Count <= 5)
+                {
+                    string invitados = "6/" + textUser.Text + "/" + checkedListBox1.CheckedItems.Count.ToString() + "/";
+                    foreach (int i in checkedListBox1.CheckedIndices)
+                    {
+
+                        invitados += checkedListBox1.Items[i] + "/";
+
+                    }
+
+                    EnviaMensagem(invitados.TrimEnd(','));
+
+
+                }
+                else if (checkedListBox1.CheckedItems.Count == 0)
+                {
+
+                    MessageBox.Show("Selecione por lo menos un jugador!");
+
+                }
+                else
+                {
+                    MessageBox.Show("Selecione no mas que 5 jugadore!");
+
+                }
 
             }
+
+
 
         }
 
