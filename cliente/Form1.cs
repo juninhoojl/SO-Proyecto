@@ -65,6 +65,8 @@ namespace Cliente
             textPassword.MaxLength = 20;
             textUser.MaxLength = 20;
             radioTodos.Checked = true;
+            radioOutro.Enabled = false;
+            radioPartida.Enabled = false;
 
         }
 
@@ -242,7 +244,9 @@ namespace Cliente
                         comboUsers.Items.Clear();
                         int quantidade = Convert.ToInt32(trozos[1]);
                         trozos[quantidade + 1] = trozos[quantidade + 1].Split('\0')[0];
-
+                        radioOutro.Enabled = false;
+                        comboUsers.Enabled = false;
+                        radioTodos.Checked = true;
                         // a partir do 2
                         for (int i = 2; i < quantidade + 2; i++)
                         {
@@ -266,6 +270,8 @@ namespace Cliente
                                     checkedListBox1.Items.Add(trozos[i]);
                                     comboUsers.Items.Add(trozos[i]);
                                     listView1.Items.Add(trozos[i]);
+                                    comboUsers.SelectedIndex = 0;
+                                    radioOutro.Enabled = true;
                                 }
 
                             }
@@ -338,10 +344,9 @@ namespace Cliente
                         {
                             AlteraBanner("Voce foi inserido na partida");
                             Global.partida = 1;
+                            radioPartida.Enabled = true;
                             // Habilita o radiobox para partida
                             // Fazer caso que sai da partida (da para reaproveitar botao convida)
-
-
 
                             //MessageBox.Show("Todos ya estan!");
 
@@ -663,13 +668,22 @@ namespace Cliente
         private void radioOutro_CheckedChanged(object sender, EventArgs e)
         {
             // Vai habilitar o checkbox
+            if (radioOutro.Checked)
+            {
+                comboUsers.Enabled = true;
+                comboUsers.Enabled = true;
+            }
+            else
+            {
 
+                comboUsers.Enabled = false;
+                comboUsers.Enabled = false;
 
-
+            }
         }
-
         private void comboUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
+
 
         }
 
