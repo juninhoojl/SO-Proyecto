@@ -79,6 +79,8 @@ int get_socket(hnode * cabeca, char name[MAXNOME]);
 
 int get_pontos(hnode * cabeca, char name[MAXNOME]);
 
+unsigned int get_partida(hnode * cabeca, char name[MAXNOME]);
+
 int get_jugadores_momento(hnode * cabeca, char name[MAXNOME]);
 
 int * vetor_socket(hnode * cabeca); // Retorna vetor de sockets

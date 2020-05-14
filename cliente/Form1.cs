@@ -287,6 +287,7 @@ namespace Cliente
                         break;
 
                     case 5: // Resposta insere usuario
+                        // Alterar esses casos
 
                         if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
                         {
@@ -605,9 +606,7 @@ namespace Cliente
             // Envia para todos os conectados
 
             string mensagem = "";
-            mensagem = "4/" + textUser.Text + "/0/" + textBoxMensagem.Text;
 
-            /*
             if (radioTodos.Checked == true)
             {
                 mensagem="4/" + textUser.Text + "/0/" + textBoxMensagem.Text;
@@ -624,7 +623,6 @@ namespace Cliente
                 return;
             }
 
-    */
             // Aqui envia
 
             EnviaMensagem(mensagem);

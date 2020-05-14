@@ -650,6 +650,11 @@ int get_jugadores_momento(hnode * cabeca, char name[MAXNOME]){
 	
 }
 
+unsigned int get_partida(hnode * cabeca, char name[MAXNOME]){
+	
+	return search_node(cabeca,name)->partida;
+	
+}
 
 
 

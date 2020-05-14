@@ -160,12 +160,20 @@ void *AtenderCliente (void *args_void){
 			// Antes concatena assim:
 			// Metodo pode ser 0 1 2 3(no futuro)
 			// 10/quem_enviou/metodo/mensagem
+			
+			if(tipo_envios == 0){
+				vetsockets = vetor_socket(lista);
+			}else{
+				vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
+			}
+			
+			
 			p=strtok(NULL,"/");
 			strcpy(somente_mensagem, p);
 			sprintf(texto_mensagem,"10/%s/%d/%s",nombre,tipo_envios,somente_mensagem);
 			printf("Mensagem = %s\n",somente_mensagem);
 			free(somente_mensagem);
-			vetsockets = vetor_socket(lista);
+			
 			
 			if(tipo_envios == 0){
 				printf("Mensagem para todos os conectados\n");
@@ -177,6 +185,20 @@ void *AtenderCliente (void *args_void){
 					vetsockets[0]-=1;
 					i++;
 				}
+				
+			}else if(tipo_envios == 1){
+				
+				
+				printf("Mensagem para todos da partidan");
+				
+				i = 1;
+				
+				while(vetsockets[0]>0){
+					write(vetsockets[i],texto_mensagem, strlen(texto_mensagem));
+					vetsockets[0]-=1;
+					i++;
+				}
+				
 			}
 			
 			free(vetsockets);
