@@ -76,10 +76,10 @@ namespace Cliente
         {
 
             // PRODUCION ###########
-            // IPAddress direc = IPAddress.Parse("147.83.117.22");
+             IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-            IPAddress direc = IPAddress.Parse("10.211.55.9");
+            //IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
@@ -136,7 +136,7 @@ namespace Cliente
                 msg2 = new byte[200];
                 // Limpa toda vez que chama esse botao e preenche do zero
 
-                server.Receive(msg2);
+                 server.Receive(msg2);
 
                 string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
 
@@ -385,6 +385,7 @@ namespace Cliente
                         {
                  
                             label1.Text = "Juego ha empezado";
+                            MessageBox.Show("Juego ha empezado");
 
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2") == 0) // Acabo
@@ -394,12 +395,12 @@ namespace Cliente
                             buttonInvitar.Text = "Invitar";
                             // Juego empeza ahora
                             radioTodos.Checked = true;
-                            comboUsers.Enabled = false;
+                            
                             Global.partida = 0;
                             checkedListBox1.Enabled = true;
                             buttonRegistra.Enabled = true;
                             buttonLogin.Enabled = true;
-
+                            radioPartida.Enabled = false;
                             // Habilita as coisas de novo
 
                         }
@@ -411,7 +412,7 @@ namespace Cliente
                             buttonInvitar.Text = "Invitar";
                             // Juego empeza ahora
                             radioTodos.Checked = true;
-                            comboUsers.Enabled = false;
+                            radioPartida.Enabled = false;
                             Global.partida = 0;
                             checkedListBox1.Enabled = true;
                             buttonRegistra.Enabled = true;
@@ -553,7 +554,7 @@ namespace Cliente
             }
             else
             {
-                if (checkedListBox1.CheckedItems.Count > 0 && checkedListBox1.CheckedItems.Count <= 5)
+                if (checkedListBox1.CheckedItems.Count > 0 && checkedListBox1.CheckedItems.Count <= 4)
                 {
                     string invitados = "6/" + textUser.Text + "/" + checkedListBox1.CheckedItems.Count.ToString() + "/";
                     foreach (int i in checkedListBox1.CheckedIndices)
@@ -575,7 +576,7 @@ namespace Cliente
                 }
                 else
                 {
-                    MessageBox.Show("Selecione no mas que 5 jugadore!");
+                    MessageBox.Show("Selecione no mas que 4 jugadore!");
 
                 }
 
@@ -734,6 +735,8 @@ namespace Cliente
 
             }
         }
+
+
 
 
         // Funcao para convidar
