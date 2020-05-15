@@ -253,6 +253,7 @@ void *AtenderCliente (void *args_void){
 			// Cria partida insere quem convidou e faz loop com os outros
 			// Cria partida e devolve id
 			idgame=cria_partida(conn);
+			retira_partida(lista,nombre);
 			// Ate aqui ja tenho quem criou o jogo
 			// Agora relaciono o criador do jogo
 			printf("Nome de quem solicitou = %s\n",nombre); 
@@ -262,7 +263,7 @@ void *AtenderCliente (void *args_void){
 			
 			alter_emjogo(lista,nombre,0);
 			alter_jugadores_partida(lista,nombre,qjugadores+1);
-			sum_jugadores_momento(lista,nombre); // Incrementa um nos jogadores
+			sum_jugadores_momento(lista,nombre);// Incrementa um nos jogadores
 			alter_idgame(lista, nombre, idgame);
 			// A cada resposta altera osvalores de quem criou a partida
 			
@@ -324,9 +325,9 @@ void *AtenderCliente (void *args_void){
 			if(existe_game(conn, idbdgames)){ // Se game existe
 				
 				if(respconvites == 1){ // Aceitou
-					
+					retira_partida(lista,nombre);
 					// relaciona a pessoa com a partida
-					relaciona_jugador(conn, nombre, idbdgames);
+					relaciona_jugador(conn, nombre,idbdgames);
 					sum_jugadores_momento(lista,donopartida);
 					alter_idgame(lista,nombre,idbdgames);
 					
@@ -345,11 +346,17 @@ void *AtenderCliente (void *args_void){
 						
 					}
 					
+					strcpy(respuesta,"7/1/"); // Inserido na partida
+					strcat(respuesta, nombre);
+					
 				}else{ // Recusou
+					retira_partida(lista,nombre);
 					// Vai avisar todos que alguem nao aceitou e excuir
 					deleta_game(conn, idbdgames);
 					printf("Usuario %s nao aceitou, partida deletada\n",nombre);
-					strcpy(contesta,"8/3/");// faltan personas
+					strcpy(contesta,"8/3/");// Jogo cancelado
+					strcat(contesta,nombre);
+					strcpy(respuesta,"99/"); 
 					strcat(contesta,nombre);
 					// envia que acabou
 					// Vai enviar para todos que a partida acabou
@@ -367,8 +374,6 @@ void *AtenderCliente (void *args_void){
 				
 				free(vetsockets);
 				
-				// Avisa a pessoa que ela foi inserida na partida
-				strcpy(respuesta,"7/1/nombre"); // Aceita iniciar a partida
 				
 			}else{ // Avisa que soliciotu por ele que nao esta disponivel mais
 				
@@ -394,6 +399,11 @@ void *AtenderCliente (void *args_void){
 			
 			free(vetsockets);
 			
+			retira_partida(lista,nombre);
+			
+			
+			strcpy(respuesta,"99/1/");
+			strcat(respuesta,nombre);
 			// envia isso para todos se for codigo 2
 			
 		}

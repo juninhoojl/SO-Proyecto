@@ -275,8 +275,7 @@ namespace Cliente
             this.comboUsers.Name = "comboUsers";
             this.comboUsers.Size = new System.Drawing.Size(207, 26);
             this.comboUsers.TabIndex = 17;
-            this.comboUsers.SelectedIndexChanged += new System.EventHandler(this.comboUsers_SelectedIndexChanged);
-            // 
+        
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.radioPartida);

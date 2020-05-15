@@ -397,10 +397,20 @@ namespace Cliente
                         }
                         else if (String.Compare(trozos[1], "3") == 0)
                         {
-                            MessageBox.Show(trozos[2]+"no acepto, partida ha sido cancelado");
-                            label1.Text = trozos[2] + "no acepto, partida ha sido cancelado";
+                            MessageBox.Show(trozos[2].Split('\0')[0] + " no acepto, partida ha sido cancelado");
+                            label1.Text = trozos[2].Split('\0')[0] + " no acepto, partida ha sido cancelado";
+
+
+                            MessageBox.Show("Juego ha acabado");
+                            label1.Text = "Juego ha acabado";
+                            buttonInvitar.Text = "Invitar";
                             // Juego empeza ahora
+                            radioTodos.Checked = true;
+                            comboUsers.Enabled = false;
                             Global.partida = 0;
+                            checkedListBox1.Enabled = true;
+                            buttonRegistra.Enabled = true;
+                            buttonLogin.Enabled = true;
                             // Habilita as coisas de novo
 
                         }
@@ -533,6 +543,8 @@ namespace Cliente
             {
 
                 EnviaMensagem("8/" + textUser.Text + "/1/");
+
+
             }
             else
             {
@@ -717,14 +729,6 @@ namespace Cliente
 
             }
         }
-        private void comboUsers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-
-        }
-
-
-
 
 
         // Funcao para convidar
