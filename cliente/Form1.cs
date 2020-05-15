@@ -76,10 +76,10 @@ namespace Cliente
         {
 
             // PRODUCION ###########
-             IPAddress direc = IPAddress.Parse("147.83.117.22");
+            // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-            //IPAddress direc = IPAddress.Parse("10.211.55.9");
+             IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
@@ -385,7 +385,7 @@ namespace Cliente
                         {
                  
                             label1.Text = "Juego ha empezado";
-                            MessageBox.Show("Juego ha empezado");
+                            //MessageBox.Show("Juego ha empezado");
 
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2") == 0) // Acabo
