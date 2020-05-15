@@ -77,6 +77,8 @@ void sub_jugadores_momento(hnode * cabeca, char name[MAXNOME]);
 
 int get_socket(hnode * cabeca, char name[MAXNOME]);
 
+char * get_nombre(hnode * cabeca, int socket);
+
 int get_pontos(hnode * cabeca, char name[MAXNOME]);
 
 unsigned int get_partida(hnode * cabeca, char name[MAXNOME]);

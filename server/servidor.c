@@ -234,7 +234,7 @@ void *AtenderCliente (void *args_void){
 			free(hsenha);
 			
 		}else if(codigo==6){ // insere USUARIO servico = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
-			
+			alterlista=1;
 			printf("Codigo 6\n");
 			i = 0;
 			
@@ -261,7 +261,7 @@ void *AtenderCliente (void *args_void){
 			relaciona_jugador(conn, nombre, idgame);
 			// Adiciona quantidade de jogadores
 			
-			alter_emjogo(lista,nombre,0);
+			alter_emjogo(lista,nombre,1);
 			alter_jugadores_partida(lista,nombre,qjugadores+1);
 			sum_jugadores_momento(lista,nombre);// Incrementa um nos jogadores
 			alter_idgame(lista, nombre, idgame);
@@ -298,7 +298,7 @@ void *AtenderCliente (void *args_void){
 			// 6/quemchamou/idpartida
 			
 		}else if(codigo==7){ // resposta convite partida = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
-			
+			alterlista=1;
 			printf("Codigo 7\n");
 			// 7/nombre/1/donopartida/idgame
 			// aqui vai sobrar somente  /1/donopartida/idgame
@@ -330,9 +330,12 @@ void *AtenderCliente (void *args_void){
 					relaciona_jugador(conn, nombre,idbdgames);
 					sum_jugadores_momento(lista,donopartida);
 					alter_idgame(lista,nombre,idbdgames);
-					
+					alter_emjogo(lista,nombre,1);
 					//if(usuario->jugadores_momento == usuario->jugadores_partida){
 					if(qtd_conectados_partida(lista, idbdgames) == get_jugadores_momento(lista, donopartida)){
+						
+						strcpy(respuesta,"7/1/"); // Inserido na partida
+						strcat(respuesta, nombre);
 						
 						printf("Todos ja estao prontos para comecar\n");						
 						strcpy(contesta,"8/1/");// Estan todos y juego empeza
@@ -340,41 +343,68 @@ void *AtenderCliente (void *args_void){
 						
 					}else{ // Ainda faltam pessoas
 						
+						strcpy(respuesta,"7/1/"); // Inserido na partida
+						strcat(respuesta, nombre);
+						
 						printf("Ainda faltam pessoas\n");
 						strcpy(contesta,"8/0/");// faltan personas
 						strcat(contesta,nombre);
 						
 					}
+					// Envia a mensagem aqui independente do que foi
 					
-					strcpy(respuesta,"7/1/"); // Inserido na partida
-					strcat(respuesta, nombre);
 					
-				}else{ // Recusou
-					retira_partida(lista,nombre);
+					vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
+					
+					i = 1;
+					while(vetsockets[0]>0){
+						
+						// Para a propria pessoa vai enviar depois
+						if(vetsockets[i] != suser){
+							write(vetsockets[i], contesta, strlen(contesta));
+						}
+						vetsockets[0]-=1;
+						i++;
+						
+					}
+					
+				}else if(respconvites == 2){ // Recusou
+					
+					// Retira todos da partida
 					// Vai avisar todos que alguem nao aceitou e excuir
 					deleta_game(conn, idbdgames);
 					printf("Usuario %s nao aceitou, partida deletada\n",nombre);
-					strcpy(contesta,"8/3/");// Jogo cancelado
+					
+					alterlista=1;
+					
+					vetsockets = vetor_socket_partida(lista,idbdgames);
+					
+					strcpy(contesta,"8/3/");// acaba partida
 					strcat(contesta,nombre);
-					strcpy(respuesta,"99/"); 
-					strcat(contesta,nombre);
+					
+					i = 1;
+					while(vetsockets[0]>0){
+						printf("retirou da partida\n");
+						
+						if(vetsockets[i] != suser){
+							write(vetsockets[i], contesta, strlen(contesta));
+						}
+						
+						retira_partida(lista,get_nombre(lista,vetsockets[i]));
+						vetsockets[0]-=1;
+						i++;
+						
+					}
+					
+					free(vetsockets);
+					
+					strcpy(respuesta,"8/3/");
+					strcat(respuesta,nombre);
+					
 					// envia que acabou
 					// Vai enviar para todos que a partida acabou
 				}
-				
-				// Envia a mensagem aqui independente do que foi
-				vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
-				i = 1;
-				
-				while(vetsockets[0]>0){
-					write(vetsockets[i],contesta, strlen(contesta));
-					vetsockets[0]-=1;
-					i++;
-				}
-				
-				free(vetsockets);
-				
-				
+				//strcpy(respuesta,"99/");
 			}else{ // Avisa que soliciotu por ele que nao esta disponivel mais
 				
 				sprintf(respuesta,"7/0/nombre");// Nao existe mais a partida que deseja entrar
@@ -383,27 +413,30 @@ void *AtenderCliente (void *args_void){
 			
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
 		}else if(codigo==8){
+			alterlista=1;
+			
+			strcpy(respuesta,"8/2/");
+			strcat(respuesta,nombre);
 			
 			printf("Solicitou acabar partida");
 			vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
 			char contesta[7+MAXNOME];
-			strcpy(contesta,"8/2/");// Estan todos y juego empeza
+			strcpy(contesta,"8/2/");// acaba partida
 			strcat(contesta,nombre);
 			
 			i = 1;
 			while(vetsockets[0]>0){
-				write(vetsockets[i], contesta, strlen( contesta));
+				
+				if(vetsockets[i] != suser){
+					write(vetsockets[i], contesta, strlen(contesta));
+				}
+				retira_partida(lista,get_nombre(lista,vetsockets[i]));
 				vetsockets[0]-=1;
 				i++;
+				
 			}
 			
 			free(vetsockets);
-			
-			retira_partida(lista,nombre);
-			
-			
-			strcpy(respuesta,"99/1/");
-			strcat(respuesta,nombre);
 			// envia isso para todos se for codigo 2
 			
 		}
@@ -418,7 +451,7 @@ void *AtenderCliente (void *args_void){
 			
 		}
 		
-		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)||(codigo== 7)||(codigo== 8)){
+		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)||(codigo== 7)||(codigo==8)){
 			
 			pthread_mutex_lock(&mutex); // No me interrumpas ahora
 			contador+=1;
@@ -428,7 +461,7 @@ void *AtenderCliente (void *args_void){
 			if(alterlista && lista->tam > 0){
 				
 				printf("String conectados\n");
-				char * sconectados = string_conectados(lista);
+				char * sconectados = string_conectados_indicador_jogo(lista);
 				
 				printf("\n%s\n",sconectados);
 				

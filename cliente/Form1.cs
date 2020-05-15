@@ -249,7 +249,7 @@ namespace Cliente
                         comboUsers.Enabled = false;
                         radioTodos.Checked = true;
                         // a partir do 2
-                        for (int i = 2; i < quantidade + 2; i++)
+                        for (int i = 2; i < (quantidade*2) + 2; i+=2)
                         {
 
                             if (trozos[i].Trim() != "")
@@ -258,21 +258,29 @@ namespace Cliente
                                 if (String.Compare(trozos[i], textUser.Text) == 0)
                                 {
                                     listView1.Items.Add(trozos[i] + " (tu)");
-                                    // string[] teste = { "item1", "item2", "Item3" };
-
-
-                                    //checkedListBox1.Items.Add(trozos[i] + " (tu)");
-
                                 }
                                 else
                                 {
 
-                                    // string[] teste = { "item1", "item2", "Item3" };
-                                    checkedListBox1.Items.Add(trozos[i]);
                                     comboUsers.Items.Add(trozos[i]);
-                                    listView1.Items.Add(trozos[i]);
+
+                                    if(String.Compare(trozos[i+1].Split('\0')[0], "0") == 0){
+                                        checkedListBox1.Items.Add(trozos[i]);
+
+                                    }
+                                    else
+                                    {
+
+                                        listView1.Items.Add(trozos[i]);
+
+                                    }
+
+
+                                    
+
                                     comboUsers.SelectedIndex = 0;
                                     radioOutro.Enabled = true;
+
                                 }
 
                             }
@@ -332,7 +340,7 @@ namespace Cliente
                         }
                         else
                         {
-                            EnviaMensagem("7/" + textUser.Text + "/0/" + trozos[1] + "/" + trozos[2]);
+                            EnviaMensagem("7/" + textUser.Text + "/2/" + trozos[1] + "/" + trozos[2]);
                             // Nao aceptou
                         }
                         // Responde aceitando ou recusando
@@ -358,8 +366,8 @@ namespace Cliente
                         }
                         else // Nao foi inserido
                         {
-
-                            MessageBox.Show("La partida ya no esta disponible mas!");
+                            AlteraBanner("La partida ya no esta disponible mas!");
+                           
                         }
                        
                         // Responde aceitando ou recusando
@@ -368,20 +376,20 @@ namespace Cliente
                     case 8: // Convite para jogar
 
                         // Acepto pero aun faltan personas
-                        if (String.Compare(trozos[1], "0") == 0)
+                        if (String.Compare(trozos[1].Split('\0')[0], "0") == 0)
                         {
                             label1.Text = trozos[2].Split('\0')[0] + " acepto la invitacion! Pero aun faltan personas!";
 
                         }
-                        else if (String.Compare(trozos[1], "1") == 0) // Empezo
+                        else if (String.Compare(trozos[1].Split('\0')[0], "1") == 0) // Empezo
                         {
-                            MessageBox.Show("Juego ha empezado");
+                 
                             label1.Text = "Juego ha empezado";
 
                         }
-                        else if (String.Compare(trozos[1], "2") == 0) // Acabo
+                        else if (String.Compare(trozos[1].Split('\0')[0], "2") == 0) // Acabo
                         {
-                            MessageBox.Show("Juego ha acabado");
+                           
                             label1.Text = "Juego ha acabado";
                             buttonInvitar.Text = "Invitar";
                             // Juego empeza ahora
@@ -395,14 +403,11 @@ namespace Cliente
                             // Habilita as coisas de novo
 
                         }
-                        else if (String.Compare(trozos[1], "3") == 0)
+                        else if (String.Compare(trozos[1].Split('\0')[0], "3") == 0)
                         {
-                            MessageBox.Show(trozos[2].Split('\0')[0] + " no acepto, partida ha sido cancelado");
+                            
                             label1.Text = trozos[2].Split('\0')[0] + " no acepto, partida ha sido cancelado";
 
-
-                            MessageBox.Show("Juego ha acabado");
-                            label1.Text = "Juego ha acabado";
                             buttonInvitar.Text = "Invitar";
                             // Juego empeza ahora
                             radioTodos.Checked = true;

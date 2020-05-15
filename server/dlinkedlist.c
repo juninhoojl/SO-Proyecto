@@ -421,6 +421,23 @@ int get_socket(hnode * cabeca, char name[MAXNOME]){
     return search_node(cabeca,name)->socket;
 }
 
+char * get_nombre(hnode * cabeca, int socket){
+	
+	char * nombre = (char*)malloc((MAXNOME)*sizeof(char));
+	struct Node * atual = cabeca->first;
+	// busca aqui
+
+	while(atual && atual->socket!=socket){
+		atual = atual->next;
+	}
+	
+	if(atual){
+		nombre = atual->username;
+		return nombre;
+	}
+	
+	return NULL;
+}
 
 int get_pontos(hnode * cabeca, char name[MAXNOME]){
     
