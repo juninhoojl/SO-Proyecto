@@ -1,7 +1,6 @@
 #ifndef _SERVIDOR_H_
 #define _SERVIDOR_H_
 #include "basedados.h"
-#include "fmd5.h"
 #include "dlinkedlist.h"
 #include <string.h>
 #include <unistd.h>

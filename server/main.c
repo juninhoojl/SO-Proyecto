@@ -9,15 +9,15 @@
 #include "dlinkedlist.h"
 #include "basedados.h"
 #include "servidor.h"
-#include "fmd5.h"
+
 // #include "lista.h"
 // /media/psf/Home/Documents/SO/SO-Proyecto/server
 
 // Para compilar terminal
-// gcc main.c -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c dlinkedlist.c -lcrypto -lm -o main.bin
+// gcc main.c -std=c99 `mysql_config --cflags --libs` basedados.c servidor.c dlinkedlist.c -lm -o main.bin
 
 // Para compilar Zinjal (em main.c Run-> COnfigure -> Extra arguments for compiler:
-// -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c dlinkedlist.c -lcrypto -lm 
+// -std=c99 `mysql_config --cflags --libs` basedados.c servidor.c dlinkedlist.c -lm 
 
 // Ps.: Em alguns casos Zinjal nao deleta os .bin antigos e nao compila os novos
 // rm *.bin
