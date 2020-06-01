@@ -453,9 +453,9 @@ void *AtenderCliente (void *args_void){
 		
 		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)||(codigo== 7)||(codigo==8)){
 			
-			pthread_mutex_lock(&mutex); // No me interrumpas ahora
-			contador+=1;
-			pthread_mutex_unlock(&mutex); // Ya puedes interrumpirme
+			//pthread_mutex_lock(&mutex); // No me interrumpas ahora
+			//contador+=1;
+			//pthread_mutex_unlock(&mutex); // Ya puedes interrumpirme
 			
 			
 			if(alterlista && lista->tam > 0){

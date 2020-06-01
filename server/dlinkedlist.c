@@ -24,119 +24,6 @@ void show_node(node * no){
     return;
 }
 
-
-node * node_min(hnode * cabeca){
-    
-    node * atual = cabeca->first;
-    node * min = cabeca->first;
-    
-    while(atual->next){
-        if(!compare_node(atual, atual->next)){
-            min = atual->next;
-        }
-        atual = atual->next;
-    }
-    
-    return min;
-}
-node * node_max(hnode * cabeca){
-    
-    node * atual = cabeca->first;
-    node * max = cabeca->first;
-    
-    while(atual->next){
-        if(compare_node(atual, atual->next)){
-            max = atual->next;
-        }
-        atual = atual->next;
-    }
-    
-    return max;
-}
-
-void swap_nodes(hnode * cabeca, node * first, node * second){
-
-    node * aux = first->next;
-    node * aux2 = second->prev;
-    node * aux3 = first->prev;
-    node * aux4 = second->next;
-
-    if (!first->next){ // Ultimo
-        cabeca->last = second;
-    }else if (!first->prev){ // Primeiro
-        cabeca->first = second;
-    }
-    
-    if (!second->next){ // Ultimo
-        cabeca->last = first;
-    }else if (!second->prev){ // Primeiro
-        cabeca->first = first;
-    }
-    
-
-    if (first->next != second && second->next != first){ // Nao sao vizinhos
-        
-        if(first->prev){
-            first->prev->next = second;
-        }
-        
-        if(first->next){
-            first->next->prev = second;
-        }
-        
-        if(second->next){
-            second->next->prev = first;
-        }
-
-        if(second->prev){
-            second->prev->next = first;
-        }
-        
-        first->next = aux4;
-        second->next = aux;
-        
-        first->prev = aux2;
-        second->prev = aux3;
-        
-    }else if(first->next == second){ //segundo é vizinho direito
-
-        if(first->prev){ // Se nao eh nulo
-            first->prev->next = second;
-        }
-        
-        if(second->next){
-            second->next->prev = first;
-        }
-
-        second->next = first;
-        first->prev = second;
-        second->prev = aux3;
-        first->next = aux4;
-        
-        
-    }else if(second->next == first){ // Segundo eh vizinho esquerdo
-     // se existe algum depois do primerio o anterior dele aponta para o segundo
-        
-        if(first->next){
-            first->next->prev = second;
-        }
-        
-        if(second->prev){
-            second->prev->next = first;
-        }
-        
-        second->prev = first;
-        second->next = aux4;
-        first->prev = aux2;
-        first->next = second;
-        
-    }
-    
-    
-    
-    return;
-}
-
 // 1-Primeiro maior 0-Iguais 1-Segundo maior
 // Usar isso para pegar o que tem maior pontuacao
 int compare_node(node * first, node * second){
@@ -175,31 +62,11 @@ node * new_node(int socket, char name[MAXNOME]){
 }
 
 
-void insert_beggining(hnode * cabeca, node * newnode){
-
-    //node * novo = new_node(valor);
-    //novo->data = valor;
-    newnode->next = cabeca->first;
-    
-    if (cabeca->first){
-        cabeca->first->prev = newnode;
-    }
-    
-    if (!cabeca->first){ // Se vazia
-        cabeca->last = newnode;
-    }
-    
-    cabeca->first = newnode;
-    cabeca->tam+=1;
-    
-    return;
-}
-
-
 void remove_all(hnode * cabeca){
     
     struct Node * atual = cabeca->first;
     struct Node * aux = NULL;
+	pthread_mutex_lock(&cabeca->mutexvar);
     
     while(atual){
         aux = atual;
@@ -210,6 +77,8 @@ void remove_all(hnode * cabeca){
     cabeca->first = NULL;
     cabeca->last = NULL;
     cabeca->tam = 0;
+	
+	pthread_mutex_unlock(&cabeca->mutexvar);
     
     return;
 }
@@ -217,12 +86,13 @@ void remove_all(hnode * cabeca){
 void remove_node(hnode * cabeca, node * nremove){
 	
 	
-	if (cabeca->tam == 1) {
+	if (cabeca->tam == 1){
 		remove_all(cabeca);
 		return;
 	}
 	
-
+	pthread_mutex_lock(&cabeca->mutexvar);
+	
     if(cabeca->first == nremove){ // Se primeiro
         
         cabeca->first = nremove->next;
@@ -243,6 +113,7 @@ void remove_node(hnode * cabeca, node * nremove){
     free(nremove);
     
     cabeca->tam-=1;
+	pthread_mutex_unlock(&cabeca->mutexvar);
     
     return;
 }
@@ -252,7 +123,10 @@ void insert_end(hnode * cabeca, node * newnode){
     
     //node * novo = new_node(valor);
     //novo->data = valor;
+	
     newnode->prev = cabeca->last;
+	
+	pthread_mutex_lock(&cabeca->mutexvar);
     
     if (cabeca->last){
         cabeca->last->next = newnode;
@@ -264,46 +138,12 @@ void insert_end(hnode * cabeca, node * newnode){
     
     cabeca->last = newnode;
     cabeca->tam+=1;
+	
+	pthread_mutex_unlock(&cabeca->mutexvar);
     
     return;
 }
 
-void insert_after(hnode * cabeca, node * anterior, node * newnode){
-    
-    if(!anterior->next){ // Se ultimo
-        insert_end(cabeca,newnode);
-        
-    }else{
-        //node * novo = new_node(valor);
-        //novo->data = valor;
-        newnode->prev = anterior;
-        newnode->next = anterior->next;
-        anterior->next = newnode;
-        newnode->next->prev = newnode;
-        cabeca->tam+=1;
-    }
-    
-    return;
-}
-
-void insert_before(hnode * cabeca, node * proximo, node * newnode){
-    
-    if(cabeca->first == proximo){ // Se primeiro
-        insert_beggining(cabeca, newnode);
-    }else{
-        //node * novo = new_node(valor);
-        //novo->data = valor;
-        newnode->prev = proximo->prev;
-        newnode->next = proximo;
-        
-        proximo->prev->next = newnode;
-        proximo->prev = newnode;
-
-        cabeca->tam+=1;
-    }
-    
-    return;
-}
 
 void show_list(hnode * cabeca){
     
@@ -315,7 +155,7 @@ void show_list(hnode * cabeca){
         printf("Lista vazia!\n");
         return;
     }
-
+	
     while(atual){
         show_node(atual);
         //printf("%d ", atual->data);
@@ -323,15 +163,6 @@ void show_list(hnode * cabeca){
     }
     
     atual = cabeca->last;
-    
-//    printf("\nInvertido:\n");
-//    while(atual){
-//        show_node(atual);
-//        //printf("%d ", atual->data);
-//        atual = atual->prev;
-//    }
-
-    printf("\n");
     
     return;
 }
@@ -341,40 +172,22 @@ node * search_node(hnode * cabeca, char name[MAXNOME]){
     
     struct Node * atual = cabeca->first;
     
-
+	pthread_mutex_lock(&cabeca->mutexvar);
     while(atual && strcmp(name,atual->username) != 0){
         atual = atual->next;
     }
 
     if(atual){
+		pthread_mutex_unlock(&cabeca->mutexvar);
         return atual;
     }
+	pthread_mutex_unlock(&cabeca->mutexvar);
+	
     
     return NULL;
 }
 
-void insert_sorting(hnode * cabeca, node * newnode){
-    
-    // Caminha ate achar alg
-    struct Node * atual = cabeca->first;
-    
-    // 1 primeiro maior
-    // -1 segundo maior
-    // 0 iguais
 
-    if(!atual || compare_node(atual, newnode) == 0 || compare_node(atual, newnode) == 1){
-        // Se vazia ou menor insere no comeco
-        insert_beggining(cabeca, newnode);
-        printf("Insere Inicio\n");
-    }else{
-        while(atual->next!=NULL && compare_node(atual->next, newnode) == -1){
-            atual = atual->next;
-        }
-        insert_after(cabeca, atual, newnode);
-    }
-    
-    return;
-}
 
 hnode * new_list(void){
     hnode * newlist = (hnode *)malloc(sizeof(hnode));
@@ -385,6 +198,7 @@ hnode * new_list(void){
 hnode * initialize_list(hnode * head){
     head->first = NULL;
     head->last = NULL;
+	pthread_mutex_init(&head->mutexvar,NULL);
     head->tam = 0;
     return NULL;
 }
@@ -427,14 +241,19 @@ char * get_nombre(hnode * cabeca, int socket){
 	struct Node * atual = cabeca->first;
 	// busca aqui
 
+	pthread_mutex_lock(&cabeca->mutexvar);
+	
 	while(atual && atual->socket!=socket){
 		atual = atual->next;
 	}
 	
 	if(atual){
 		nombre = atual->username;
+		pthread_mutex_unlock(&cabeca->mutexvar);
 		return nombre;
 	}
+	
+	pthread_mutex_unlock(&cabeca->mutexvar);
 	
 	return NULL;
 }
@@ -458,6 +277,8 @@ int * vetor_socket_partida(hnode * cabeca, unsigned int idpartida){
     }
 
     vsockets[0]=tam;
+	
+	pthread_mutex_lock(&cabeca->mutexvar);
     
     while(atual && tam>0){
         printf("Conectado = %s -> %u\n", atual->username, atual->partida);
@@ -468,6 +289,8 @@ int * vetor_socket_partida(hnode * cabeca, unsigned int idpartida){
         }
         atual = atual->next;
     }
+	
+	pthread_mutex_unlock(&cabeca->mutexvar);
     
     return vsockets;
 }
@@ -485,6 +308,8 @@ int * vetor_socket(hnode * cabeca){
     }
 
     vsockets[0] = tam;
+	
+	pthread_mutex_lock(&cabeca->mutexvar);
     
     while(tam>0){
         vsockets[i] = atual->socket;
@@ -493,6 +318,9 @@ int * vetor_socket(hnode * cabeca){
         tam-=1;
     }
 
+	pthread_mutex_unlock(&cabeca->mutexvar);
+	
+	
     return vsockets;
 }
 
@@ -509,7 +337,7 @@ char * string_conectados(hnode * cabeca){
         printf("Sem memoria disponivel\n");
         exit(1);
     }
-    
+	
     if(tam==0){
         sprintf(sconectados,"%d/",tam);
         return sconectados;
@@ -517,12 +345,16 @@ char * string_conectados(hnode * cabeca){
         sprintf(sconectados,"%d",tam);
     }
 
+	pthread_mutex_lock(&cabeca->mutexvar);
+	
     while(tam>0){
         sprintf(sconectados, "%s/%s",sconectados,atual->username);
         atual = atual->next;
         tam-=1;
     }
     
+	pthread_mutex_unlock(&cabeca->mutexvar);
+	
     return sconectados;
 }
 
@@ -541,7 +373,7 @@ char * string_conectados_partida(hnode * cabeca, unsigned int idpartida){
         printf("Sem memoria disponivel\n");
         exit(1);
     }
-    
+	
     if(tam==0){
         sprintf(sconectados,"%d/",tam);
         return sconectados;
@@ -549,6 +381,9 @@ char * string_conectados_partida(hnode * cabeca, unsigned int idpartida){
         sprintf(sconectados,"%d",tam);
     }
 
+	
+	pthread_mutex_lock(&cabeca->mutexvar);
+	
     while(atual && tam>0){
         if(atual->partida == idpartida){
             sprintf(sconectados, "%s/%s",sconectados,atual->username);
@@ -557,6 +392,9 @@ char * string_conectados_partida(hnode * cabeca, unsigned int idpartida){
         atual = atual->next;
     }
     
+	
+	pthread_mutex_unlock(&cabeca->mutexvar);
+	
     return sconectados;
 }
 
@@ -574,6 +412,8 @@ int qtd_conectados_partida(hnode * cabeca, unsigned int idpartida){
         return 0;
     }
 
+	pthread_mutex_lock(&cabeca->mutexvar);
+	
     while(atual){
         if(atual->partida == idpartida){ // Soma 1 na quantidade
             qconectados+=1;
@@ -581,40 +421,46 @@ int qtd_conectados_partida(hnode * cabeca, unsigned int idpartida){
         atual = atual->next;
     }
     
+	pthread_mutex_unlock(&cabeca->mutexvar);
+	
     return qconectados;
 }
 
 
 char * string_conectados_partida_pontos(hnode * cabeca, unsigned int idpartida){
     
-    // O tamanho vai ser int (numero conectados) + tam*maxnome
-       int tam = qtd_conectados_partida(cabeca, idpartida);
-       char * sconectados;
-       struct Node * atual = cabeca->first;
-       
-       sconectados = (char*)malloc(((tam*MAXNOME)+2)*sizeof(char)+sizeof(int));
-       
-       if(!sconectados){
-           printf("Sem memoria disponivel\n");
-           exit(1);
-       }
-       
-       if(tam==0){
-           sprintf(sconectados,"%d/",tam);
-           return sconectados;
-       }else{
-           sprintf(sconectados,"%d",tam);
-       }
+	// O tamanho vai ser int (numero conectados) + tam*maxnome
+	int tam = qtd_conectados_partida(cabeca, idpartida);
+	char * sconectados;
+	struct Node * atual = cabeca->first;
 
-       while(atual && tam>0){
-           if(atual->partida == idpartida){
-               sprintf(sconectados, "%s/%s/%d",sconectados,atual->username,atual->pontos);
-               tam-=1;
-           }
-           atual = atual->next;
-       }
-       
-       return sconectados;
+	sconectados = (char*)malloc(((tam*MAXNOME)+2)*sizeof(char)+sizeof(int));
+
+	if(!sconectados){
+	   printf("Sem memoria disponivel\n");
+	   exit(1);
+	}
+
+	pthread_mutex_lock(&cabeca->mutexvar);
+
+	if(tam==0){
+	   sprintf(sconectados,"%d/",tam);
+	   pthread_mutex_unlock(&cabeca->mutexvar);
+	   return sconectados;
+	}else{
+	   sprintf(sconectados,"%d",tam);
+	}
+	while(atual && tam>0){
+	   if(atual->partida == idpartida){
+		   sprintf(sconectados, "%s/%s/%d",sconectados,atual->username,atual->pontos);
+		   tam-=1;
+	   }
+	   atual = atual->next;
+	}
+
+	pthread_mutex_unlock(&cabeca->mutexvar);
+
+	return sconectados;
 }
 
 char * string_conectados_indicador_jogo(hnode * cabeca){
@@ -630,31 +476,35 @@ char * string_conectados_indicador_jogo(hnode * cabeca){
         printf("Sem memoria disponivel\n");
         exit(1);
     }
-    
+	
     if(tam==0){
         sprintf(sconectados,"%d/",tam);
         return sconectados;
     }else{
         sprintf(sconectados,"%d",tam);
     }
-
+	
+	pthread_mutex_lock(&cabeca->mutexvar);
+	
     while(tam>0){
         sprintf(sconectados, "%s/%s/%d",sconectados,atual->username, atual->emjogo);
         atual = atual->next;
         tam-=1;
     }
-    
+	pthread_mutex_unlock(&cabeca->mutexvar);
+	
     return sconectados;
 }
 
 void retira_partida(hnode * cabeca, char name[MAXNOME]){
-    
+	
     node * user = search_node(cabeca,name);
     user->emjogo=0;
     user->jugadores_momento=0;
     user->jugadores_partida=0;
     user->pontos=0;
     user->partida=0;
+
     // Nao esta mais em jogo, quantidades 0
     // pontos   0
     
