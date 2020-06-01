@@ -1,14 +1,8 @@
 #include "servidor.h"
 
-
-int contador;
-//Estructura necesaria para acceso excluyente
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-
 void *AtenderCliente (void *args_void){
 	
 	// Antes de tudo deve selecionar o head em um no aqui
-	
 	struct thread_args * args = args_void;
 	hnode * lista = args->lista;
 	
@@ -78,8 +72,10 @@ void *AtenderCliente (void *args_void){
 			printf("Solicitou login");
 			p = strtok( NULL, "/");
 			strcpy(senha, p);
-			char * asenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof(char));
-			asenha = smd5(senha,asenha);
+			
+			
+			//char * asenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof(char));
+			//asenha = smd5(senha,asenha);
 			
 			// Esta ativo em outra sessao
 			if(search_node(lista, nombre) != NULL){
@@ -89,7 +85,7 @@ void *AtenderCliente (void *args_void){
 			}else{ // Existe faz tudo normal
 				
 				// Se usuario ja existe na lista nao pode logar de novo
-				situacao=loga_user(nombre,asenha,conn);
+				situacao=loga_user(nombre,senha,conn);
 				
 				if (situacao==1){ // Login correto
 					logado=1;
@@ -106,7 +102,7 @@ void *AtenderCliente (void *args_void){
 				}
 			}
 			
-			free(asenha);
+			//free(asenha);
 			
 		}else if(codigo==2){ // Solicita deslogar servico = 2/
 			
@@ -214,14 +210,14 @@ void *AtenderCliente (void *args_void){
 			p = strtok( NULL, "/");
 			strcpy(senha, p);
 			
-			char *hsenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
+			//char *hsenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
 			
-			hsenha = smd5(senha,hsenha);
+			//hsenha = smd5(senha,hsenha);
 			
-			printf("%s\n",hsenha);
+			printf("%s\n",senha);
 			
 			
-			situacao=insere_user(nombre,hsenha,conn);
+			situacao=insere_user(nombre,senha,conn);
 			
 			if(situacao == 1){
 				sprintf(respuesta,"5/1%s",nombre); // Inserido correto
@@ -231,7 +227,7 @@ void *AtenderCliente (void *args_void){
 				sprintf(respuesta,"5/3%s",nombre); // Erro ao inserir
 			}
 			
-			free(hsenha);
+			//free(hsenha);
 			
 		}else if(codigo==6){ // insere USUARIO servico = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
 			alterlista=1;
@@ -452,12 +448,7 @@ void *AtenderCliente (void *args_void){
 		}
 		
 		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)||(codigo== 7)||(codigo==8)){
-			
-			//pthread_mutex_lock(&mutex); // No me interrumpas ahora
-			//contador+=1;
-			//pthread_mutex_unlock(&mutex); // Ya puedes interrumpirme
-			
-			
+
 			if(alterlista && lista->tam > 0){
 				
 				printf("String conectados\n");

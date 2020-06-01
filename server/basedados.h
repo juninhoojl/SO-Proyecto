@@ -28,8 +28,6 @@
 #define PORTA 50004
 #define MAXMENSAGEM 150
 
-int insere_Player(char nome_arq[], MYSQL *conn);
-
 // Funcao para criar Game inserir usernames do array e retrornar o id do game que estao
 unsigned int cria_Game(MYSQL *conn, char players[QTDMAX][TAMUSERNAME], int qtd);
 
