@@ -11,7 +11,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> 
+#include <string.h>
+#include <pthread.h>
 
 #define MAXNOME 25
 #define MAXELE 10
@@ -32,23 +33,21 @@ typedef struct Node{
 
 typedef struct Hnode{
     int tam;
+	pthread_mutex_t mutexvar;
     struct Node * first;
     struct Node * last;
+	
 }hnode;
 
 // Para ordenacao
 
-void insert_beggining(hnode * cabeca, node * newnode);
+
 void insert_end(hnode * cabeca, node * newnode);
-void insert_after(hnode * cabeca, node * anterior, node * newnode);
-void insert_before(hnode * cabeca, node * proximo, node * newnode);
-void insert_sorting(hnode * cabeca, node * newnode);
-void swap_nodes(hnode * cabeca, node * first, node * second);
+
 void remove_all(hnode * cabeca);
 void remove_node(hnode * cabeca, node * nremove);
 void show_list(hnode * cabeca);
-node * node_min(hnode * cabeca);
-node * node_max(hnode * cabeca);
+
 void show_node(node * no);
 hnode * new_list(void);
 hnode * initialize_list(hnode * head);
@@ -76,6 +75,8 @@ void sum_jugadores_momento(hnode * cabeca, char name[MAXNOME]);
 void sub_jugadores_momento(hnode * cabeca, char name[MAXNOME]);
 
 int get_socket(hnode * cabeca, char name[MAXNOME]);
+
+char * get_nombre(hnode * cabeca, int socket);
 
 int get_pontos(hnode * cabeca, char name[MAXNOME]);
 

@@ -31,6 +31,7 @@ namespace Cliente
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.textPassword = new System.Windows.Forms.TextBox();
             this.buttonLogin = new System.Windows.Forms.Button();
             this.textUser = new System.Windows.Forms.TextBox();
@@ -131,7 +132,7 @@ namespace Cliente
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(8, 155);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(184, 191);
+            this.listView1.Size = new System.Drawing.Size(184, 216);
             this.listView1.TabIndex = 5;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -144,7 +145,7 @@ namespace Cliente
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(6, 604);
+            this.button2.Location = new System.Drawing.Point(6, 629);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(186, 26);
             this.button2.TabIndex = 6;
@@ -156,7 +157,7 @@ namespace Cliente
             // 
             this.checkedListBox1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(6, 384);
+            this.checkedListBox1.Location = new System.Drawing.Point(6, 409);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(184, 214);
             this.checkedListBox1.TabIndex = 7;
@@ -164,7 +165,7 @@ namespace Cliente
             // buttonInvitar
             // 
             this.buttonInvitar.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonInvitar.Location = new System.Drawing.Point(6, 352);
+            this.buttonInvitar.Location = new System.Drawing.Point(6, 377);
             this.buttonInvitar.Name = "buttonInvitar";
             this.buttonInvitar.Size = new System.Drawing.Size(186, 26);
             this.buttonInvitar.TabIndex = 8;
@@ -175,12 +176,12 @@ namespace Cliente
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(198, 10);
+            this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(196, 7);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 2);
-            this.label1.MinimumSize = new System.Drawing.Size(550, 20);
+            this.label1.MinimumSize = new System.Drawing.Size(660, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(550, 20);
+            this.label1.Size = new System.Drawing.Size(660, 22);
             this.label1.TabIndex = 9;
             this.label1.Text = "Teste\\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -188,17 +189,17 @@ namespace Cliente
             // textBoxMensagem
             // 
             this.textBoxMensagem.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMensagem.Location = new System.Drawing.Point(859, 391);
+            this.textBoxMensagem.Location = new System.Drawing.Point(859, 463);
             this.textBoxMensagem.Multiline = true;
             this.textBoxMensagem.Name = "textBoxMensagem";
-            this.textBoxMensagem.Size = new System.Drawing.Size(219, 122);
+            this.textBoxMensagem.Size = new System.Drawing.Size(219, 160);
             this.textBoxMensagem.TabIndex = 10;
             this.textBoxMensagem.TextChanged += new System.EventHandler(this.textBoxMensagem_TextChanged);
             // 
             // buttonEnvia
             // 
             this.buttonEnvia.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEnvia.Location = new System.Drawing.Point(859, 519);
+            this.buttonEnvia.Location = new System.Drawing.Point(859, 629);
             this.buttonEnvia.Name = "buttonEnvia";
             this.buttonEnvia.Size = new System.Drawing.Size(219, 26);
             this.buttonEnvia.TabIndex = 11;
@@ -209,10 +210,10 @@ namespace Cliente
             // caixaMensagens
             // 
             this.caixaMensagens.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.caixaMensagens.Location = new System.Drawing.Point(859, 31);
+            this.caixaMensagens.Location = new System.Drawing.Point(859, 36);
             this.caixaMensagens.Name = "caixaMensagens";
             this.caixaMensagens.ReadOnly = true;
-            this.caixaMensagens.Size = new System.Drawing.Size(219, 275);
+            this.caixaMensagens.Size = new System.Drawing.Size(219, 342);
             this.caixaMensagens.TabIndex = 12;
             this.caixaMensagens.Text = "";
             // 
@@ -275,7 +276,6 @@ namespace Cliente
             this.comboUsers.Name = "comboUsers";
             this.comboUsers.Size = new System.Drawing.Size(207, 26);
             this.comboUsers.TabIndex = 17;
-            this.comboUsers.SelectedIndexChanged += new System.EventHandler(this.comboUsers_SelectedIndexChanged);
             // 
             // groupBox1
             // 
@@ -283,7 +283,7 @@ namespace Cliente
             this.groupBox1.Controls.Add(this.comboUsers);
             this.groupBox1.Controls.Add(this.radioTodos);
             this.groupBox1.Controls.Add(this.radioOutro);
-            this.groupBox1.Location = new System.Drawing.Point(859, 312);
+            this.groupBox1.Location = new System.Drawing.Point(859, 384);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(219, 73);
             this.groupBox1.TabIndex = 18;
@@ -310,8 +310,9 @@ namespace Cliente
             this.Controls.Add(this.groupLogin);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Gandalf Cards";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load_1);
             this.groupLogin.ResumeLayout(false);

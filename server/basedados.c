@@ -10,9 +10,9 @@ int insere_user(char user[], char senha[], MYSQL *conn){
 		
 		strcpy (query, "INSERT INTO Player (Username, Password) VALUES ('");
 		strcat (query, user);
-		strcat (query, "','");
+		strcat (query, "',MD5('");
 		strcat (query, senha); 
-		strcat (query, "'");
+		strcat (query, "')");
 		strcat (query, ");");
 		printf("query = %s\n", query);
 		err = mysql_query(conn, query);
@@ -127,9 +127,9 @@ int loga_user(char user[], char senha[], MYSQL *conn){
 		
 		strcpy (query, "SELECT EXISTS(SELECT * FROM Player WHERE Username = '");
 		strcat (query, user);
-		strcat (query, "' AND Password = '");
+		strcat (query, "' AND Password = MD5('");
 		strcat (query, senha);
-		strcat (query, "');");
+		strcat (query, "'));");
 		
 		err = mysql_query(conn, query);
 		
@@ -390,64 +390,3 @@ unsigned int cria_Game(MYSQL *conn, char players[QTDMAX][TAMUSERNAME], int qtd){
 	return id_game;
 }
 	
-
-	
-int insere_Player(char nome_arq[], MYSQL *conn){
-	
-	FILE *arq;
-	int err;
-	char username[25];
-	char senha[25];
-	char query[80];
-	
-	// Abre arquivo
-	arq=fopen(nome_arq, "r");
-	
-	// Insere dados
-	if (arq==NULL){
-		perror("Error");
-		return 1;
-	}else{ 
-		
-		if (arq==NULL){
-			perror("Error");
-			return 1;
-		}else{
-			
-			while(!feof(arq)) {
-				
-				err=fscanf(arq,"%s %s", &username[0], &senha[0]);
-				
-				if(err!=2){
-					
-					// Caso esteja na ultima linha, para nao repetir
-					if(err<0){
-						return 1;
-					}
-					printf("Erro ao introduzir dados\n");
-					printf("%d",err); 
-					
-				}
-				strcpy (query, "INSERT INTO Player (Username, Password) VALUES ('");
-				strcat (query, username);
-				strcat (query, "','");
-				strcat (query, senha); 
-				strcat (query, "'");
-				strcat (query, ");");
-				printf("query = %s\n", query);
-				err = mysql_query(conn, query);
-				
-				if (err!=0){
-					printf ("Error ao introduzir dados na base %u %s\n", mysql_errno(conn), mysql_error(conn));
-					return 1;
-				}
-			}
-		}
-	}
-	
-	// Fecha arquivo
-	fclose(arq);
-	
-	return 0;
-}
-		

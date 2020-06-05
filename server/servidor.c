@@ -1,14 +1,8 @@
 #include "servidor.h"
 
-
-int contador;
-//Estructura necesaria para acceso excluyente
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-
 void *AtenderCliente (void *args_void){
 	
 	// Antes de tudo deve selecionar o head em um no aqui
-	
 	struct thread_args * args = args_void;
 	hnode * lista = args->lista;
 	
@@ -78,8 +72,10 @@ void *AtenderCliente (void *args_void){
 			printf("Solicitou login");
 			p = strtok( NULL, "/");
 			strcpy(senha, p);
-			char * asenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof(char));
-			asenha = smd5(senha,asenha);
+			
+			
+			//char * asenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof(char));
+			//asenha = smd5(senha,asenha);
 			
 			// Esta ativo em outra sessao
 			if(search_node(lista, nombre) != NULL){
@@ -89,7 +85,7 @@ void *AtenderCliente (void *args_void){
 			}else{ // Existe faz tudo normal
 				
 				// Se usuario ja existe na lista nao pode logar de novo
-				situacao=loga_user(nombre,asenha,conn);
+				situacao=loga_user(nombre,senha,conn);
 				
 				if (situacao==1){ // Login correto
 					logado=1;
@@ -106,7 +102,7 @@ void *AtenderCliente (void *args_void){
 				}
 			}
 			
-			free(asenha);
+			//free(asenha);
 			
 		}else if(codigo==2){ // Solicita deslogar servico = 2/
 			
@@ -214,14 +210,14 @@ void *AtenderCliente (void *args_void){
 			p = strtok( NULL, "/");
 			strcpy(senha, p);
 			
-			char *hsenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
+			//char *hsenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
 			
-			hsenha = smd5(senha,hsenha);
+			//hsenha = smd5(senha,hsenha);
 			
-			printf("%s\n",hsenha);
+			printf("%s\n",senha);
 			
 			
-			situacao=insere_user(nombre,hsenha,conn);
+			situacao=insere_user(nombre,senha,conn);
 			
 			if(situacao == 1){
 				sprintf(respuesta,"5/1%s",nombre); // Inserido correto
@@ -231,10 +227,10 @@ void *AtenderCliente (void *args_void){
 				sprintf(respuesta,"5/3%s",nombre); // Erro ao inserir
 			}
 			
-			free(hsenha);
+			//free(hsenha);
 			
 		}else if(codigo==6){ // insere USUARIO servico = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
-			
+			alterlista=1;
 			printf("Codigo 6\n");
 			i = 0;
 			
@@ -253,6 +249,7 @@ void *AtenderCliente (void *args_void){
 			// Cria partida insere quem convidou e faz loop com os outros
 			// Cria partida e devolve id
 			idgame=cria_partida(conn);
+			retira_partida(lista,nombre);
 			// Ate aqui ja tenho quem criou o jogo
 			// Agora relaciono o criador do jogo
 			printf("Nome de quem solicitou = %s\n",nombre); 
@@ -260,9 +257,9 @@ void *AtenderCliente (void *args_void){
 			relaciona_jugador(conn, nombre, idgame);
 			// Adiciona quantidade de jogadores
 			
-			alter_emjogo(lista,nombre,0);
+			alter_emjogo(lista,nombre,1);
 			alter_jugadores_partida(lista,nombre,qjugadores+1);
-			sum_jugadores_momento(lista,nombre); // Incrementa um nos jogadores
+			sum_jugadores_momento(lista,nombre);// Incrementa um nos jogadores
 			alter_idgame(lista, nombre, idgame);
 			// A cada resposta altera osvalores de quem criou a partida
 			
@@ -297,7 +294,7 @@ void *AtenderCliente (void *args_void){
 			// 6/quemchamou/idpartida
 			
 		}else if(codigo==7){ // resposta convite partida = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
-			
+			alterlista=1;
 			printf("Codigo 7\n");
 			// 7/nombre/1/donopartida/idgame
 			// aqui vai sobrar somente  /1/donopartida/idgame
@@ -324,14 +321,17 @@ void *AtenderCliente (void *args_void){
 			if(existe_game(conn, idbdgames)){ // Se game existe
 				
 				if(respconvites == 1){ // Aceitou
-					
+					retira_partida(lista,nombre);
 					// relaciona a pessoa com a partida
-					relaciona_jugador(conn, nombre, idbdgames);
+					relaciona_jugador(conn, nombre,idbdgames);
 					sum_jugadores_momento(lista,donopartida);
 					alter_idgame(lista,nombre,idbdgames);
-					
+					alter_emjogo(lista,nombre,1);
 					//if(usuario->jugadores_momento == usuario->jugadores_partida){
 					if(qtd_conectados_partida(lista, idbdgames) == get_jugadores_momento(lista, donopartida)){
+						
+						strcpy(respuesta,"7/1/"); // Inserido na partida
+						strcat(respuesta, nombre);
 						
 						printf("Todos ja estao prontos para comecar\n");						
 						strcpy(contesta,"8/1/");// Estan todos y juego empeza
@@ -339,37 +339,68 @@ void *AtenderCliente (void *args_void){
 						
 					}else{ // Ainda faltam pessoas
 						
+						strcpy(respuesta,"7/1/"); // Inserido na partida
+						strcat(respuesta, nombre);
+						
 						printf("Ainda faltam pessoas\n");
 						strcpy(contesta,"8/0/");// faltan personas
 						strcat(contesta,nombre);
 						
 					}
+					// Envia a mensagem aqui independente do que foi
 					
-				}else{ // Recusou
+					
+					vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
+					
+					i = 1;
+					while(vetsockets[0]>0){
+						
+						// Para a propria pessoa vai enviar depois
+						if(vetsockets[i] != suser){
+							write(vetsockets[i], contesta, strlen(contesta));
+						}
+						vetsockets[0]-=1;
+						i++;
+						
+					}
+					
+				}else if(respconvites == 2){ // Recusou
+					
+					// Retira todos da partida
 					// Vai avisar todos que alguem nao aceitou e excuir
 					deleta_game(conn, idbdgames);
 					printf("Usuario %s nao aceitou, partida deletada\n",nombre);
-					strcpy(contesta,"8/3/");// faltan personas
+					
+					alterlista=1;
+					
+					vetsockets = vetor_socket_partida(lista,idbdgames);
+					
+					strcpy(contesta,"8/3/");// acaba partida
 					strcat(contesta,nombre);
+					
+					i = 1;
+					while(vetsockets[0]>0){
+						printf("retirou da partida\n");
+						
+						if(vetsockets[i] != suser){
+							write(vetsockets[i], contesta, strlen(contesta));
+						}
+						
+						retira_partida(lista,get_nombre(lista,vetsockets[i]));
+						vetsockets[0]-=1;
+						i++;
+						
+					}
+					
+					free(vetsockets);
+					
+					strcpy(respuesta,"8/3/");
+					strcat(respuesta,nombre);
+					
 					// envia que acabou
 					// Vai enviar para todos que a partida acabou
 				}
-				
-				// Envia a mensagem aqui independente do que foi
-				vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
-				i = 1;
-				
-				while(vetsockets[0]>0){
-					write(vetsockets[i],contesta, strlen(contesta));
-					vetsockets[0]-=1;
-					i++;
-				}
-				
-				free(vetsockets);
-				
-				// Avisa a pessoa que ela foi inserida na partida
-				strcpy(respuesta,"7/1/nombre"); // Aceita iniciar a partida
-				
+				//strcpy(respuesta,"99/");
 			}else{ // Avisa que soliciotu por ele que nao esta disponivel mais
 				
 				sprintf(respuesta,"7/0/nombre");// Nao existe mais a partida que deseja entrar
@@ -378,22 +409,30 @@ void *AtenderCliente (void *args_void){
 			
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
 		}else if(codigo==8){
+			alterlista=1;
+			
+			strcpy(respuesta,"8/2/");
+			strcat(respuesta,nombre);
 			
 			printf("Solicitou acabar partida");
 			vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
 			char contesta[7+MAXNOME];
-			strcpy(contesta,"8/2/");// Estan todos y juego empeza
+			strcpy(contesta,"8/2/");// acaba partida
 			strcat(contesta,nombre);
 			
 			i = 1;
 			while(vetsockets[0]>0){
-				write(vetsockets[i], contesta, strlen( contesta));
+				
+				if(vetsockets[i] != suser){
+					write(vetsockets[i], contesta, strlen(contesta));
+				}
+				retira_partida(lista,get_nombre(lista,vetsockets[i]));
 				vetsockets[0]-=1;
 				i++;
+				
 			}
 			
 			free(vetsockets);
-			
 			// envia isso para todos se for codigo 2
 			
 		}
@@ -408,17 +447,12 @@ void *AtenderCliente (void *args_void){
 			
 		}
 		
-		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)||(codigo== 7)||(codigo== 8)){
-			
-			pthread_mutex_lock(&mutex); // No me interrumpas ahora
-			contador+=1;
-			pthread_mutex_unlock(&mutex); // Ya puedes interrumpirme
-			
-			
+		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)||(codigo== 7)||(codigo==8)){
+
 			if(alterlista && lista->tam > 0){
 				
 				printf("String conectados\n");
-				char * sconectados = string_conectados(lista);
+				char * sconectados = string_conectados_indicador_jogo(lista);
 				
 				printf("\n%s\n",sconectados);
 				
