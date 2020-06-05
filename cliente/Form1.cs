@@ -79,10 +79,10 @@ namespace Cliente
             // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-            IPAddress direc = IPAddress.Parse("10.211.55.9");
+            ///IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
-            IPEndPoint ipep = new IPEndPoint(direc, 50004);
+           // IPEndPoint ipep = new IPEndPoint(direc, 50004);
 
 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -720,6 +720,11 @@ namespace Cliente
         private void comboUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
 
         }
 
