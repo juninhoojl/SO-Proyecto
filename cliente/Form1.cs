@@ -41,6 +41,7 @@ namespace Cliente
             this.MinimumSize = new Size(1100, 700);
             this.MaximumSize = new Size(1100, 700);
 
+           
         }
 
         // Conecta ao carregar
@@ -79,7 +80,7 @@ namespace Cliente
             // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-             IPAddress direc = IPAddress.Parse("10.211.55.9");
+            IPAddress direc = IPAddress.Parse("192.168.1.62");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
@@ -108,7 +109,7 @@ namespace Cliente
                 return 1;
             }
 
-            
+
         }
 
 
@@ -136,7 +137,7 @@ namespace Cliente
                 msg2 = new byte[200];
                 // Limpa toda vez que chama esse botao e preenche do zero
 
-                 server.Receive(msg2);
+                server.Receive(msg2);
 
                 string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
 
@@ -249,7 +250,7 @@ namespace Cliente
                         comboUsers.Enabled = false;
                         radioTodos.Checked = true;
                         // a partir do 2
-                        for (int i = 2; i < (quantidade*2) + 2; i+=2)
+                        for (int i = 2; i < (quantidade * 2) + 2; i += 2)
                         {
 
                             if (trozos[i].Trim() != "")
@@ -264,7 +265,8 @@ namespace Cliente
 
                                     comboUsers.Items.Add(trozos[i]);
 
-                                    if(String.Compare(trozos[i+1].Split('\0')[0], "0") == 0){
+                                    if (String.Compare(trozos[i + 1].Split('\0')[0], "0") == 0)
+                                    {
                                         checkedListBox1.Items.Add(trozos[i]);
 
                                     }
@@ -276,7 +278,7 @@ namespace Cliente
                                     }
 
 
-                                    
+
 
                                     comboUsers.SelectedIndex = 0;
                                     radioOutro.Enabled = true;
@@ -367,9 +369,9 @@ namespace Cliente
                         else // Nao foi inserido
                         {
                             AlteraBanner("La partida ya no esta disponible mas!");
-                           
+
                         }
-                       
+
                         // Responde aceitando ou recusando
 
                         break;
@@ -383,19 +385,19 @@ namespace Cliente
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "1") == 0) // Empezo
                         {
-                 
+                       
                             label1.Text = "Juego ha empezado";
                             //MessageBox.Show("Juego ha empezado");
 
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "2") == 0) // Acabo
                         {
-                           
+
                             label1.Text = "Juego ha acabado";
                             buttonInvitar.Text = "Invitar";
                             // Juego empeza ahora
                             radioTodos.Checked = true;
-                            
+
                             Global.partida = 0;
                             checkedListBox1.Enabled = true;
                             buttonRegistra.Enabled = true;
@@ -406,7 +408,7 @@ namespace Cliente
                         }
                         else if (String.Compare(trozos[1].Split('\0')[0], "3") == 0)
                         {
-                            
+
                             label1.Text = trozos[2].Split('\0')[0] + " no acepto, partida ha sido cancelado";
 
                             buttonInvitar.Text = "Invitar";
@@ -441,11 +443,11 @@ namespace Cliente
                     case 10: // Mensagens recebidas
 
                         label1.Text = "Mensagem recebida!";
-                        
+
                         // MessageBox.Show("Recebeu mensagem de:"+trozos[1]);
-                        if(String.Compare(trozos[1], textUser.Text) == 0) // Ele mesmo
+                        if (String.Compare(trozos[1], textUser.Text) == 0) // Ele mesmo
                         {
-                            caixaMensagens.Text = caixaMensagens.Text + "\n\n" + "Tu:\n" + trozos[3] ;
+                            caixaMensagens.Text = caixaMensagens.Text + "\n\n" + "Tu:\n" + trozos[3];
 
                         }
                         else
@@ -457,7 +459,7 @@ namespace Cliente
 
                         break;
                     case 11: // Mensagens enviadas
-      
+
                         label1.Text = "Mensagenes Inviadas!";
 
                         break;
@@ -482,10 +484,10 @@ namespace Cliente
             public static int partida = 0;
             public static int musica = 0;
 
-       
+
             public static SoundPlayer splayer = new SoundPlayer(Properties.Resources.gandalf_reduzido);
 
-          
+
         }
 
 
@@ -522,21 +524,21 @@ namespace Cliente
         private void buttonRegistra_Click(object sender, EventArgs e)
         {
 
-                if (Global.logado == 1)
+            if (Global.logado == 1)
+            {
+                dynamic result = MessageBox.Show("Seguro que quieres\n\t borrar usuario?", "GameSO", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes) // Somente se quiser deletar
                 {
-                    dynamic result = MessageBox.Show("Seguro que quieres\n\t borrar usuario?", "GameSO", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes) // Somente se quiser deletar
-                    {
-                        EnviaMensagem("3/" + textUser.Text + "/" + textPassword.Text);
-                    }
+                    EnviaMensagem("3/" + textUser.Text + "/" + textPassword.Text);
                 }
-                else
-                {
-                    EnviaMensagem("5/" + textUser.Text + "/" + textPassword.Text);
-                }
+            }
+            else
+            {
+                EnviaMensagem("5/" + textUser.Text + "/" + textPassword.Text);
+            }
 
             // Remove usuario
-            
+
         }
 
         private void buttonInvitar_Click(object sender, EventArgs e)
@@ -545,7 +547,7 @@ namespace Cliente
 
             // primeiro confere se a pessoa esta em jogo ou nao, se estiver
             // envia dizendo que acabou
-            if(Global.partida == 1)
+            if (Global.partida == 1)
             {
 
                 EnviaMensagem("8/" + textUser.Text + "/1/");
@@ -587,7 +589,7 @@ namespace Cliente
         }
 
 
-    
+
         // 1- Logado corretamente
         // 2- Credenciais incorretas
         // 3- Erro ao logar
@@ -595,24 +597,24 @@ namespace Cliente
         private void buttonLogin_Click(object sender, EventArgs e)
         {
 
-                // Confere se os tamanhos ok
-                // Vamos limitar em 20 por garantia
+            // Confere se os tamanhos ok
+            // Vamos limitar em 20 por garantia
 
-                // Se logado pede logout
-                if (Global.logado == 1)
-                {
-                    EnviaMensagem("2/" + textUser.Text + "/" + textPassword.Text);
-                }
-                else // Efetua login
-                {
-                    // Mensagem Login
-                    EnviaMensagem("1/" + textUser.Text + "/" + textPassword.Text);
-                }
+            // Se logado pede logout
+            if (Global.logado == 1)
+            {
+                EnviaMensagem("2/" + textUser.Text + "/" + textPassword.Text);
+            }
+            else // Efetua login
+            {
+                // Mensagem Login
+                EnviaMensagem("1/" + textUser.Text + "/" + textPassword.Text);
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-               
+
             // Enviamos ao servidor a mensagem de desconexao
             EnviaMensagem("0/" + textUser.Text + "/" + textPassword.Text);
 
@@ -668,20 +670,20 @@ namespace Cliente
 
             if (radioTodos.Checked == true)
             {
-                mensagem="4/" + textUser.Text + "/0/" + textBoxMensagem.Text;
+                mensagem = "4/" + textUser.Text + "/0/" + textBoxMensagem.Text;
             }
             else if (radioPartida.Checked == true)
             {
-                mensagem="4/" + textUser.Text + "/1/" + textBoxMensagem.Text;
-                
+                mensagem = "4/" + textUser.Text + "/1/" + textBoxMensagem.Text;
+
             }
             else if (radioOutro.Checked == true) // ecolhe pessoa 
             {
 
-                
-                mensagem= "4/" + textUser.Text + "/2/" + comboUsers.SelectedItem +"/"+ textBoxMensagem.Text;
+
+                mensagem = "4/" + textUser.Text + "/2/" + comboUsers.SelectedItem + "/" + textBoxMensagem.Text;
                 AlteraBanner(mensagem);
-                
+
             }
 
             // Aqui envia
@@ -701,11 +703,11 @@ namespace Cliente
             else
             {
 
-                if(Global.logado == 1)
+                if (Global.logado == 1)
                 {
                     buttonEnvia.Enabled = true;
                 }
-               
+
             }
         }
 
@@ -736,10 +738,67 @@ namespace Cliente
             }
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+           
+        }
 
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
 
+        }
 
-        // Funcao para convidar
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
 
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            panel1.Show();
+            button4.Show();
+            button5.Show();
+            button6.Show();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
