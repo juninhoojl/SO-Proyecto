@@ -5,7 +5,7 @@ Proyeto SO
 ## Para compilar usando GCC en terminal:
 
 ```
-gcc main.c -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c lista.c -lcrypto -lm -o main.bin
+gcc main.c -std=c99 `mysql_config --cflags --libs` basedados.c servidor.c lista.c -lm -o main.bin
 ```
 
 ## Para compilar usando GCC en Zinjal:
@@ -13,7 +13,7 @@ gcc main.c -std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c
 * (main.c) Run-> Configure -> Extra arguments for compiler:
 
 ```
--std=c99 `mysql_config --cflags --libs` fmd5.c basedados.c servidor.c lista.c -lcrypto -lm
+-std=c99 `mysql_config --cflags --libs` basedados.c servidor.c lista.c -lm
 ```
 
 ## Ps.: Si obtiene errores al compilar en Zinjal:
