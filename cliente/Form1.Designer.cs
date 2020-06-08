@@ -314,6 +314,7 @@ namespace Cliente
             this.Name = "Form1";
             this.Text = "Gandalf Cards";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load_1);
             this.groupLogin.ResumeLayout(false);
             this.groupLogin.PerformLayout();
             this.groupBox1.ResumeLayout(false);
