@@ -81,7 +81,7 @@ void *AtenderCliente (void *args_void){
 	show_list(lista);
 
 	char peticion[512], respuesta[512];
-	int ret, logado=0, terminar=0, situacao=0, alterlista = 0;
+	int ret, logado=0, terminar=0, situacao=0, alterlista = 0, nvazio = 0;
 	int codigo;
 	char nombre[MAXNOME];
 	char *p;
@@ -135,7 +135,7 @@ void *AtenderCliente (void *args_void){
 			terminar=1;
 			
 		}else if(codigo==1){ // Solicita login servico login = 1/
-			
+			nvazio = 1;
 			situacao=0;
 			printf("Solicitou login");
 			p = strtok( NULL, "/");
@@ -174,6 +174,7 @@ void *AtenderCliente (void *args_void){
 			
 		}else if(codigo==2){ // Solicita deslogar servico = 2/
 			
+			nvazio = 1;
 			printf("Solicitou deslogar");
 			remove_node(lista, search_node(lista, nombre));
 			alterlista = 1;
@@ -184,6 +185,7 @@ void *AtenderCliente (void *args_void){
 			
 		}else if(codigo==3){ //Solicita excluir USUARIO servico = 3/
 			// Somente se estiver logado
+			nvazio = 1;
 			if(logado){
 				situacao=remove_user(nombre,conn);
 				if(situacao == 1){
@@ -208,11 +210,7 @@ void *AtenderCliente (void *args_void){
 			
 			// Vai ter tamanho maximo de 150 a mensagem
 			// Assim que:
-			
-			// 4/nombre_quien_envia/0/mensagem -> todos os conectados
-			// 4/nombre_quien_envia/1/mensagem -> todos da partida
-			// Aloca espaco mensagem que tem maximo de 150 chars
-			// Falta separar 
+			// nvazio = 1;
 			char tipo_envio[2];
 			char persona_especifica[MAXNOME];
 			p = strtok(NULL, "/");
@@ -269,11 +267,11 @@ void *AtenderCliente (void *args_void){
 			}
 			
 			free(texto_mensagem);
-			strcpy(respuesta,"11/1"); // Mensagens enviadas
+			//strcpy(respuesta,"11/1"); // Mensagens enviadas
 			
 			
 		}else if (codigo==5){ // insere USUARIO servico = 5/
-			
+			nvazio = 1;
 			char senha[20];
 			p = strtok( NULL, "/");
 			strcpy(senha, p);
@@ -291,6 +289,7 @@ void *AtenderCliente (void *args_void){
 			
 		}else if(codigo==6){ // insere USUARIO servico = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
 			alterlista=1;
+			nvazio = 1;
 			printf("Codigo 6\n");
 			i = 0;
 			
@@ -347,6 +346,7 @@ void *AtenderCliente (void *args_void){
 			
 		}else if(codigo==7){ // resposta convite partida = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
 			alterlista=1;
+			//nvazio = 1;
 			printf("Codigo 7\n");
 			// 7/nombre/1/donopartida/idgame
 			// aqui vai sobrar somente  /1/donopartida/idgame
@@ -373,7 +373,8 @@ void *AtenderCliente (void *args_void){
 			if(existe_game(conn, idbdgames)){ // Se game existe
 				
 				if(respconvites == 1){ // Aceitou
-					retira_partida(lista,nombre);
+					printf("CASO 1\n");
+					//retira_partida(lista,nombre);
 					// relaciona a pessoa com a partida
 					relaciona_jugador(conn, nombre,idbdgames);
 					sum_jugadores_momento(lista,donopartida);
@@ -382,36 +383,32 @@ void *AtenderCliente (void *args_void){
 					//if(usuario->jugadores_momento == usuario->jugadores_partida){
 					if(qtd_conectados_partida(lista, idbdgames) == get_jugadores_momento(lista, donopartida)){
 						
-						strcpy(respuesta,"7/1/"); // Inserido na partida
-						strcat(respuesta, nombre);
+						//strcpy(respuesta,"7/1/"); // Inserido na partida
+						//strcat(respuesta, nombre);
 						
 						printf("Todos ja estao prontos para comecar\n");
 						
 						carta baralho[52];
 						preenche(baralho);
-						mostra(baralho);
-						printf("DEPOIS\n\n");
-						embaralhar(baralho, 52);
-						mostra(baralho);
+						//mostra(baralho);
+						printf("Embaralhado\n");
+						//embaralhar(baralho, 52);
+						//mostra(baralho);
 						char * stcartas = scartas(baralho);
 						
-						printf("\n%s\n",stcartas);
-						
-						
+						//printf("\n%s\n",stcartas);
 						// 208 eh so o tamanho do baralho
-						
-						
 						strcpy(contesta,"8/1/");// Estan todos y juego empeza
 						strcat(contesta,nombre);
-						
+						strcat(contesta,"/");
 						strcat(contesta,stcartas);
 						
 						free(stcartas);
 						
 					}else{ // Ainda faltam pessoas
 						
-						strcpy(respuesta,"7/1/"); // Inserido na partida
-						strcat(respuesta, nombre);
+						//strcpy(respuesta,"7/1/"); // Inserido na partida
+						//strcat(respuesta, nombre);
 						
 						printf("Ainda faltam pessoas\n");
 						strcpy(contesta,"8/0/");// faltan personas
@@ -426,8 +423,8 @@ void *AtenderCliente (void *args_void){
 					i = 1;
 					while(vetsockets[0]>0){
 						
-						// Para a propria pessoa vai enviar depois
-						if(vetsockets[i] != suser){
+						// Para a propria pessoa vai enviar depois (nao mais)
+						if(vetsockets[i]){
 							write(vetsockets[i], contesta, strlen(contesta));
 						}
 						vetsockets[0]-=1;
@@ -435,8 +432,11 @@ void *AtenderCliente (void *args_void){
 						
 					}
 					
+					free(vetsockets);
+					
 				}else if(respconvites == 2){ // Recusou
 					
+					printf("CASO 2\n");
 					// Retira todos da partida
 					// Vai avisar todos que alguem nao aceitou e excuir
 					deleta_game(conn, idbdgames);
@@ -453,7 +453,7 @@ void *AtenderCliente (void *args_void){
 					while(vetsockets[0]>0){
 						printf("retirou da partida\n");
 						
-						if(vetsockets[i] != suser){
+						if(vetsockets[i]){
 							write(vetsockets[i], contesta, strlen(contesta));
 						}
 						
@@ -465,25 +465,27 @@ void *AtenderCliente (void *args_void){
 					
 					free(vetsockets);
 					
-					strcpy(respuesta,"8/3/");
-					strcat(respuesta,nombre);
+					//strcpy(respuesta,"8/3/");
+					//strcat(respuesta,nombre);
 					
 					// envia que acabou
 					// Vai enviar para todos que a partida acabou
 				}
 				//strcpy(respuesta,"99/");
 			}else{ // Avisa que soliciotu por ele que nao esta disponivel mais
-				
+				//nvazio = 1;
+				printf("CASO 3\n");
 				sprintf(respuesta,"7/0/nombre");// Nao existe mais a partida que deseja entrar
+				write(suser, respuesta, strlen(respuesta));
 				
 			}
 			
-			// Se alguem nao aceita deleta tudo relacionado ao jogo
+		// Se alguem nao aceita deleta tudo relacionado ao jogo
 		}else if(codigo==8){
-			alterlista=1;
-			
-			strcpy(respuesta,"8/2/");
-			strcat(respuesta,nombre);
+			//alterlista=1;
+			nvazio = 1;
+			//strcpy(respuesta,"8/2/");
+			//strcat(respuesta,nombre);
 			
 			printf("Solicitou acabar partida");
 			vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
@@ -494,7 +496,7 @@ void *AtenderCliente (void *args_void){
 			i = 1;
 			while(vetsockets[0]>0){
 				
-				if(vetsockets[i] != suser){
+				if(vetsockets[i]){
 					write(vetsockets[i], contesta, strlen(contesta));
 				}
 				retira_partida(lista,get_nombre(lista,vetsockets[i]));
@@ -509,47 +511,48 @@ void *AtenderCliente (void *args_void){
 		}
 		
 		
-		if(codigo !=0 ){ // Desconectar
+		if(codigo !=0 && nvazio == 1){ // Desconectar
 			printf("Codigo: %d => Reposta: %s\n",codigo,respuesta);
 			//printf ("Resposta: %s\n", respuesta);
 			// Enviamos a resposta
-			
 			write(suser,respuesta,strlen(respuesta));
-			
+			nvazio = 0;
 		}
 		
-		if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)||(codigo== 7)||(codigo==8)){
-
-			if(alterlista && lista->tam > 0){
+		//if((codigo == 0)||(codigo == 1)||(codigo== 2)||(codigo== 3)||(codigo== 4)||(codigo== 5)||(codigo== 6)||(codigo== 7)||(codigo==8)){
+		if(alterlista && lista->tam > 0){
+			
+			printf("String conectados\n");
+			char * sconectados = string_conectados_indicador_jogo(lista);
+			
+			printf("\n%s\n",sconectados);
+			
+			vetsockets = vetor_socket(lista);
+			
+			i = 1;
+			int quantidade = 0;
+			// Aloca o tamanho maximo de um nome * a quantidade de pessoas
+			char notificacion[MAXNOME*vetsockets[0]+MAXNOME+10];
+			
+			sprintf(notificacion, "4/%s",sconectados);
+			
+			quantidade = vetsockets[0];
+			
+			while(quantidade>0){
 				
-				printf("String conectados\n");
-				char * sconectados = string_conectados_indicador_jogo(lista);
-				
-				printf("\n%s\n",sconectados);
-				
-				vetsockets = vetor_socket(lista);
-				
-				i = 1;
-				
-				// Aloca o tamanho maximo de um nome * a quantidade de pessoas
-				char notificacion[MAXNOME*vetsockets[0]+MAXNOME+10];
-				
-				sprintf(notificacion, "4/%s",sconectados);
-				
-				while(vetsockets[0]>0){
-					
-					printf("USUARIOS CONECTADOS STRING = %s \n",notificacion);
-					write(vetsockets[i],notificacion, strlen(notificacion));
-					printf("vetsockets p%d = %d \n",i,vetsockets[i]);
-					vetsockets[0]-=1;
-					i++;
-				}
-				
-				free(vetsockets);
-				free(sconectados);
-				alterlista=0;
+				printf("USUARIOS CONECTADOS STRING = %s \n",notificacion);
+				write(vetsockets[i],notificacion, strlen(notificacion));
+				printf("vetsockets p%d = %d \n",i,vetsockets[i]);
+				quantidade-=1;
+				i++;
 			}
+			printf("Saiu ok");
+			
+			free(vetsockets);
+			free(sconectados);
+			alterlista=0;
 		}
+		//}
 	}
 	// Se acabo el servicio para este cliente
 	close(suser);

@@ -23,7 +23,7 @@
 // rm *.bin
 
 // Visualizar o processo que esta utilizando a PORTA
-// sudo fuser -v 50001/tcp
+// sudo fuser -v 50004/tcp
 // matar ele
 // kill PID
 

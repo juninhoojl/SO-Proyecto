@@ -34,7 +34,7 @@ namespace Cliente
 
             // Set the MaximizeBox to false to remove the maximize box.
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.MinimizeBox = true;
 
             // Set the start position of the form to the center of the screen.
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -134,364 +134,372 @@ namespace Cliente
             while (true)
             {
                 //Recibimos la respuesta del servidor
-                msg2 = new byte[200];
+                msg2 = new byte[512];
                 // Limpa toda vez que chama esse botao e preenche do zero
 
                 server.Receive(msg2);
 
                 string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
 
-                codigo = Convert.ToInt32(trozos[0]); // Antes da barra
+                //codigo = Convert.ToInt32(trozos[0]); // Antes da barra
 
-                switch (codigo)
+                bool tconvert = Int32.TryParse(trozos[0], out codigo);
+                if (tconvert)
                 {
+                
+                    switch (codigo)
+                    {
 
-                    case 1: // Resposta ao login
+                        case 1: // Resposta ao login
 
-                        if (String.Compare(trozos[1], "1") == 0)
-                        {
-                            label1.Text = "Logueado con sucesso";
-                            Global.logado = 1;
-                            buttonEnvia.Enabled = true;
-                            textUser.Enabled = false;
-                            textPassword.Enabled = false;
-                            //listView1.Enabled = true;
-                            button1.Enabled = false;
-                            buttonRegistra.Text = "Deletar";
-                            buttonLogin.Text = "Logout";
-
-                        }
-                        else if (String.Compare(trozos[1], "2") == 0)
-                        {
-                            label1.Text = "Usuario o contrasena incorrectos";
-                        }
-                        else if (String.Compare(trozos[1], "0") == 0)
-                        {
-                            label1.Text = "Usuario no existe";
-                        }
-                        else if (String.Compare(trozos[1], "4") == 0)
-                        {
-                            label1.Text = "Usuario ya logueado en otra secion";
-                        }
-                        else
-                        {
-                            label1.Text = "Erro al hacer el login";
-                        }
-
-                        break;
-
-                    case 2: // Resposta deslogin
-                        if (String.Compare(trozos[1], "1") == 0)
-                        {
-                            label1.Text = "Delogueado con sucesso";
-                            Global.logado = 0;
-                            buttonEnvia.Enabled = false;
-                            textUser.Enabled = true;
-                            textPassword.Enabled = true;
-                            listView1.Items.Clear();
-                            checkedListBox1.Items.Clear();
-                            buttonLogin.Text = "Login";
-                            buttonRegistra.Text = "Registrar";
-                            button1.Enabled = true;
-                            textPassword.Text = "";
-                            textUser.Text = "";
-                        }
-                        else
-                        {
-                            label1.Text = "Erro al desloguear";
-                        }
-
-                        break;
-
-                    case 3: // Resposta excluir
-
-                        if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
-                        {
-                            label1.Text = "Usuario borrado con sucesso";
-                            //MessageBox.Show("Excluido com sucesso");
-                            Global.logado = 0;
-                            textUser.Enabled = true;
-                            textPassword.Enabled = true;
-                            button1.Enabled = true;
-                            listView1.Items.Clear();
-                            checkedListBox1.Items.Clear();
-                            //listView1.Enabled = false;
-                            buttonEnvia.Enabled = false;
-                            buttonRegistra.Text = "Registrar";
-                            buttonLogin.Text = "Login";
-                            textPassword.Text = "";
-                            textUser.Text = "";
-
-                        }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
-                        {
-                            label1.Text = "Erro ao excluir usuario";
-                            //MessageBox.Show("Erro ao excluir usuario");
-                        }
-                        else // Eh impossivel chegar nesse caso
-                        {
-                            label1.Text = "Credenciales incorrectas";
-                            //MessageBox.Show("Credenciais incorretas");
-                        }
-
-                        break;
-
-                    case 4: // Resposta ver usuarios conectados
-
-                        // Ja esta feito o split dentro do trozos
-
-                        //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                        listView1.Items.Clear();
-                        checkedListBox1.Items.Clear();
-                        comboUsers.Items.Clear();
-                        int quantidade = Convert.ToInt32(trozos[1]);
-                        trozos[quantidade + 1] = trozos[quantidade + 1].Split('\0')[0];
-                        radioOutro.Enabled = false;
-                        comboUsers.Enabled = false;
-                        radioTodos.Checked = true;
-                        // a partir do 2
-                        for (int i = 2; i < (quantidade * 2) + 2; i += 2)
-                        {
-
-                            if (trozos[i].Trim() != "")
+                            if (String.Compare(trozos[1], "1") == 0)
                             {
-                                // Proprio usuario
-                                if (String.Compare(trozos[i], textUser.Text) == 0)
-                                {
-                                    listView1.Items.Add(trozos[i] + " (tu)");
-                                }
-                                else
-                                {
+                                label1.Text = "Logueado con sucesso";
+                                Global.logado = 1;
+                                buttonEnvia.Enabled = true;
+                                textUser.Enabled = false;
+                                textPassword.Enabled = false;
+                                //listView1.Enabled = true;
+                                button1.Enabled = false;
+                                buttonRegistra.Text = "Deletar";
+                                buttonLogin.Text = "Logout";
 
-                                    comboUsers.Items.Add(trozos[i]);
+                            }
+                            else if (String.Compare(trozos[1], "2") == 0)
+                            {
+                                label1.Text = "Usuario o contrasena incorrectos";
+                            }
+                            else if (String.Compare(trozos[1], "0") == 0)
+                            {
+                                label1.Text = "Usuario no existe";
+                            }
+                            else if (String.Compare(trozos[1], "4") == 0)
+                            {
+                                label1.Text = "Usuario ya logueado en otra secion";
+                            }
+                            else
+                            {
+                                label1.Text = "Erro al hacer el login";
+                            }
 
-                                    if (String.Compare(trozos[i + 1].Split('\0')[0], "0") == 0)
+                            break;
+
+                        case 2: // Resposta deslogin
+                            if (String.Compare(trozos[1], "1") == 0)
+                            {
+                                label1.Text = "Delogueado con sucesso";
+                                Global.logado = 0;
+                                buttonEnvia.Enabled = false;
+                                textUser.Enabled = true;
+                                textPassword.Enabled = true;
+                                listView1.Items.Clear();
+                                checkedListBox1.Items.Clear();
+                                buttonLogin.Text = "Login";
+                                buttonRegistra.Text = "Registrar";
+                                button1.Enabled = true;
+                                textPassword.Text = "";
+                                textUser.Text = "";
+                            }
+                            else
+                            {
+                                label1.Text = "Erro al desloguear";
+                            }
+
+                            break;
+
+                        case 3: // Resposta excluir
+
+                            if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
+                            {
+                                label1.Text = "Usuario borrado con sucesso";
+                                //MessageBox.Show("Excluido com sucesso");
+                                Global.logado = 0;
+                                textUser.Enabled = true;
+                                textPassword.Enabled = true;
+                                button1.Enabled = true;
+                                listView1.Items.Clear();
+                                checkedListBox1.Items.Clear();
+                                //listView1.Enabled = false;
+                                buttonEnvia.Enabled = false;
+                                buttonRegistra.Text = "Registrar";
+                                buttonLogin.Text = "Login";
+                                textPassword.Text = "";
+                                textUser.Text = "";
+
+                            }
+                            else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
+                            {
+                                label1.Text = "Erro ao excluir usuario";
+                                //MessageBox.Show("Erro ao excluir usuario");
+                            }
+                            else // Eh impossivel chegar nesse caso
+                            {
+                                label1.Text = "Credenciales incorrectas";
+                                //MessageBox.Show("Credenciais incorretas");
+                            }
+
+                            break;
+
+                        case 4: // Resposta ver usuarios conectados
+
+                            // Ja esta feito o split dentro do trozos
+
+                            //mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                            listView1.Items.Clear();
+                            checkedListBox1.Items.Clear();
+                            comboUsers.Items.Clear();
+                            int quantidade = Convert.ToInt32(trozos[1]);
+                            trozos[quantidade + 1] = trozos[quantidade + 1].Split('\0')[0];
+                            radioOutro.Enabled = false;
+                            comboUsers.Enabled = false;
+                            radioTodos.Checked = true;
+                            // a partir do 2
+                            for (int i = 2; i < (quantidade * 2) + 2; i += 2)
+                            {
+
+                                if (trozos[i].Trim() != "")
+                                {
+                                    // Proprio usuario
+                                    if (String.Compare(trozos[i], textUser.Text) == 0)
                                     {
-                                        checkedListBox1.Items.Add(trozos[i]);
-
+                                        listView1.Items.Add(trozos[i] + " (tu)");
                                     }
                                     else
                                     {
 
-                                        listView1.Items.Add(trozos[i]);
+                                        comboUsers.Items.Add(trozos[i]);
+
+                                        if (String.Compare(trozos[i + 1].Split('\0')[0], "0") == 0)
+                                        {
+                                            checkedListBox1.Items.Add(trozos[i]);
+
+                                        }
+                                        else
+                                        {
+
+                                            listView1.Items.Add(trozos[i]);
+
+                                        }
+
+
+
+
+                                        comboUsers.SelectedIndex = 0;
+                                        radioOutro.Enabled = true;
 
                                     }
-
-
-
-
-                                    comboUsers.SelectedIndex = 0;
-                                    radioOutro.Enabled = true;
 
                                 }
 
                             }
 
-                        }
-
-                        if (quantidade == 1)
-                        {
-                            label1.Text = quantidade + " jugador conectado! (tu mismo)";
-                            //MessageBox.Show(quantidade + " jugador conectado! (tu mismo)");
-                        }
-                        else
-                        {
-                            label1.Text = quantidade + " jugadores conectados!";
-                            //MessageBox.Show(quantidade + " jugadores conectados!");
-                        }
+                            if (quantidade == 1)
+                            {
+                                label1.Text = quantidade + " jugador conectado! (tu mismo)";
+                                //MessageBox.Show(quantidade + " jugador conectado! (tu mismo)");
+                            }
+                            else
+                            {
+                                label1.Text = quantidade + " jugadores conectados!";
+                                //MessageBox.Show(quantidade + " jugadores conectados!");
+                            }
 
 
-                        break;
+                            break;
 
-                    case 5: // Resposta insere usuario
-                        // Alterar esses casos
+                        case 5: // Resposta insere usuario
+                            // Alterar esses casos
 
-                        if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
-                        {
-                            label1.Text = "Registrado com sucesso";
-                            //MessageBox.Show("Registrado com sucesso");
+                            if (String.Compare(trozos[1].Split('\0')[0], "1" + textUser.Text) == 0)
+                            {
+                                label1.Text = "Registrado com sucesso";
+                                //MessageBox.Show("Registrado com sucesso");
 
-                        }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
-                        {
-                            label1.Text = "Usuario ja existe";
-                            //MessageBox.Show("Usuario ja existe");
-                        }
-                        else
-                        {
-                            label1.Text = "Erro ao registrar usuario";
-                            //MessageBox.Show("Erro ao registrar usuario");
-                        }
+                            }
+                            else if (String.Compare(trozos[1].Split('\0')[0], "2" + textUser.Text) == 0)
+                            {
+                                label1.Text = "Usuario ja existe";
+                                //MessageBox.Show("Usuario ja existe");
+                            }
+                            else
+                            {
+                                label1.Text = "Erro ao registrar usuario";
+                                //MessageBox.Show("Erro ao registrar usuario");
+                            }
 
-                        break;
-                    case 6: // Convite para jogar
+                            break;
+                        case 6: // Convite para jogar
 
-                        // So mostra quem convidou
-                        // trozos[0] = proprio codigo
-                        // trozos[1] = quem chamou
-                        // trozos[2] = idgame bd
+                            // So mostra quem convidou
+                            // trozos[0] = proprio codigo
+                            // trozos[1] = quem chamou
+                            // trozos[2] = idgame bd
 
-                        // Resposta
-                        // 7/nombre/respuesta/quieninvito/idbasedados
+                            // Resposta
+                            // 7/nombre/respuesta/quieninvito/idbasedados
 
-                        dynamic result = MessageBox.Show(trozos[1] + "te ivitou para jugar, \n\t aceptar?", "Invitacion", MessageBoxButtons.YesNo);
-                        if (result == DialogResult.Yes)
-                        {
-                            // Aceptou
-                            EnviaMensagem("7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]);
-                        }
-                        else
-                        {
-                            EnviaMensagem("7/" + textUser.Text + "/2/" + trozos[1] + "/" + trozos[2]);
-                            // Nao aceptou
-                        }
-                        // Responde aceitando ou recusando
+                            dynamic result = MessageBox.Show(trozos[1] + "te ivitou para jugar, \n\t aceptar?", "Invitacion", MessageBoxButtons.YesNo);
+                            
+                            if (result == DialogResult.Yes)
+                            {
+                                // Aceptou
+                                EnviaMensagem("7/" + textUser.Text + "/1/" + trozos[1] + "/" + trozos[2]);
+                            }
+                            else
+                            {
+                                EnviaMensagem("7/" + textUser.Text + "/2/" + trozos[1] + "/" + trozos[2]);
+                                // Nao aceptou
+                            }
+                            // Responde aceitando ou recusando
 
-                        break;
-                    case 7: // Convite para jogar
-                            // Nao existe mais o jogo que tentou entrar
+                            break;
+                        case 7: // Convite para jogar
+                                // Nao existe mais o jogo que tentou entrar
 
-                        if (String.Compare(trozos[1], "1") == 0) // Foi inserido na partida
-                        {
-                            AlteraBanner("Voce foi inserido na partida");
+                            if (String.Compare(trozos[1], "1") == 0) // Foi inserido na partida
+                            {
+                                AlteraBanner("Voce foi inserido na partida");
+                                Global.partida = 1;
+                                buttonInvitar.Text = "Acabar Partida";
+                                radioPartida.Enabled = true;
+                                checkedListBox1.Enabled = false;
+                                buttonLogin.Enabled = false;
+                                buttonRegistra.Enabled = false;
+                                // Habilita o radiobox para partida
+                                // Fazer caso que sai da partida (da para reaproveitar botao convida)
+
+                                //MessageBox.Show("Todos ya estan!");
+
+                            }
+                            else // Nao foi inserido
+                            {
+                                AlteraBanner("La partida ya no esta disponible mas!");
+
+                            }
+
+                            // Responde aceitando ou recusando
+
+                            break;
+                        case 8: // Convite para jogar
+
+                            // Acepto pero aun faltan personas
+                            if (String.Compare(trozos[1].Split('\0')[0], "0") == 0)
+                            {
+                                label1.Text = trozos[2].Split('\0')[0] + " acepto la invitacion! Pero aun faltan personas!";
+
+                            }
+                            else if (String.Compare(trozos[1].Split('\0')[0], "1") == 0) // Empezo
+                            {
+                       
+                                label1.Text = "Juego ha empezado";
+
+                                // vai mostrar no label as cartas
+
+                                int i = 0;
+
+                                // 8/1/nombre/carta1/carta2...
+                                // logo comeca no 3
+
+                                for (i = 2; i < 54; i++)
+                                {
+
+                                    label1.Text = label1.Text + trozos[i];
+
+
+                                }
+
+
+                                //MessageBox.Show("Juego ha empezado");
+
+                            }
+                            else if (String.Compare(trozos[1].Split('\0')[0], "2") == 0) // Acabo
+                            {
+
+                                label1.Text = "Juego ha acabado";
+                                buttonInvitar.Text = "Invitar";
+                                // Juego empeza ahora
+                                radioTodos.Checked = true;
+
+                                Global.partida = 0;
+                                checkedListBox1.Enabled = true;
+                                buttonRegistra.Enabled = true;
+                                buttonLogin.Enabled = true;
+                                radioPartida.Enabled = false;
+                                // Habilita as coisas de novo
+
+                            }
+                            else if (String.Compare(trozos[1].Split('\0')[0], "3") == 0)
+                            {
+
+                                label1.Text = trozos[2].Split('\0')[0] + " no acepto, partida ha sido cancelado";
+
+                                buttonInvitar.Text = "Invitar";
+                                // Juego empeza ahora
+                                radioTodos.Checked = true;
+                                radioPartida.Enabled = false;
+                                Global.partida = 0;
+                                checkedListBox1.Enabled = true;
+                                buttonRegistra.Enabled = true;
+                                buttonLogin.Enabled = true;
+                                // Habilita as coisas de novo
+
+                            }
+
+                            break;
+                        case 9: // Convite para jogar
+                                // Nao existe mais o jogo que tentou entrar
+
+                            //MessageBox.Show("Invitaciones Inviadas!");
+                            label1.Text = "Invitaciones Inviadas!";
                             Global.partida = 1;
                             buttonInvitar.Text = "Acabar Partida";
                             radioPartida.Enabled = true;
                             checkedListBox1.Enabled = false;
                             buttonLogin.Enabled = false;
                             buttonRegistra.Enabled = false;
-                            // Habilita o radiobox para partida
-                            // Fazer caso que sai da partida (da para reaproveitar botao convida)
 
-                            //MessageBox.Show("Todos ya estan!");
+                            // Responde aceitando ou recusando
+                            // Aqui vai mudar o valor do invitar para sair
 
-                        }
-                        else // Nao foi inserido
-                        {
-                            AlteraBanner("La partida ya no esta disponible mas!");
+                            break;
+                        case 10: // Mensagens recebidas
 
-                        }
+                            label1.Text = "Mensagem recebida!";
 
-                        // Responde aceitando ou recusando
-
-                        break;
-                    case 8: // Convite para jogar
-
-                        // Acepto pero aun faltan personas
-                        if (String.Compare(trozos[1].Split('\0')[0], "0") == 0)
-                        {
-                            label1.Text = trozos[2].Split('\0')[0] + " acepto la invitacion! Pero aun faltan personas!";
-
-                        }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "1") == 0) // Empezo
-                        {
-                       
-                            label1.Text = "Juego ha empezado";
-
-                            // vai mostrar no label as cartas
-
-                            int i = 0;
-
-                            // 8/1/nombre/carta1/carta2...
-                            // logo comeca no 3
-
-                            for (i = 3; i < 55; i++)
+                            // MessageBox.Show("Recebeu mensagem de:"+trozos[1]);
+                            if (String.Compare(trozos[1], textUser.Text) == 0) // Ele mesmo
                             {
+                                caixaMensagens.Text = caixaMensagens.Text + "\n\n" + "Tu:\n" + trozos[3];
 
-                                label1.Text = label1.Text + trozos[i];
+                            }
+                            else
+                            {
+                                caixaMensagens.Text = caixaMensagens.Text + "\n\n" + trozos[1] + ":\n" + trozos[3];
 
 
                             }
 
+                            break;
+                        case 11: // Mensagens enviadas
 
-                            //MessageBox.Show("Juego ha empezado");
+                            label1.Text = "Mensagenes Inviadas!";
 
-                        }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "2") == 0) // Acabo
-                        {
+                            break;
+                        case 99: // No hace nada
 
-                            label1.Text = "Juego ha acabado";
-                            buttonInvitar.Text = "Invitar";
-                            // Juego empeza ahora
-                            radioTodos.Checked = true;
+                            // Responde aceitando ou recusando
+                            break;
 
-                            Global.partida = 0;
-                            checkedListBox1.Enabled = true;
-                            buttonRegistra.Enabled = true;
-                            buttonLogin.Enabled = true;
-                            radioPartida.Enabled = false;
-                            // Habilita as coisas de novo
+                        default:
+                            label1.Text = "Mensagem recebida desconhecida";
+                            //MessageBox.Show("Mensagem recebida desconhecida");
+                            break;
+                    }
 
-                        }
-                        else if (String.Compare(trozos[1].Split('\0')[0], "3") == 0)
-                        {
-
-                            label1.Text = trozos[2].Split('\0')[0] + " no acepto, partida ha sido cancelado";
-
-                            buttonInvitar.Text = "Invitar";
-                            // Juego empeza ahora
-                            radioTodos.Checked = true;
-                            radioPartida.Enabled = false;
-                            Global.partida = 0;
-                            checkedListBox1.Enabled = true;
-                            buttonRegistra.Enabled = true;
-                            buttonLogin.Enabled = true;
-                            // Habilita as coisas de novo
-
-                        }
-
-                        break;
-                    case 9: // Convite para jogar
-                            // Nao existe mais o jogo que tentou entrar
-
-                        //MessageBox.Show("Invitaciones Inviadas!");
-                        label1.Text = "Invitaciones Inviadas!";
-                        Global.partida = 1;
-                        buttonInvitar.Text = "Acabar Partida";
-                        radioPartida.Enabled = true;
-                        checkedListBox1.Enabled = false;
-                        buttonLogin.Enabled = false;
-                        buttonRegistra.Enabled = false;
-
-                        // Responde aceitando ou recusando
-                        // Aqui vai mudar o valor do invitar para sair
-
-                        break;
-                    case 10: // Mensagens recebidas
-
-                        label1.Text = "Mensagem recebida!";
-
-                        // MessageBox.Show("Recebeu mensagem de:"+trozos[1]);
-                        if (String.Compare(trozos[1], textUser.Text) == 0) // Ele mesmo
-                        {
-                            caixaMensagens.Text = caixaMensagens.Text + "\n\n" + "Tu:\n" + trozos[3];
-
-                        }
-                        else
-                        {
-                            caixaMensagens.Text = caixaMensagens.Text + "\n\n" + trozos[1] + ":\n" + trozos[3];
-
-
-                        }
-
-                        break;
-                    case 11: // Mensagens enviadas
-
-                        label1.Text = "Mensagenes Inviadas!";
-
-                        break;
-                    case 99: // No hace nada
-
-                        // Responde aceitando ou recusando
-                        break;
-
-                    default:
-                        label1.Text = "Mensagem recebida desconhecida";
-                        //MessageBox.Show("Mensagem recebida desconhecida");
-                        break;
                 }
-
             }
+
+
 
         }
         public static class Global

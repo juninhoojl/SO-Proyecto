@@ -49,12 +49,16 @@ node * new_node(int socket, char name[MAXNOME]){
     }
     
     // Vai passar o nome e o socket dele
-    
+	strcpy(newnode->username, name);
+	
     newnode->socket = socket;
     newnode->emjogo = 0;
     newnode->pontos = 0;
-    strcpy(newnode->username, name);
-    
+	newnode->jugadores_momento=0;
+	newnode->jugadores_partida=0;
+	newnode->pontos=0;
+	newnode->partida=0;
+	
     newnode->prev = NULL;
     newnode->next = NULL;
     
