@@ -738,7 +738,10 @@ void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]){
 	while(atual && tam>0){
 		if(atual->partida == idpartida){
 			
-			strcpy(dono->sequencia[i],atual->username);
+			// Pessoa na partida
+			
+			printf("PESSOA NA PARTIDA =%s\n",atual->username); 
+			// strcpy(dono->sequencia[i],atual->username);
 			
 			i+=1;
 			tam-=1;

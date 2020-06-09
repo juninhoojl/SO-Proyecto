@@ -340,9 +340,13 @@ void *AtenderCliente (void *args_void){
 						printf("Sequencia de jogo %d\n",teste(2,3));
 						
 						node * donod = search_dono(lista, idbdgames);
+						
+						
+						
 						printf("HAHAHAHAH Dono = %s\n",donod->username);
 						
-						//sequencia_jogo(lista,nombre);
+						printf("Sequencia de jogo TESTETTTTTTTTTTT\n");
+						sequencia_jogo(lista,nombre);
 						
 						printf("Todos ja estao prontos para comecar\n");						
 						strcpy(contesta,"8/1/Carta");// Estan todos y juego empeza
