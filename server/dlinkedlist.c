@@ -571,6 +571,91 @@ void preenche(hnode * cabeca, char name[MAXNOME]){
 	
 	return;
 }
+	
+
+// 1 a primeira eh maior
+// 0 iguais
+// 2 segunda eh maior
+int compara(carta seguinte, carta atual){
+	
+	char h = 'H', c = 'C', d = 'D', s = 'S';
+	
+	if (seguinte.numero > atual.numero) {
+		return 1; // Primeira eh maior
+		
+	}else if (seguinte.numero < atual.numero){
+		return 2; // Segunda eh maior
+		
+	}else{
+		// Aqui entra a comparacao dos nipes
+		if (seguinte.naipe == h) { // Maior naipe
+			return 1; // Primeira eh maior
+			
+		}else if (seguinte.naipe == s){ // Menor naipe
+			return 2; // Segunda eh maior
+			
+		}else if(seguinte.naipe == c && atual.naipe != h){
+			return 1; // Primeira eh maior
+			
+		}else if(seguinte.naipe == d && atual.naipe == s){
+			return 1; // Primeira ganhou
+			
+		}else{
+			return 2; // Segunda eh maior
+		}
+		
+		return 1; // Primeira eh maior
+	}
+}
 
 
-
+int aposta(hnode * cabeca, char dono[MAXNOME], char jogador[MAXNOME], int aposta){
+	
+	// 1 - acha que eh maior
+	// 2 - acha que eh menor
+	// Nao tem como ser igual por conta dos naipes
+	
+	// Busca dono
+	node * ndono = search_node(cabeca,dono);
+	
+	// Busca quem jogou
+	node * jogador = search_node(cabeca,jogador);
+	
+	int resaposta = compara(ndono->baralho[ndono->poscarta+1], ndono->baralho[ndono->poscarta]);
+	
+	ndono->poscarta+=1; // Movimenta para a seguinte ja
+	
+	if (resaposta == 1 && aposta == 1) { // maior
+		
+		jogador->pontos+=1;
+		return 1; // disse que era maior e eh maior (acertou)
+		
+	}else if(resaposta == 1 && aposta == 2){ // Disse que era menor e eh maior
+		
+		jogador->pontos-=3;
+		return 2;
+		
+	}else if(resaposta == 2 && aposta == 2){ // Disse que era menor e eh menor (acertou)
+		
+		jogador->pontos+=1;
+		return 3;
+		
+	}else{ // Disse que era maior e eh menor
+		
+		jogador->pontos-=3;
+		return  4;
+		
+	}
+	
+	/*
+		A funcao que recebe o retorno dessa daqui ja deve conferir
+		se a partida esta a ponto de acabar. 
+		Fazer funcao para acabar partida que vai basicamente salvar na base de dados
+		e mostrar o resultado para todos da partida
+	
+	*/
+	
+}
+	
+	
+	

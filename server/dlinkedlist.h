@@ -119,4 +119,8 @@ void retira_partida(hnode * cabeca, char name[MAXNOME]);
 
 void preenche(hnode * cabeca, char name[MAXNOME]);
 
+int compara(carta seguinte, carta atual);
+
+int aposta(hnode * cabeca, char dono[MAXNOME], char jogador[MAXNOME], int aposta);
+
 #endif /* dlinkedlist_h */
