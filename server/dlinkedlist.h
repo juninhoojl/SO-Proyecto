@@ -128,4 +128,6 @@ void make_dono(hnode * cabeca, char name[MAXNOME]);
 
 char * search_dono(hnode * cabeca, unsigned int idpartida);
 
+int isultima(hnode * cabeca, char jogador[MAXNOME]);
+
 #endif /* dlinkedlist_h */

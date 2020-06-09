@@ -698,5 +698,39 @@ char * search_dono(hnode * cabeca, unsigned int idpartida){
 	
 }
 	
+int isultima(hnode * cabeca, char jogador[MAXNOME]){
+	
+	// Busca dono
+	
+	struct Node * atual = cabeca->first;
+	
+	// Busca quem jogou
+	node * sjogador = search_node(cabeca,jogador);
+	
+	unsigned int idpartida = sjogador->partida;
+	//namedono = (char*)malloc(MAXNOME*sizeof(char));
+	
+	while(atual){
+		if(atual->partida == idpartida && atual->isdono == 1){ 
+			
+			printf("Dono da partida %u: %s\n",idpartida,atual->username);
+			break;
+			//return atual->username;
+		}
+		atual = atual->next;
+	}
+	
+	// cartas de 0 ate 51
+	if(atual->poscarta == 51){
+		
+		return 1;
+		
+	}else{
+		
+		return 0;
+	}
+	
+	
+}
 	
 	
