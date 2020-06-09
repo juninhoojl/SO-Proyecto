@@ -34,7 +34,7 @@ namespace Cliente
 
             // Set the MaximizeBox to false to remove the maximize box.
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.MinimizeBox = true;
 
             // Set the start position of the form to the center of the screen.
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -80,7 +80,7 @@ namespace Cliente
             // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-            IPAddress direc = IPAddress.Parse("192.168.1.62");
+            IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
