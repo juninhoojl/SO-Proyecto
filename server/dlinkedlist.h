@@ -18,6 +18,11 @@
 #define MAXELE 10
 #define SEPARADOR 1
 
+typedef struct Carta{
+	int numero; // 1 2 3 4 5 6 7 8 9 10 11 12 13 repreentando de A a K
+	char naipe; // 1 = Ouros, 2 = Espada, 3 = Copas, 4 = Paus
+}carta;
+
 typedef struct Node{
     int socket;
     char username[MAXNOME];
@@ -29,6 +34,9 @@ typedef struct Node{
     int data;//Pontos
     struct Node * next;
     struct Node * prev;
+	struct Carta baralho[52];
+	int poscarta;
+	
 }node;
 
 typedef struct Hnode{

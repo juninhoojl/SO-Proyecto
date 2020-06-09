@@ -233,10 +233,9 @@ void *AtenderCliente (void *args_void){
 			alterlista=1;
 			printf("Codigo 6\n");
 			i = 0;
-			
+			int aux = 0;
 			unsigned int idgame = 0;
-			
-			
+			carta temp;
 			char qjugador[5];
 			p = strtok( NULL, "/");
 			strcpy(qjugador, p);
@@ -250,6 +249,51 @@ void *AtenderCliente (void *args_void){
 			// Cria partida e devolve id
 			idgame=cria_partida(conn);
 			retira_partida(lista,nombre);
+			// Aqui ja pode gerar um baralho e colocar indice igual a 0
+			
+			node * agora = search_node(lista,nombre);
+			
+			// INICIO CRIACAO BARALHO
+			printf("\nCRIANDO CARTAS\n"); 
+			
+			for (aux=0; aux<13; aux+=1){
+				agora->baralho[aux].numero = aux+1;
+				agora->baralho[aux].naipe = 'C';
+			}
+			for (aux=13; aux<26; aux+=1){
+				agora->baralho[aux].numero = aux+1-13;
+				agora->baralho[aux].naipe = 'D';
+			}
+			for (aux=26; aux<39; aux+=1){
+				agora->baralho[aux].numero = aux+1-26;
+				agora->baralho[aux].naipe = 'H';
+			}
+			for (aux=39; aux<52; aux+=1){
+				agora->baralho[aux].numero = aux+1-39;
+				agora->baralho[aux].naipe = 'S';
+			}
+			
+			for (int aux = 0; aux < 52; aux++){
+				
+				int r = rand() % 52;
+				
+				temp.numero = agora->baralho[aux].numero;
+				temp.naipe = agora->baralho[aux].naipe;
+				agora->baralho[aux].numero = agora->baralho[r].numero;
+				agora->baralho[aux].naipe = agora->baralho[r].naipe;
+				agora->baralho[r].numero = temp.numero;
+				agora->baralho[r].naipe = temp.naipe;
+				
+			}
+			
+			aux = 0;
+			for (aux=0; aux<52; aux++) {
+				printf("Carta %d => %d%c\n",aux,agora->baralho[aux].numero,agora->baralho[aux].naipe);
+			}
+			// FIM CRIACAO BARALHO
+			
+			
+			
 			// Ate aqui ja tenho quem criou o jogo
 			// Agora relaciono o criador do jogo
 			printf("Nome de quem solicitou = %s\n",nombre); 
@@ -334,7 +378,7 @@ void *AtenderCliente (void *args_void){
 						strcat(respuesta, nombre);
 						
 						printf("Todos ja estao prontos para comecar\n");						
-						strcpy(contesta,"8/1/");// Estan todos y juego empeza
+						strcpy(contesta,"8/1/Carta");// Estan todos y juego empeza
 						strcat(contesta,nombre);
 						
 					}else{ // Ainda faltam pessoas
