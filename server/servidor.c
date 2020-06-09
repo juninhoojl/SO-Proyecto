@@ -437,6 +437,19 @@ void *AtenderCliente (void *args_void){
 			free(vetsockets);
 			// envia isso para todos se for codigo 2
 			
+		}else if(codigo==9){
+			// Funcao para apostar
+			
+			// Primeiro vai achar o dono da partida por meio da busca de todos mesmo
+			// porem vai buscar qual deles tem o mesmo gameID e tem o isdono = 1;
+			
+			// 9/
+			
+			
+			// Pode passar a vez (simplesmente vai descontar ponto e mandar de novo);
+			
+			
+			
 		}
 		
 		

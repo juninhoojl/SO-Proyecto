@@ -53,6 +53,7 @@ node * new_node(int socket, char name[MAXNOME]){
     newnode->socket = socket;
     newnode->emjogo = 0;
     newnode->pontos = 0;
+	newnode->isdono = 0;
     strcpy(newnode->username, name);
     
     newnode->prev = NULL;
@@ -504,7 +505,7 @@ void retira_partida(hnode * cabeca, char name[MAXNOME]){
     user->jugadores_partida=0;
     user->pontos=0;
     user->partida=0;
-
+	user->isdono=0;
     // Nao esta mais em jogo, quantidades 0
     // pontos   0
     
@@ -523,6 +524,12 @@ unsigned int get_partida(hnode * cabeca, char name[MAXNOME]){
 	
 }
 
+void make_dono(hnode * cabeca, char name[MAXNOME]){
+	
+	node * dono = search_node(cabeca, name);
+	dono->isdono = 1;
+	
+}
 
 void preenche(hnode * cabeca, char name[MAXNOME]){
 	
@@ -609,40 +616,56 @@ int compara(carta seguinte, carta atual){
 }
 
 
-int aposta(hnode * cabeca, char dono[MAXNOME], char jogador[MAXNOME], int aposta){
+int aposta(hnode * cabeca, char jogador[MAXNOME], int aposta){
 	
 	// 1 - acha que eh maior
 	// 2 - acha que eh menor
 	// Nao tem como ser igual por conta dos naipes
-	
+
 	// Busca dono
-	node * ndono = search_node(cabeca,dono);
+	
+	struct Node * atual = cabeca->first;
 	
 	// Busca quem jogou
-	node * jogador = search_node(cabeca,jogador);
+	node * sjogador = search_node(cabeca,jogador);
+
+	unsigned int idpartida = sjogador->partida;
+	//namedono = (char*)malloc(MAXNOME*sizeof(char));
 	
+	while(atual){
+		if(atual->partida == idpartida && atual->isdono == 1){ 
+			
+			printf("Dono da partida %u: %s\n",idpartida,atual->username);
+			break;
+			//return atual->username;
+		}
+		atual = atual->next;
+	}
+	
+	node * ndono = atual;
+
 	int resaposta = compara(ndono->baralho[ndono->poscarta+1], ndono->baralho[ndono->poscarta]);
 	
 	ndono->poscarta+=1; // Movimenta para a seguinte ja
 	
 	if (resaposta == 1 && aposta == 1) { // maior
 		
-		jogador->pontos+=1;
+		sjogador->pontos+=1;
 		return 1; // disse que era maior e eh maior (acertou)
 		
 	}else if(resaposta == 1 && aposta == 2){ // Disse que era menor e eh maior
 		
-		jogador->pontos-=3;
+		sjogador->pontos-=3;
 		return 2;
 		
 	}else if(resaposta == 2 && aposta == 2){ // Disse que era menor e eh menor (acertou)
 		
-		jogador->pontos+=1;
+		sjogador->pontos+=1;
 		return 3;
 		
 	}else{ // Disse que era maior e eh menor
 		
-		jogador->pontos-=3;
+		sjogador->pontos-=3;
 		return  4;
 		
 	}
@@ -654,6 +677,24 @@ int aposta(hnode * cabeca, char dono[MAXNOME], char jogador[MAXNOME], int aposta
 		e mostrar o resultado para todos da partida
 	
 	*/
+	
+}
+	
+char * search_dono(hnode * cabeca, unsigned int idpartida){
+	
+	// O tamanho vai ser int (numero conectados) + tam*maxnome
+	//char * namedono;
+	struct Node * atual = cabeca->first;
+	//namedono = (char*)malloc(MAXNOME*sizeof(char));
+	
+	while(atual){
+		if(atual->partida == idpartida && atual->isdono == 1){ 
+			
+			printf("Dono da partida %u: %s\n",idpartida,atual->username);
+			return atual->username;
+		}
+		atual = atual->next;
+	}
 	
 }
 	

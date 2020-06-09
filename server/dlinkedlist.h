@@ -34,6 +34,7 @@ typedef struct Node{
     int data;//Pontos
     struct Node * next;
     struct Node * prev;
+	int isdono; // Somente o dono da partida vai ter isso igual a 1
 	struct Carta baralho[52];
 	int poscarta;
 	
@@ -121,6 +122,10 @@ void preenche(hnode * cabeca, char name[MAXNOME]);
 
 int compara(carta seguinte, carta atual);
 
-int aposta(hnode * cabeca, char dono[MAXNOME], char jogador[MAXNOME], int aposta);
+int aposta(hnode * cabeca, char jogador[MAXNOME], int aposta);
+
+void make_dono(hnode * cabeca, char name[MAXNOME]);
+
+char * search_dono(hnode * cabeca, unsigned int idpartida);
 
 #endif /* dlinkedlist_h */
