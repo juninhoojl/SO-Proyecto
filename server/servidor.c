@@ -337,16 +337,19 @@ void *AtenderCliente (void *args_void){
 						strcpy(respuesta,"7/1/"); // Inserido na partida
 						strcat(respuesta, nombre);
 						
-						printf("Sequencia de jogo %d\n",teste(2,3));
-						
 						node * donod = search_dono(lista, idbdgames);
-						
-						
 						
 						printf("HAHAHAHAH Dono = %s\n",donod->username);
 						
 						printf("Sequencia de jogo TESTETTTTTTTTTTT\n");
+						
+						printf("Sequencia de jogo\n");
+						
 						sequencia_jogo(lista,nombre);
+						
+						
+						printf("PESSOA SEQ1 = %s\n",donod->sequencia[0]);
+						printf("PESSOA SEQ2 = %s\n",donod->sequencia[1]);
 						
 						printf("Todos ja estao prontos para comecar\n");						
 						strcpy(contesta,"8/1/Carta");// Estan todos y juego empeza

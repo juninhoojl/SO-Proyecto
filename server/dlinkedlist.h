@@ -134,7 +134,4 @@ int isultima(hnode * cabeca, char jogador[MAXNOME]);
 
 void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]);
 
-int teste(int a, int b);
-	
-
 #endif /* dlinkedlist_h */

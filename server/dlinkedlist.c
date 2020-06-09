@@ -754,11 +754,6 @@ void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]){
 
 }
 	
-	
-int teste(int a, int b){
-	
-	return a+b;
-}
 // Funcao para selecionar proximo
 
 
