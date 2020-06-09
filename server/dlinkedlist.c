@@ -524,7 +524,53 @@ unsigned int get_partida(hnode * cabeca, char name[MAXNOME]){
 }
 
 
-
+void preenche(hnode * cabeca, char name[MAXNOME]){
+	
+	//pthread_mutex_lock(&cabeca->mutexvar);
+	
+	node * pessoa = search_node(cabeca,name);
+	pessoa->poscarta = 0;// inicia na posicao zero e vai comparar sempre com a seguinte
+	
+	carta temp;
+	printf("Comecou a embaralhar\n");
+	// loop de 13 e poe 4 em cada
+	int aux = 0;
+	for (aux=0; aux<13; aux+=1){
+		pessoa->baralho[aux].numero = aux+1;
+		pessoa->baralho[aux].naipe = 'C';
+	}
+	for (aux=13; aux<26; aux+=1){
+		pessoa->baralho[aux].numero = aux+1-13;
+		pessoa->baralho[aux].naipe = 'D';
+	}
+	for (aux=26; aux<39; aux+=1){
+		pessoa->baralho[aux].numero = aux+1-26;
+		pessoa->baralho[aux].naipe = 'H';
+	}
+	for (aux=39; aux<52; aux+=1){
+		pessoa->baralho[aux].numero = aux+1-39;
+		pessoa->baralho[aux].naipe = 'S';
+	}
+	
+	for (int aux = 0; aux < 52; aux++){
+		int r = rand() % 52;
+		temp.numero = pessoa->baralho[aux].numero;
+		temp.naipe = pessoa->baralho[aux].naipe;
+		pessoa->baralho[aux].numero = pessoa->baralho[r].numero;
+		pessoa->baralho[aux].naipe = pessoa->baralho[r].naipe;
+		pessoa->baralho[r].numero = temp.numero;
+		pessoa->baralho[r].naipe = temp.naipe;
+	}
+	
+	printf("Terminou de embaralhar\n");
+	//for (aux=0; aux<52; aux++) {
+	//	printf("Carta %d => %d%c\n",aux,pessoa->baralho[aux].numero,pessoa->baralho[aux].naipe);
+	//}
+	
+	//pthread_mutex_unlock(&cabeca->mutexvar);
+	
+	return;
+}
 
 
 

@@ -117,4 +117,6 @@ char * string_conectados_indicador_jogo(hnode * cabeca);
 // Reseta valores de um usuario apos sair de uma partida
 void retira_partida(hnode * cabeca, char name[MAXNOME]);
 
+void preenche(hnode * cabeca, char name[MAXNOME]);
+
 #endif /* dlinkedlist_h */
