@@ -111,7 +111,6 @@ int existe_game(MYSQL *conn, unsigned int id_game){
 	
 	return atoi(row[0]);
 }
-
 	
 	
 int loga_user(char user[], char senha[], MYSQL *conn){

@@ -732,5 +732,39 @@ int isultima(hnode * cabeca, char jogador[MAXNOME]){
 	
 	
 }
+
+void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]){
 	
+	
+	struct Node * atual = cabeca->first;
+	
+	int i=0;
+	
+	// Busca quem jogou
+	node * sjogador = search_node(cabeca,jogador);
+	
+	unsigned int idpartida = sjogador->partida;
+	// Encontra o dono da partida
+	// coloca o vetor de pessoas ai
+
+	int tam = qtd_conectados_partida(cabeca, idpartida);
+	
+	node * donop = search_node(cabeca,search_dono(cabeca,idpartida));
+
+	while(atual && tam>0){
+		if(atual->partida == idpartida){
+			
+			donop->sequencia[i] = atual->username;
+			
+			i+=1;
+			tam-=1;
+		}
+		atual = atual->next;
+	}
+	
+
+}
+// Funcao para selecionar proximo
+
+
 	

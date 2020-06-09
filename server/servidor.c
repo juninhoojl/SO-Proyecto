@@ -443,6 +443,12 @@ void *AtenderCliente (void *args_void){
 			// Primeiro vai achar o dono da partida por meio da busca de todos mesmo
 			// porem vai buscar qual deles tem o mesmo gameID e tem o isdono = 1;
 			
+			//
+			
+			// Vai fazer o que tem que fazer na aposta
+			// conferir se eh ultima partida e enviar a carta na ppsicao poscarta
+			// vai ser interessante colocar o ultimo a jogar e quem vai ser o proximo
+			// Para mostrar na tela
 			// 9/
 			
 			

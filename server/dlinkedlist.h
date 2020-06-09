@@ -36,7 +36,9 @@ typedef struct Node{
     struct Node * prev;
 	int isdono; // Somente o dono da partida vai ter isso igual a 1
 	struct Carta baralho[52];
+	int proxJoga; // de 0 ate 3 no maximo
 	int poscarta;
+	char * sequencia[4]; // 4 jogadores
 	
 }node;
 
@@ -129,5 +131,8 @@ void make_dono(hnode * cabeca, char name[MAXNOME]);
 char * search_dono(hnode * cabeca, unsigned int idpartida);
 
 int isultima(hnode * cabeca, char jogador[MAXNOME]);
+
+void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]);
+	
 
 #endif /* dlinkedlist_h */
