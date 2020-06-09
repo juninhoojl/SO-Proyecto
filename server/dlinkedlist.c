@@ -743,6 +743,8 @@ void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]){
 			printf("PESSOA NA PARTIDA =%s\n",atual->username); 
 			// strcpy(dono->sequencia[i],atual->username);
 			
+			dono->sequencia[i] = (char*)malloc(MAXNOME*sizeof(char));
+			strcpy(dono->sequencia[i], atual->username);
 			i+=1;
 			tam-=1;
 		}
