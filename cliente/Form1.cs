@@ -80,7 +80,7 @@ namespace Cliente
             // IPAddress direc = IPAddress.Parse("147.83.117.22");
 
             // LOCAL ###########
-            IPAddress direc = IPAddress.Parse("192.168.1.62");
+            IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
             IPEndPoint ipep = new IPEndPoint(direc, 50004);
@@ -387,6 +387,23 @@ namespace Cliente
                         {
                        
                             label1.Text = "Juego ha empezado";
+
+                            // vai mostrar no label as cartas
+
+                            int i = 0;
+
+                            // 8/1/nombre/carta1/carta2...
+                            // logo comeca no 3
+
+                            for (i = 3; i < 55; i++)
+                            {
+
+                                label1.Text = label1.Text + trozos[i];
+
+
+                            }
+
+
                             //MessageBox.Show("Juego ha empezado");
 
                         }
@@ -753,6 +770,7 @@ namespace Cliente
 
         }
 
+
         private void button3_Click_1(object sender, EventArgs e)
         {
             panel1.Show();
@@ -797,6 +815,11 @@ namespace Cliente
         }
 
         private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
         {
 
         }

@@ -1,5 +1,73 @@
 #include "servidor.h"
 
+
+void embaralhar(carta *vet, int vetSize){
+	
+	carta temp;
+	
+	for (int i = 0; i < vetSize; i++){
+		
+		int r = rand() % vetSize;
+		
+		temp.numero = vet[i].numero;
+		temp.naipe = vet[i].naipe;
+		vet[i].numero = vet[r].numero;
+		vet[i].naipe = vet[r].naipe;
+		vet[r].numero = temp.numero;
+		vet[r].naipe = temp.naipe;
+		
+	}
+}
+
+	
+char * scartas(carta * baralho){
+	
+	char * scartas = (char *)malloc(208*sizeof(char));
+	int i = 0;
+	
+	for (i=0; i<52; i++) {
+		if(i==51){
+			sprintf(scartas,"%s%d%c",scartas,baralho[i].numero,baralho[i].naipe);
+		}else{
+			sprintf(scartas,"%s%d%c/",scartas,baralho[i].numero,baralho[i].naipe);
+		}
+		
+	}
+	
+	return scartas;
+}
+
+void preenche(carta * baralho){
+	
+	// loop de 13 e poe 4 em cada
+	int i = 0;
+	for (i=0; i<13; i+=1){
+		baralho[i].numero = i+1;
+		baralho[i].naipe = 'C';
+	}
+	for (i=13; i<26; i+=1){
+		baralho[i].numero = i+1-13;
+		baralho[i].naipe = 'D';
+	}
+	for (i=26; i<39; i+=1){
+		baralho[i].numero = i+1-26;
+		baralho[i].naipe = 'H';
+	}
+	for (i=39; i<52; i+=1){
+		baralho[i].numero = i+1-39;
+		baralho[i].naipe = 'S';
+	}
+	
+}
+
+	
+void mostra(carta * baralho){
+	int i = 0;
+	for (i=0; i<52; i++) {
+		printf("Carta %d => %d%c\n",i,baralho[i].numero,baralho[i].naipe);
+	}
+}
+	
 void *AtenderCliente (void *args_void){
 	
 	// Antes de tudo deve selecionar o head em um no aqui
@@ -210,13 +278,7 @@ void *AtenderCliente (void *args_void){
 			p = strtok( NULL, "/");
 			strcpy(senha, p);
 			
-			//char *hsenha = malloc((MD5_DIGEST_LENGTH*2+1)*sizeof( char));
-			
-			//hsenha = smd5(senha,hsenha);
-			
 			printf("%s\n",senha);
-			
-			
 			situacao=insere_user(nombre,senha,conn);
 			
 			if(situacao == 1){
@@ -226,8 +288,6 @@ void *AtenderCliente (void *args_void){
 			}else{
 				sprintf(respuesta,"5/3%s",nombre); // Erro ao inserir
 			}
-			
-			//free(hsenha);
 			
 		}else if(codigo==6){ // insere USUARIO servico = 6/quemChamou/quantidade/invitado1/invitado2/invitado3...
 			alterlista=1;
@@ -244,14 +304,8 @@ void *AtenderCliente (void *args_void){
 			int qjugadores =  atoi(qjugador);
 			printf("Quantidade de jogadores = %d",qjugadores);
 			char convidado[TAMUSERNAME];
-			// Ya tenemos el nombre
-			
-			// Cria partida insere quem convidou e faz loop com os outros
-			// Cria partida e devolve id
 			idgame=cria_partida(conn);
 			retira_partida(lista,nombre);
-			// Ate aqui ja tenho quem criou o jogo
-			// Agora relaciono o criador do jogo
 			printf("Nome de quem solicitou = %s\n",nombre); 
 			
 			relaciona_jugador(conn, nombre, idgame);
@@ -261,8 +315,6 @@ void *AtenderCliente (void *args_void){
 			alter_jugadores_partida(lista,nombre,qjugadores+1);
 			sum_jugadores_momento(lista,nombre);// Incrementa um nos jogadores
 			alter_idgame(lista, nombre, idgame);
-			// A cada resposta altera osvalores de quem criou a partida
-			
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
 			// 6/quemchamou/idgame
 			char conviteres[MAXNOME+10];
@@ -333,9 +385,28 @@ void *AtenderCliente (void *args_void){
 						strcpy(respuesta,"7/1/"); // Inserido na partida
 						strcat(respuesta, nombre);
 						
-						printf("Todos ja estao prontos para comecar\n");						
+						printf("Todos ja estao prontos para comecar\n");
+						
+						carta baralho[52];
+						preenche(baralho);
+						mostra(baralho);
+						printf("DEPOIS\n\n");
+						embaralhar(baralho, 52);
+						mostra(baralho);
+						char * stcartas = scartas(baralho);
+						
+						printf("\n%s\n",stcartas);
+						
+						
+						// 208 eh so o tamanho do baralho
+						
+						
 						strcpy(contesta,"8/1/");// Estan todos y juego empeza
 						strcat(contesta,nombre);
+						
+						strcat(contesta,stcartas);
+						
+						free(stcartas);
 						
 					}else{ // Ainda faltam pessoas
 						
