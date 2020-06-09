@@ -305,9 +305,6 @@ int relaciona_jugador(MYSQL *conn, char jugador[], unsigned int id_game){
 	
 	//INSERT INTO Relaciona (Game,Player) VALUES (1,'Luiz');
 	printf("id_game = %u\n",id_game);
-	
-	
-	
 	strcpy (query, "INSERT INTO Relaciona (Game,Player) VALUES ('");
 	sprintf(id_games, "%u", id_game);
 	strcat (query, id_games);

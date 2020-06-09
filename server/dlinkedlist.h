@@ -128,11 +128,13 @@ int aposta(hnode * cabeca, char jogador[MAXNOME], int aposta);
 
 void make_dono(hnode * cabeca, char name[MAXNOME]);
 
-char * search_dono(hnode * cabeca, unsigned int idpartida);
+node * search_dono(hnode * cabeca, unsigned int idpartida);
 
 int isultima(hnode * cabeca, char jogador[MAXNOME]);
 
 void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]);
+
+int teste(int a, int b);
 	
 
 #endif /* dlinkedlist_h */

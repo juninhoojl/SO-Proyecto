@@ -249,6 +249,8 @@ void *AtenderCliente (void *args_void){
 			// Cria partida e devolve id
 			idgame=cria_partida(conn);
 			retira_partida(lista,nombre);
+			
+			make_dono(lista,nombre);
 			// Aqui ja pode gerar um baralho e colocar indice igual a 0
 			preenche(lista,nombre);
 			
@@ -334,6 +336,13 @@ void *AtenderCliente (void *args_void){
 						
 						strcpy(respuesta,"7/1/"); // Inserido na partida
 						strcat(respuesta, nombre);
+						
+						printf("Sequencia de jogo %d\n",teste(2,3));
+						
+						node * donod = search_dono(lista, idbdgames);
+						printf("HAHAHAHAH Dono = %s\n",donod->username);
+						
+						//sequencia_jogo(lista,nombre);
 						
 						printf("Todos ja estao prontos para comecar\n");						
 						strcpy(contesta,"8/1/Carta");// Estan todos y juego empeza
@@ -428,6 +437,7 @@ void *AtenderCliente (void *args_void){
 				if(vetsockets[i] != suser){
 					write(vetsockets[i], contesta, strlen(contesta));
 				}
+				printf("DDDDDD Retirou da partida\n");
 				retira_partida(lista,get_nombre(lista,vetsockets[i]));
 				vetsockets[0]-=1;
 				i++;

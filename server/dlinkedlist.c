@@ -499,6 +499,8 @@ char * string_conectados_indicador_jogo(hnode * cabeca){
 
 void retira_partida(hnode * cabeca, char name[MAXNOME]){
 	
+	
+	printf("Retirando DA PARTIDA -> %s\n",name);
     node * user = search_node(cabeca,name);
     user->emjogo=0;
     user->jugadores_momento=0;
@@ -631,18 +633,8 @@ int aposta(hnode * cabeca, char jogador[MAXNOME], int aposta){
 
 	unsigned int idpartida = sjogador->partida;
 	//namedono = (char*)malloc(MAXNOME*sizeof(char));
-	
-	while(atual){
-		if(atual->partida == idpartida && atual->isdono == 1){ 
-			
-			printf("Dono da partida %u: %s\n",idpartida,atual->username);
-			break;
-			//return atual->username;
-		}
-		atual = atual->next;
-	}
-	
-	node * ndono = atual;
+
+	node * ndono = search_dono(cabeca,idpartida);
 
 	int resaposta = compara(ndono->baralho[ndono->poscarta+1], ndono->baralho[ndono->poscarta]);
 	
@@ -680,7 +672,7 @@ int aposta(hnode * cabeca, char jogador[MAXNOME], int aposta){
 	
 }
 	
-char * search_dono(hnode * cabeca, unsigned int idpartida){
+node * search_dono(hnode * cabeca, unsigned int idpartida){
 	
 	// O tamanho vai ser int (numero conectados) + tam*maxnome
 	//char * namedono;
@@ -691,7 +683,7 @@ char * search_dono(hnode * cabeca, unsigned int idpartida){
 		if(atual->partida == idpartida && atual->isdono == 1){ 
 			
 			printf("Dono da partida %u: %s\n",idpartida,atual->username);
-			return atual->username;
+			return atual;
 		}
 		atual = atual->next;
 	}
@@ -710,18 +702,10 @@ int isultima(hnode * cabeca, char jogador[MAXNOME]){
 	unsigned int idpartida = sjogador->partida;
 	//namedono = (char*)malloc(MAXNOME*sizeof(char));
 	
-	while(atual){
-		if(atual->partida == idpartida && atual->isdono == 1){ 
-			
-			printf("Dono da partida %u: %s\n",idpartida,atual->username);
-			break;
-			//return atual->username;
-		}
-		atual = atual->next;
-	}
+	node * dono = search_dono(cabeca,idpartida);
 	
 	// cartas de 0 ate 51
-	if(atual->poscarta == 51){
+	if(dono->poscarta == 51){
 		
 		return 1;
 		
@@ -749,12 +733,12 @@ void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]){
 
 	int tam = qtd_conectados_partida(cabeca, idpartida);
 	
-	node * donop = search_node(cabeca,search_dono(cabeca,idpartida));
+	node * dono = search_dono(cabeca,idpartida);
 
 	while(atual && tam>0){
 		if(atual->partida == idpartida){
 			
-			donop->sequencia[i] = atual->username;
+			strcpy(dono->sequencia[i],atual->username);
 			
 			i+=1;
 			tam-=1;
@@ -763,6 +747,12 @@ void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]){
 	}
 	
 
+}
+	
+	
+int teste(int a, int b){
+	
+	return a+b;
 }
 // Funcao para selecionar proximo
 
