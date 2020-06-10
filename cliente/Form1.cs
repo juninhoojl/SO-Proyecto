@@ -11,7 +11,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Media;
 using System.Threading;
-
+using Cliente.Properties;
 
 namespace Cliente
 {
@@ -538,8 +538,24 @@ namespace Cliente
 
                         infoGame.Text = informacaoAnt;
 
+                        string valor = "_"+ trozos[3];
 
+                        object O = Resources.ResourceManager.GetObject(valor); //Return an object from the image chan1.png in the project
+                        imgCartaAtual.Image = (Image)O;
 
+                        // vai defininir a anterior se for diferente de zero e de pasa turno
+                        if (String.Compare(trozos[2], "0") != 0 && String.Compare(trozos[2], "5") != 0)
+                        {
+                            object Oa = Resources.ResourceManager.GetObject(Global.cartaAnterior); //Return an object from the image chan1.png in the project
+                            imgCartaAnterior.Image = (Image)Oa;
+
+                        }
+
+                        Global.cartaAnterior = valor;
+
+                        //imgCartaAtual.Image = Properties.Resources.;
+
+                        //imgCartaAtual.Image = Properties.Resources.ResourceManager.GetObject("H1");
                         // Se a pessoa nao for ela tem que desabilitar os botoes
 
                         // se a pessoa que tem que jogar eh ela, habilita
@@ -576,7 +592,7 @@ namespace Cliente
             public static int logado = 0;
             public static int partida = 0;
             public static int musica = 0;
-
+            public static string cartaAnterior = "";
 
             public static SoundPlayer splayer = new SoundPlayer(Properties.Resources.gandalf_reduzido);
 
