@@ -70,6 +70,10 @@ namespace Cliente
             radioOutro.Enabled = false;
             radioPartida.Enabled = false;
 
+            bmenor.Enabled = false;
+            bmayor.Enabled = false;
+            bpasarturno.Enabled = false;
+
         }
 
 
@@ -476,7 +480,7 @@ namespace Cliente
 
                         cartaAtual.Text = trozos[3];
 
-                        infoGame.Text = "Informacoes sobre a partida anterior";
+                        
 
                         // listViewPontos.Items.Add(trozos[1]);
                         // Tratar aqui caso seja o seguinte ou nao
@@ -492,25 +496,66 @@ namespace Cliente
 
                          }
 
-                        
+
+                        // 0    1     2  3   4   5   6     7   8   9 ...
+                        string informacaoAnt = "";
+                        if(String.Compare(trozos[2], "1") == 0)
+                        {
+                            // 12/juninho/1/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh maior (acertou)
+                            informacaoAnt = trozos[1] + " gano 2 puntos, era mayor!";
+                        }
+                        else if(String.Compare(trozos[2], "2") == 0)
+                        {
+                            // 12/juninho/2/KS/jose/2/juninho/10/jose/15 ... ->  Disse que era menor e eh maior
+                            informacaoAnt = trozos[1] + " perdio 4 puntos, no era menor!";
+                        }
+                        else if (String.Compare(trozos[2], "3") == 0)
+                        {
+                            // 12/juninho/3/KS/jose/2/juninho/10/jose/15 ... -> Disse que era menor e eh menor (acertou)
+                            informacaoAnt = trozos[1] + " gano 2 puntos, era menor!";
+                        }
+                        else if (String.Compare(trozos[2], "4") == 0)
+                        {
+                            // 12/juninho/4/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh menor
+                            informacaoAnt = trozos[1] + " perdio 4 puntos, no era mayor!";
+                        }
+                        else if (String.Compare(trozos[2], "5") == 0)
+                        {
+                            // 12/juninho/5/KS/jose/2/juninho/10/jose/15 ... -> Passou vez
+                            informacaoAnt = trozos[1] + " paso turno para "+trozos[4]+" y perdio 2 puntos!";
+                        }
+                        else // vale zero entao eh a primeira jogada
+                        {
+                            AlteraBanner("Voce foi inserido na partida");
+                            Global.partida = 1;
+                            buttonInvitar.Text = "Acabar Partida";
+                            radioPartida.Enabled = true;
+                            checkedListBox1.Enabled = false;
+                            buttonLogin.Enabled = false;
+                            buttonRegistra.Enabled = false;
+                            informacaoAnt = "Primero turno!";
+                        }
+
+                        infoGame.Text = informacaoAnt;
+
+
+
                         // Se a pessoa nao for ela tem que desabilitar os botoes
 
-                        AlteraBanner("Voce foi inserido na partida");
-                        Global.partida = 1;
-                        buttonInvitar.Text = "Acabar Partida";
-                        radioPartida.Enabled = true;
-                        checkedListBox1.Enabled = false;
-                        buttonLogin.Enabled = false;
-                        buttonRegistra.Enabled = false;
+                        // se a pessoa que tem que jogar eh ela, habilita
+                        if (String.Compare(trozos[4], textUser.Text) == 0)
+                        {
+                            bmenor.Enabled = true;
+                            bmayor.Enabled = true;
+                            bpasarturno.Enabled = true;
 
-                        // For do dqtdp+1 ate qtdp+(2*qtdp)
-                        //for
-                        // 0      1        2   3     4    5    6         7    8     9
-                        // 12 / juninho / 0 / KS / jose / 2 / juninho / 10 / jose / 15...
+                        }
+
+                            // vai ser desabilitado logo ao clicar no botao
 
 
-                        //listView1.Items.Add(trozos[i] + " (tu)");
-                        break;
+
+                            break;
                     case 99: // No hace nada
 
                         // Responde aceitando ou recusando
@@ -789,6 +834,10 @@ namespace Cliente
         // 9/juninho/2 -> Acha que a seguinte eh menor
         private void bmenor_Click(object sender, EventArgs e)
         {
+            bmenor.Enabled = false;
+            bmayor.Enabled = false;
+            bpasarturno.Enabled = false;
+
             string mensagem = "";
             mensagem = "9/" + textUser.Text + "/2/" + textUser.Text;
             EnviaMensagem(mensagem);
@@ -797,6 +846,10 @@ namespace Cliente
         // 9/juninho/3 -> Passa a vez
         private void bpasarturno_Click_1(object sender, EventArgs e)
         {
+            bmenor.Enabled = false;
+            bmayor.Enabled = false;
+            bpasarturno.Enabled = false;
+
             string mensagem = "";
             mensagem = "9/" + textUser.Text + "/3/" + textUser.Text;
             EnviaMensagem(mensagem);
@@ -805,6 +858,9 @@ namespace Cliente
         // 9/juninho/1 -> Acha que a seguinte eh maior
         private void bmayor_Click(object sender, EventArgs e)
         {
+            bmenor.Enabled = false;
+            bmayor.Enabled = false;
+            bpasarturno.Enabled = false;
 
             string mensagem = "";
             mensagem = "9/" + textUser.Text + "/1/"+textUser.Text;

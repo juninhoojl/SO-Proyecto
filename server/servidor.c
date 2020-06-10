@@ -495,6 +495,7 @@ void *AtenderCliente (void *args_void){
 			if(reqaposta == 3){ // 9/juninho/3 -> Passa a vez
 				
 				eujog->pontos-=2;
+				despaposta = 5;
 				// vai perder ponto por isso
 				printf("Passou a vez\n");
 				
@@ -535,6 +536,7 @@ void *AtenderCliente (void *args_void){
 			// 12/juninho/3/KS/jose/2/juninho/10/jose/15 ... -> Disse que era menor e eh menor (acertou)
 			// 12/juninho/4/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh menor
 			// 12/juninho/5/KS/jose/2/juninho/10/jose/15 ... -> Passou vez
+			// 12/juninho/
 			// Envia para todos
 			
 			
@@ -546,7 +548,7 @@ void *AtenderCliente (void *args_void){
 			// Pode passar a vez (simplesmente vai descontar ponto e mandar de novo);
 			// Is ultima?
 			
-			
+			int jogAnterior=(donod->proxJoga)%(qtd_conectados_partida(lista, idPartida));
 			donod->proxJoga+=1; // O jogador sempre movimenta, a carta as vezes
 			
 			// Vai pegar a posicao atual % quantidade-1
@@ -555,7 +557,7 @@ void *AtenderCliente (void *args_void){
 			// Junta com a posicao 1
 			int cartaatual = donod->poscarta;
 			// no lugar do nome ia ja pegar o proximo jogador // Na primeira o proximo eh o mesmo
-			sprintf(testestring, "12/%s/0/%d%c/%s",donod->sequencia[jogaatual],donod->baralho[cartaatual].numero,donod->baralho[cartaatual].naipe,donod->sequencia[jogaatual]);
+			sprintf(testestring, "12/%s/%d/%d%c/%s",donod->sequencia[jogAnterior],despaposta,donod->baralho[cartaatual].numero,donod->baralho[cartaatual].naipe,donod->sequencia[jogaatual]);         
 			sprintf(testestring, "%s/%s",testestring,string_conectados_partida_pontos(lista,idPartida));
 			// qtd-jog/Jog1/pont/Jog2/pont
 			
