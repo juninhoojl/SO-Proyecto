@@ -453,6 +453,7 @@ namespace Cliente
             this.imgCartaAnterior.Location = new System.Drawing.Point(232, 170);
             this.imgCartaAnterior.Name = "imgCartaAnterior";
             this.imgCartaAnterior.Size = new System.Drawing.Size(111, 180);
+            this.imgCartaAnterior.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.imgCartaAnterior.TabIndex = 23;
             this.imgCartaAnterior.TabStop = false;
             // 
