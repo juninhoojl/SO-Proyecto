@@ -59,7 +59,6 @@ namespace Cliente
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imgCartaAtual = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cartaAtual = new System.Windows.Forms.Label();
             this.infoGame = new System.Windows.Forms.Label();
             this.listViewPontos = new System.Windows.Forms.ListView();
             this.jogador = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -67,6 +66,8 @@ namespace Cliente
             this.labelTurno = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.imgCartaAnterior = new System.Windows.Forms.PictureBox();
+            this.qtdCartas = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupLogin.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -366,11 +367,12 @@ namespace Cliente
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.qtdCartas);
             this.panel1.Controls.Add(this.bmayor);
             this.panel1.Controls.Add(this.bpasarturno);
             this.panel1.Controls.Add(this.imgCartaAnterior);
             this.panel1.Controls.Add(this.bmenor);
-            this.panel1.Controls.Add(this.cartaAtual);
             this.panel1.Controls.Add(this.infoGame);
             this.panel1.Controls.Add(this.listViewPontos);
             this.panel1.Controls.Add(this.labelTurno);
@@ -382,15 +384,6 @@ namespace Cliente
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(655, 418);
             this.panel1.TabIndex = 21;
-            // 
-            // cartaAtual
-            // 
-            this.cartaAtual.AutoSize = true;
-            this.cartaAtual.Location = new System.Drawing.Point(25, 10);
-            this.cartaAtual.Name = "cartaAtual";
-            this.cartaAtual.Size = new System.Drawing.Size(35, 13);
-            this.cartaAtual.TabIndex = 22;
-            this.cartaAtual.Text = "label2";
             // 
             // infoGame
             // 
@@ -456,6 +449,27 @@ namespace Cliente
             this.imgCartaAnterior.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.imgCartaAnterior.TabIndex = 23;
             this.imgCartaAnterior.TabStop = false;
+            // 
+            // qtdCartas
+            // 
+            this.qtdCartas.AutoSize = true;
+            this.qtdCartas.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.qtdCartas.Location = new System.Drawing.Point(569, 29);
+            this.qtdCartas.Name = "qtdCartas";
+            this.qtdCartas.Size = new System.Drawing.Size(65, 24);
+            this.qtdCartas.TabIndex = 25;
+            this.qtdCartas.Text = "label2";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(578, 11);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(47, 18);
+            this.label2.TabIndex = 26;
+            this.label2.Text = "Carta";
+
             // 
             // Form1
             // 
@@ -533,8 +547,9 @@ namespace Cliente
         private ColumnHeader jogador;
         private ColumnHeader pontos;
         private Label infoGame;
-        private Label cartaAtual;
         private PictureBox imgCartaAnterior;
+        private Label qtdCartas;
+        private Label label2;
     }
 }
 

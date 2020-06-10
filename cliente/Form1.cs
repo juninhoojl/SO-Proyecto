@@ -478,9 +478,8 @@ namespace Cliente
 
                         labelTurno.Text = trozos[4]; // Que eh o jogador atual
 
-                        cartaAtual.Text = trozos[3];
 
-                        
+                        qtdCartas.Text = Convert.ToString(Global.carta);
 
                         // listViewPontos.Items.Add(trozos[1]);
                         // Tratar aqui caso seja o seguinte ou nao
@@ -546,8 +545,10 @@ namespace Cliente
                         // vai defininir a anterior se for diferente de zero e de pasa turno
                         if (String.Compare(trozos[2], "0") != 0 && String.Compare(trozos[2], "5") != 0)
                         {
+                           
                             object Oa = Resources.ResourceManager.GetObject(Global.cartaAnterior); //Return an object from the image chan1.png in the project
                             imgCartaAnterior.Image = (Image)Oa;
+                            Global.carta += 1;
 
                         }
 
@@ -558,12 +559,19 @@ namespace Cliente
                         //imgCartaAtual.Image = Properties.Resources.ResourceManager.GetObject("H1");
                         // Se a pessoa nao for ela tem que desabilitar os botoes
 
+
                         // se a pessoa que tem que jogar eh ela, habilita
                         if (String.Compare(trozos[4], textUser.Text) == 0)
                         {
+                            
                             bmenor.Enabled = true;
                             bmayor.Enabled = true;
                             bpasarturno.Enabled = true;
+                            label1.Text = "Tu turno!";
+                        }
+                        else
+                        {
+                            label1.Text = "";
 
                         }
 
@@ -593,6 +601,7 @@ namespace Cliente
             public static int partida = 0;
             public static int musica = 0;
             public static string cartaAnterior = "";
+            public static int carta = 1;
 
             public static SoundPlayer splayer = new SoundPlayer(Properties.Resources.gandalf_reduzido);
 
@@ -882,6 +891,7 @@ namespace Cliente
             mensagem = "9/" + textUser.Text + "/1/"+textUser.Text;
             EnviaMensagem(mensagem);
         }
+
 
     }
 }
