@@ -341,18 +341,48 @@ void *AtenderCliente (void *args_void){
 						
 						printf("HAHAHAHAH Dono = %s\n",donod->username);
 						
-						printf("Sequencia de jogo TESTETTTTTTTTTTT\n");
+						//printf("Sequencia de jogo TESTETTTTTTTTTTT\n");
 						
 						printf("Sequencia de jogo\n");
 						
 						sequencia_jogo(lista,nombre);
 						
 						
-						printf("PESSOA SEQ1 = %s\n",donod->sequencia[0]);
-						printf("PESSOA SEQ2 = %s\n",donod->sequencia[1]);
+						//printf("PESSOA SEQ1 = %s\n",donod->sequencia[0]);
+						//printf("PESSOA SEQ2 = %s\n",donod->sequencia[1]);
 						
-						printf("Todos ja estao prontos para comecar\n");						
-						strcpy(contesta,"8/1/Carta");// Estan todos y juego empeza
+						printf("Todos ja estao prontos para comecar\n");
+						
+						
+						// Vai enviar assim para todos da partida
+						
+						// 12/jogant/acao-result/cartaAtual/prox/qtd-jog/Jog1/pont/Jog2/pont
+						// Posicao
+						// 0    1     2  3   4   5   6     7   8   9 ...
+						
+						// 12/juninho/0/KS/jose/2/juninho/10/jose/15 ... -> Primeira jogada
+						
+							// se o codigo for igual a zero vai saber que eh a primeira (mesmo nome
+						// 12/juninho/1/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh maior (acertou)
+						// 12/juninho/2/KS/jose/2/juninho/10/jose/15 ... ->  Disse que era menor e eh maior
+						// 12/juninho/3/KS/jose/2/juninho/10/jose/15 ... -> Disse que era menor e eh menor (acertou)
+						// 12/juninho/4/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh menor
+						// 12/juninho/5/KS/jose/2/juninho/10/jose/15 ... -> Passou vez
+						
+						// Envia para todos
+					
+						
+						char * testestring = (char*)malloc(MAXNOME*10*sizeof(char));
+						// Junta com a posicao 1
+						// no lugar do nome ia ja pegar o proximo jogador
+						sprintf(testestring, "12/%s/0/KS",nombre);
+						sprintf(testestring, "%s/%s",testestring,string_conectados_partida_pontos(lista,idbdgames));
+						// qtd-jog/Jog1/pont/Jog2/pont
+						
+						printf("Exemplo inicio JOGO: \n\n\t %s\n",testestring);
+						
+						free(testestring);
+						strcpy(contesta,"8/1/");// Estan todos y juego empeza
 						strcat(contesta,nombre);
 						
 					}else{ // Ainda faltam pessoas
@@ -466,11 +496,35 @@ void *AtenderCliente (void *args_void){
 			// conferir se eh ultima partida e enviar a carta na ppsicao poscarta
 			// vai ser interessante colocar o ultimo a jogar e quem vai ser o proximo
 			// Para mostrar na tela
-			// 9/
+			// 9/quemApostou/acao
+			
+			// Vai receber do cliente
+			
+			// 9/juninho/1 -> Acha que a seguinte eh maior
+			// 9/juninho/2 -> Acha que a seguinte eh menor
+			// 9/juninho/3 -> Passa a vez
+			
+			// Vai enviar assim para todos da partida
+			
+			// 12/jogant/acao-result/cartaAtual/prox/qtd-jog/Jog1/pont/Jog2/pont
+			// Posicao
+			// 0    1     2  3   4   5   6     7   8   9 ...
+			// 12/juninho/1/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh maior (acertou)
+			// 12/juninho/2/KS/jose/2/juninho/10/jose/15 ... ->  Disse que era menor e eh maior
+			// 12/juninho/3/KS/jose/2/juninho/10/jose/15 ... -> Disse que era menor e eh menor (acertou)
+			// 12/juninho/4/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh menor
+			// 12/juninho/5/KS/jose/2/juninho/10/jose/15 ... -> Passou vez
+			// Envia para todos
+			
+			
+			// Se errou perde 4
+			// Se acertou ganha 2
+			// Se passou a vez perde 2
 			
 			
 			// Pode passar a vez (simplesmente vai descontar ponto e mandar de novo);
 			
+			// Is ultima?
 			
 			
 		}

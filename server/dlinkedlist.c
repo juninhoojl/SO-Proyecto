@@ -430,6 +430,8 @@ int qtd_conectados_partida(hnode * cabeca, unsigned int idpartida){
 
 char * string_conectados_partida_pontos(hnode * cabeca, unsigned int idpartida){
     
+	
+	// tamanho/jog1/pontjog1/jog2/pontjog2...
 	// O tamanho vai ser int (numero conectados) + tam*maxnome
 	int tam = qtd_conectados_partida(cabeca, idpartida);
 	char * sconectados;
@@ -642,31 +644,31 @@ int aposta(hnode * cabeca, char jogador[MAXNOME], int aposta){
 	
 	if (resaposta == 1 && aposta == 1) { // maior
 		
-		sjogador->pontos+=1;
+		sjogador->pontos+=2;
 		return 1; // disse que era maior e eh maior (acertou)
 		
 	}else if(resaposta == 1 && aposta == 2){ // Disse que era menor e eh maior
 		
-		sjogador->pontos-=3;
+		sjogador->pontos-=4;
 		return 2;
 		
 	}else if(resaposta == 2 && aposta == 2){ // Disse que era menor e eh menor (acertou)
 		
-		sjogador->pontos+=1;
+		sjogador->pontos+=2;
 		return 3;
 		
 	}else{ // Disse que era maior e eh menor
 		
-		sjogador->pontos-=3;
+		sjogador->pontos-=4;
 		return  4;
 		
 	}
 	
 	/*
-		A funcao que recebe o retorno dessa daqui ja deve conferir
-		se a partida esta a ponto de acabar. 
-		Fazer funcao para acabar partida que vai basicamente salvar na base de dados
-		e mostrar o resultado para todos da partida
+	A funcao que recebe o retorno dessa daqui ja deve conferir
+	se a partida esta a ponto de acabar. 
+	Fazer funcao para acabar partida que vai basicamente salvar na base de dados
+	e mostrar o resultado para todos da partida
 	
 	*/
 	
@@ -751,8 +753,9 @@ void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]){
 		atual = atual->next;
 	}
 	
-
 }
+	
+
 	
 // Funcao para selecionar proximo
 
