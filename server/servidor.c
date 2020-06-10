@@ -486,17 +486,26 @@ void *AtenderCliente (void *args_void){
 			p = strtok( NULL, "/");
 			strcpy(reqapostas, p);
 			int reqaposta = atoi(reqapostas);
+			int despaposta = 0;
+			
+			node * eujog = search_node(lista,nombre);
+			unsigned int idPartida = eujog->partida;
+			node * donod = search_dono(lista, idPartida);
 			
 			if(reqaposta == 3){ // 9/juninho/3 -> Passa a vez
 				
+				eujog->pontos-=2;
+				// vai perder ponto por isso
 				printf("Passou a vez\n");
 				
 			}else if(reqaposta == 2){ // 9/juninho/2 -> Acha que a seguinte eh menor
 				
+				despaposta = aposta(lista, nombre, reqaposta);
 				printf("Apostou menor\n");
 				
 			}else{ // 9/juninho/1 -> Acha que a seguinte eh maior
 				
+				despaposta = aposta(lista, nombre, reqaposta);
 				printf("Apostou maior\n");
 				
 			}
@@ -536,9 +545,7 @@ void *AtenderCliente (void *args_void){
 			
 			// Pode passar a vez (simplesmente vai descontar ponto e mandar de novo);
 			// Is ultima?
-			node * eujog = search_node(lista,nombre);
-			unsigned int idPartida = eujog->partida;
-			node * donod = search_dono(lista, idPartida);
+			
 			
 			donod->proxJoga+=1; // O jogador sempre movimenta, a carta as vezes
 			
