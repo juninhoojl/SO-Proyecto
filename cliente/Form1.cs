@@ -351,6 +351,7 @@ namespace Cliente
                     case 7: // Convite para jogar
                             // Nao existe mais o jogo que tentou entrar
 
+                        // esse caso esta no 12 agora
                         if (String.Compare(trozos[1], "1") == 0) // Foi inserido na partida
                         {
                             AlteraBanner("Voce foi inserido na partida");
@@ -468,6 +469,11 @@ namespace Cliente
                         int qtdp = Convert.ToInt32(trozos[5]);
                         int iqd;
 
+                        // Todas as vezes remove o que ja tem na lista
+                        listViewPontos.Items.Clear();
+
+                        labelTurno.Text = trozos[4]; // Que eh o jogador atual
+
                         
 
                         // listViewPontos.Items.Add(trozos[1]);
@@ -477,12 +483,24 @@ namespace Cliente
                             string[] itemV = { trozos[iqd], trozos[iqd + 1] };
 
                             ListViewItem lvi = new ListViewItem(itemV);
-
+                            
                             listViewPontos.Items.Add(lvi);
 
                             //listViewPontos.Items.Add(+" -> "+trozos[iqd+1]);
 
                          }
+
+                        
+                        // Se a pessoa nao for ela tem que desabilitar os botoes
+
+                        AlteraBanner("Voce foi inserido na partida");
+                        Global.partida = 1;
+                        buttonInvitar.Text = "Acabar Partida";
+                        radioPartida.Enabled = true;
+                        checkedListBox1.Enabled = false;
+                        buttonLogin.Enabled = false;
+                        buttonRegistra.Enabled = false;
+
                         // For do dqtdp+1 ate qtdp+(2*qtdp)
                         //for
                         // 0      1        2   3     4    5    6         7    8     9

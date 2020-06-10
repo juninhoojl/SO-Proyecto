@@ -334,8 +334,8 @@ void *AtenderCliente (void *args_void){
 					//if(usuario->jugadores_momento == usuario->jugadores_partida){
 					if(qtd_conectados_partida(lista, idbdgames) == get_jugadores_momento(lista, donopartida)){
 						
-						strcpy(respuesta,"7/1/"); // Inserido na partida
-						strcat(respuesta, nombre);
+						//strcpy(respuesta,"7/1/"); // Inserido na partida
+						//strcat(respuesta, nombre);
 						
 						node * donod = search_dono(lista, idbdgames);
 						
@@ -384,6 +384,7 @@ void *AtenderCliente (void *args_void){
 						printf("Exemplo inicio JOGO: \n\n\t %s\n",testestring);
 						
 						strcpy(contesta,testestring);
+						strcpy(respuesta,testestring);
 						//strcpy(contesta,"8/1/");// Estan todos y juego empeza
 						//strcat(contesta,nombre);
 						
@@ -402,6 +403,8 @@ void *AtenderCliente (void *args_void){
 					
 					
 					vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
+					
+					
 					
 					i = 1;
 					while(vetsockets[0]>0){
