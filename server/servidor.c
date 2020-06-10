@@ -314,6 +314,7 @@ void *AtenderCliente (void *args_void){
 			strcpy(donopartida, p);
 			int i=0, momento=0;
 			char contesta[7+MAXNOME];
+			char * testestring = (char*)malloc(MAXNOME*10*sizeof(char));
 			// Seleciona o id da partida
 			char idbdgame[10];
 			p = strtok( NULL, "/");
@@ -347,33 +348,16 @@ void *AtenderCliente (void *args_void){
 						
 						sequencia_jogo(lista,nombre);
 						
-						
 						//printf("PESSOA SEQ1 = %s\n",donod->sequencia[0]);
 						//printf("PESSOA SEQ2 = %s\n",donod->sequencia[1]);
 						
 						printf("Todos ja estao prontos para comecar\n");
 						
-						
-						// Vai enviar assim para todos da partida
-						
-						// 12/jogant/acao-result/cartaAtual/prox/qtd-jog/Jog1/pont/Jog2/pont
-						// Posicao
-						// 0    1     2  3   4   5   6     7   8   9 ...
-						
-						// 12/juninho/0/KS/jose/2/juninho/10/jose/15 ... -> Primeira jogada
-						
-						// se o codigo for igual a zero vai saber que eh a primeira (mesmo nome
-						// 12/juninho/1/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh maior (acertou)
-						// 12/juninho/2/KS/jose/2/juninho/10/jose/15 ... ->  Disse que era menor e eh maior
-						// 12/juninho/3/KS/jose/2/juninho/10/jose/15 ... -> Disse que era menor e eh menor (acertou)
-						// 12/juninho/4/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh menor
-						// 12/juninho/5/KS/jose/2/juninho/10/jose/15 ... -> Passou vez
-						
 						// Envia para todos
 						
 						// Vai pegar a posicao atual % quantidade-1
 						int jogaatual = (donod->proxJoga)%(qtd_conectados_partida(lista, idbdgames));
-						char * testestring = (char*)malloc(MAXNOME*10*sizeof(char));
+						
 						// Junta com a posicao 1
 						int cartaatual = donod->poscarta;
 						// no lugar do nome ia ja pegar o proximo jogador // Na primeira o proximo eh o mesmo
@@ -383,12 +367,11 @@ void *AtenderCliente (void *args_void){
 						
 						printf("Exemplo inicio JOGO: \n\n\t %s\n",testestring);
 						
-						strcpy(contesta,testestring);
 						strcpy(respuesta,testestring);
 						//strcpy(contesta,"8/1/");// Estan todos y juego empeza
 						//strcat(contesta,nombre);
 						
-						free(testestring);
+						
 					}else{ // Ainda faltam pessoas
 						
 						strcpy(respuesta,"7/1/"); // Inserido na partida
@@ -411,12 +394,14 @@ void *AtenderCliente (void *args_void){
 						
 						// Para a propria pessoa vai enviar depois
 						if(vetsockets[i] != suser){
-							write(vetsockets[i], contesta, strlen(contesta));
+							write(vetsockets[i], testestring, strlen(testestring));
 						}
 						vetsockets[0]-=1;
 						i++;
 						
 					}
+					
+					free(testestring);
 					
 				}else if(respconvites == 2){ // Recusou
 					
@@ -493,7 +478,6 @@ void *AtenderCliente (void *args_void){
 		}else if(codigo==9){
 			// Funcao para apostar
 			// Primeiro captura qual foi a aposta
-		
 			printf("Aposta 9\n");
 			// 7/nombre/1/donopartida/idgame
 			// aqui vai sobrar somente  /1/donopartida/idgame
@@ -551,13 +535,42 @@ void *AtenderCliente (void *args_void){
 			
 			
 			// Pode passar a vez (simplesmente vai descontar ponto e mandar de novo);
-			
 			// Is ultima?
+			node * eujog = search_node(lista,nombre);
+			unsigned int idPartida = eujog->partida;
+			node * donod = search_dono(lista, idPartida);
 			
+			donod->proxJoga+=1; // O jogador sempre movimenta, a carta as vezes
 			
+			// Vai pegar a posicao atual % quantidade-1
+			int jogaatual = (donod->proxJoga)%(qtd_conectados_partida(lista, idPartida));
+			char * testestring = (char*)malloc(MAXNOME*10*sizeof(char));
+			// Junta com a posicao 1
+			int cartaatual = donod->poscarta;
+			// no lugar do nome ia ja pegar o proximo jogador // Na primeira o proximo eh o mesmo
+			sprintf(testestring, "12/%s/0/%d%c/%s",donod->sequencia[jogaatual],donod->baralho[cartaatual].numero,donod->baralho[cartaatual].naipe,donod->sequencia[jogaatual]);
+			sprintf(testestring, "%s/%s",testestring,string_conectados_partida_pontos(lista,idPartida));
+			// qtd-jog/Jog1/pont/Jog2/pont
+			
+			strcpy(respuesta,testestring);
+			// Vai enviar para todos os jogadores conectados da partida
+			vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
+			
+			i = 1;
+			while(vetsockets[0]>0){
+				
+				// Para a propria pessoa vai enviar depois
+				if(vetsockets[i] != suser){
+					write(vetsockets[i], testestring, strlen(testestring));
+				}
+				vetsockets[0]-=1;
+				i++;
+				
+			}
+			
+			free(testestring);
 		}
-		
-		
+
 		if(codigo !=0 ){ // Desconectar
 			printf("Codigo: %d => Reposta: %s\n",codigo,respuesta);
 			//printf ("Resposta: %s\n", respuesta);
