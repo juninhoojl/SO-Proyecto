@@ -73,7 +73,7 @@ namespace Cliente
             bmenor.Enabled = false;
             bmayor.Enabled = false;
             bpasarturno.Enabled = false;
-
+            panel1.Visible = false;
         }
 
 
@@ -473,13 +473,18 @@ namespace Cliente
                         int qtdp = Convert.ToInt32(trozos[5]);
                         int iqd;
 
+                        // Se o codigo for zero deixa visivel
+                        if (String.Compare(trozos[2], "0") == 0)
+                        {
+                            panel1.Visible = true;
+                            qtdCartas.Text = Convert.ToString(Global.carta);
+
+                        }
+
                         // Todas as vezes remove o que ja tem na lista
                         listViewPontos.Items.Clear();
 
                         labelTurno.Text = trozos[4]; // Que eh o jogador atual
-
-
-                        qtdCartas.Text = Convert.ToString(Global.carta);
 
                         // listViewPontos.Items.Add(trozos[1]);
                         // Tratar aqui caso seja o seguinte ou nao
@@ -549,6 +554,7 @@ namespace Cliente
                             object Oa = Resources.ResourceManager.GetObject(Global.cartaAnterior); //Return an object from the image chan1.png in the project
                             imgCartaAnterior.Image = (Image)Oa;
                             Global.carta += 1;
+                            qtdCartas.Text = Convert.ToString(Global.carta);
 
                         }
 
@@ -865,6 +871,7 @@ namespace Cliente
 
             string mensagem = "";
             mensagem = "9/" + textUser.Text + "/2/" + textUser.Text;
+
             EnviaMensagem(mensagem);
         }
 
@@ -889,9 +896,9 @@ namespace Cliente
 
             string mensagem = "";
             mensagem = "9/" + textUser.Text + "/1/"+textUser.Text;
+
             EnviaMensagem(mensagem);
         }
-
 
     }
 }
