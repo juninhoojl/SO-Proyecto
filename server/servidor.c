@@ -372,19 +372,12 @@ void *AtenderCliente (void *args_void){
 						// Envia para todos
 						
 						// Vai pegar a posicao atual % quantidade-1
-						int cartaatual = (donod->poscarta)%(qtd_conectados_partida(lista, idbdgames));
-						int looas = 0;
-						int testell = 0;
-						for(looas=0;looas<10;looas++){
-							testell = (looas)%(qtd_conectados_partida(lista, idbdgames));
-							printf("LOOAS: \n\n\t %s\n",donod->sequencia[testell]);
-						}
-						
-						
+						int jogaatual = (donod->proxJoga)%(qtd_conectados_partida(lista, idbdgames));
 						char * testestring = (char*)malloc(MAXNOME*10*sizeof(char));
 						// Junta com a posicao 1
-						// no lugar do nome ia ja pegar o proximo jogador
-						sprintf(testestring, "12/%s/0/KS",nombre);
+						int cartaatual = donod->poscarta;
+						// no lugar do nome ia ja pegar o proximo jogador // Na primeira o proximo eh o mesmo
+						sprintf(testestring, "12/%s/0/%d%c/%s",donod->sequencia[jogaatual],donod->baralho[cartaatual].numero,donod->baralho[cartaatual].naipe,donod->sequencia[jogaatual]);
 						sprintf(testestring, "%s/%s",testestring,string_conectados_partida_pontos(lista,idbdgames));
 						// qtd-jog/Jog1/pont/Jog2/pont
 						
