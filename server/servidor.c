@@ -362,7 +362,7 @@ void *AtenderCliente (void *args_void){
 						
 						// 12/juninho/0/KS/jose/2/juninho/10/jose/15 ... -> Primeira jogada
 						
-							// se o codigo for igual a zero vai saber que eh a primeira (mesmo nome
+						// se o codigo for igual a zero vai saber que eh a primeira (mesmo nome
 						// 12/juninho/1/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh maior (acertou)
 						// 12/juninho/2/KS/jose/2/juninho/10/jose/15 ... ->  Disse que era menor e eh maior
 						// 12/juninho/3/KS/jose/2/juninho/10/jose/15 ... -> Disse que era menor e eh menor (acertou)
@@ -370,7 +370,16 @@ void *AtenderCliente (void *args_void){
 						// 12/juninho/5/KS/jose/2/juninho/10/jose/15 ... -> Passou vez
 						
 						// Envia para todos
-					
+						
+						// Vai pegar a posicao atual % quantidade-1
+						int cartaatual = (donod->poscarta)%(qtd_conectados_partida(lista, idbdgames));
+						int looas = 0;
+						int testell = 0;
+						for(looas=0;looas<10;looas++){
+							testell = (looas)%(qtd_conectados_partida(lista, idbdgames));
+							printf("LOOAS: \n\n\t %s\n",donod->sequencia[testell]);
+						}
+						
 						
 						char * testestring = (char*)malloc(MAXNOME*10*sizeof(char));
 						// Junta com a posicao 1
