@@ -463,6 +463,34 @@ namespace Cliente
                         label1.Text = "Mensagenes Inviadas!";
 
                         break;
+
+                    case 12:
+                        int qtdp = Convert.ToInt32(trozos[5]);
+                        int iqd;
+
+                        
+
+                        // listViewPontos.Items.Add(trozos[1]);
+                        // Tratar aqui caso seja o seguinte ou nao
+                        for (iqd = 6; iqd <= 5+(2*qtdp); iqd += 2)
+                         {
+                            string[] itemV = { trozos[iqd], trozos[iqd + 1] };
+
+                            ListViewItem lvi = new ListViewItem(itemV);
+
+                            listViewPontos.Items.Add(lvi);
+
+                            //listViewPontos.Items.Add(+" -> "+trozos[iqd+1]);
+
+                         }
+                        // For do dqtdp+1 ate qtdp+(2*qtdp)
+                        //for
+                        // 0      1        2   3     4    5    6         7    8     9
+                        // 12 / juninho / 0 / KS / jose / 2 / juninho / 10 / jose / 15...
+
+
+                        //listView1.Items.Add(trozos[i] + " (tu)");
+                        break;
                     case 99: // No hace nada
 
                         // Responde aceitando ou recusando
@@ -738,65 +766,31 @@ namespace Cliente
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+
+        private void bpasarturno_Click(object sender, EventArgs e)
         {
-           
+           // panel1.Show();
+          //  bmayor.Show();
+           // bmenor.Show();
+           // bpasarturno.Show();
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void Form1_Load_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-            panel1.Show();
-            button4.Show();
-            button5.Show();
-            button6.Show();
-        }
-
-        private void label3_Click(object sender, EventArgs e)
+        private void bmenor_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void label5_Click(object sender, EventArgs e)
+        private void bpasarturno_Click_1(object sender, EventArgs e)
         {
 
         }
 
-        private void panel1_Paint_1(object sender, PaintEventArgs e)
+        private void bmayor_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label12_Click(object sender, EventArgs e)
+        private void listViewPontos_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

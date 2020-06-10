@@ -383,10 +383,11 @@ void *AtenderCliente (void *args_void){
 						
 						printf("Exemplo inicio JOGO: \n\n\t %s\n",testestring);
 						
-						free(testestring);
-						strcpy(contesta,"8/1/");// Estan todos y juego empeza
-						strcat(contesta,nombre);
+						strcpy(contesta,testestring);
+						//strcpy(contesta,"8/1/");// Estan todos y juego empeza
+						//strcat(contesta,nombre);
 						
+						free(testestring);
 					}else{ // Ainda faltam pessoas
 						
 						strcpy(respuesta,"7/1/"); // Inserido na partida
