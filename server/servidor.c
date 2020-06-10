@@ -492,6 +492,31 @@ void *AtenderCliente (void *args_void){
 			
 		}else if(codigo==9){
 			// Funcao para apostar
+			// Primeiro captura qual foi a aposta
+		
+			printf("Aposta 9\n");
+			// 7/nombre/1/donopartida/idgame
+			// aqui vai sobrar somente  /1/donopartida/idgame
+			
+			char reqapostas[2];
+			p = strtok( NULL, "/");
+			strcpy(reqapostas, p);
+			int reqaposta = atoi(reqapostas);
+			
+			if(reqaposta == 3){ // 9/juninho/3 -> Passa a vez
+				
+				printf("Passou a vez\n");
+				
+			}else if(reqaposta == 2){ // 9/juninho/2 -> Acha que a seguinte eh menor
+				
+				printf("Apostou menor\n");
+				
+			}else{ // 9/juninho/1 -> Acha que a seguinte eh maior
+				
+				printf("Apostou maior\n");
+				
+			}
+			
 			
 			// Primeiro vai achar o dono da partida por meio da busca de todos mesmo
 			// porem vai buscar qual deles tem o mesmo gameID e tem o isdono = 1;
@@ -506,9 +531,6 @@ void *AtenderCliente (void *args_void){
 			
 			// Vai receber do cliente
 			
-			// 9/juninho/1 -> Acha que a seguinte eh maior
-			// 9/juninho/2 -> Acha que a seguinte eh menor
-			// 9/juninho/3 -> Passa a vez
 			
 			// Vai enviar assim para todos da partida
 			

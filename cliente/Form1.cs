@@ -474,7 +474,9 @@ namespace Cliente
 
                         labelTurno.Text = trozos[4]; // Que eh o jogador atual
 
-                        
+                        cartaAtual.Text = trozos[3];
+
+                        infoGame.Text = "Informacoes sobre a partida anterior";
 
                         // listViewPontos.Items.Add(trozos[1]);
                         // Tratar aqui caso seja o seguinte ou nao
@@ -784,33 +786,30 @@ namespace Cliente
             }
         }
 
-
-        private void bpasarturno_Click(object sender, EventArgs e)
-        {
-           // panel1.Show();
-          //  bmayor.Show();
-           // bmenor.Show();
-           // bpasarturno.Show();
-        }
-
+        // 9/juninho/2 -> Acha que a seguinte eh menor
         private void bmenor_Click(object sender, EventArgs e)
         {
-
+            string mensagem = "";
+            mensagem = "9/" + textUser.Text + "/2/" + textUser.Text;
+            EnviaMensagem(mensagem);
         }
 
+        // 9/juninho/3 -> Passa a vez
         private void bpasarturno_Click_1(object sender, EventArgs e)
         {
-
+            string mensagem = "";
+            mensagem = "9/" + textUser.Text + "/3/" + textUser.Text;
+            EnviaMensagem(mensagem);
         }
 
+        // 9/juninho/1 -> Acha que a seguinte eh maior
         private void bmayor_Click(object sender, EventArgs e)
         {
 
+            string mensagem = "";
+            mensagem = "9/" + textUser.Text + "/1/"+textUser.Text;
+            EnviaMensagem(mensagem);
         }
 
-        private void listViewPontos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
