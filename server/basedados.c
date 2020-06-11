@@ -386,3 +386,66 @@ unsigned int cria_Game(MYSQL *conn, char players[QTDMAX][TAMUSERNAME], int qtd){
 	return id_game;
 }
 	
+	
+	
+int finaliza_jogo(MYSQL *conn, unsigned int id_game, char jugador[]){
+	
+	// Fim de jogo ok
+	// UPDATE Game Set Vencedor='juninho', Fim=NOW() WHERE ID=201;
+
+	int err;
+	unsigned int id_game=0;
+	char query[100];
+	char id_games[10];
+	// Cria Game
+	strcpy(query, "UPDATE Game Set Vencedor='");
+	strcat(query,jugador);
+	strcat(query,"', Fim=NOW() WHERE ID=");
+	sprintf(id_games, "%u", id_game);
+	strcat (query, id_games);
+	strcpy(query,";");
+	
+	err = mysql_query(conn, query);
+	
+	if (err!=0){
+		printf ("Error ao introduzir dados na base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		return 1;
+	}
+
+	return 0;
+}
+
+	
+int salva_jogo(MYSQL *conn, unsigned int id_game, char jugador[], int pontos){
+	
+	// Salva jogo
+	// UPDATE Relaciona Set Score=111 WHERE Game=201 AND Player='juninho';
+	
+	int err;
+	unsigned int id_game=0;
+	char query[100];
+	char id_games[10];
+	char scores[10];
+	// Cria Game
+	strcpy(query, "UPDATE Relaciona Set Score=");
+	sprintf(scores, "%d", pontos);
+	strcat (query, scores);
+	strcpy(query," WHERE Game=");
+	sprintf(id_games, "%u", id_game);
+	strcat (query, id_games);
+	strcpy(query," AND Player='");
+	strcat(query,jugador);
+	strcpy(query,"';");
+	
+	err = mysql_query(conn, query);
+	
+	if (err!=0){
+		printf ("Error ao introduzir dados na base %u %s\n", mysql_errno(conn), mysql_error(conn));
+		return 1;
+	}
+	
+	return 0;
+}
+
+
+
