@@ -11,13 +11,12 @@
 #include <stdio.h>
 #include <pthread.h>
 #include "dlinkedlist.h"
-
 struct thread_args{
 	
 	int a;
 	//double b;
 	//int * tam;
-	hnode * lista;
+	struct Hnode * lista;
 	
 };
 

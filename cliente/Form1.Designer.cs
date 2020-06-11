@@ -420,7 +420,7 @@ namespace Cliente
             // 
             this.infoGame.AutoSize = true;
             this.infoGame.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.infoGame.Location = new System.Drawing.Point(301, 29);
+            this.infoGame.Location = new System.Drawing.Point(25, 11);
             this.infoGame.Name = "infoGame";
             this.infoGame.Size = new System.Drawing.Size(50, 18);
             this.infoGame.TabIndex = 21;

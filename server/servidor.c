@@ -2,6 +2,7 @@
 
 void *AtenderCliente (void *args_void){
 	
+	
 	// Antes de tudo deve selecionar o head em um no aqui
 	struct thread_args * args = args_void;
 	hnode * lista = args->lista;
@@ -449,11 +450,17 @@ void *AtenderCliente (void *args_void){
 			// Se alguem nao aceita deleta tudo relacionado ao jogo
 		}else if(codigo==8){
 			alterlista=1;
-			
 			strcpy(respuesta,"8/2/");
 			strcat(respuesta,nombre);
 			
-			printf("Solicitou acabar partida");
+			
+			
+			node * useratual = search_node(lista,nombre);
+			node * vencedor = finaliza_salva(lista, useratual->partida,conn);
+			
+			printf("Solicitou acabar partida\n");
+			printf("Vencedor = %s",vencedor->username);
+			
 			vetsockets = vetor_socket_partida(lista,get_partida(lista, nombre));
 			char contesta[7+MAXNOME];
 			strcpy(contesta,"8/2/");// acaba partida
@@ -579,7 +586,6 @@ void *AtenderCliente (void *args_void){
 			
 			free(testestring);
 		}
-
 		if(codigo !=0 ){ // Desconectar
 			printf("Codigo: %d => Reposta: %s\n",codigo,respuesta);
 			//printf ("Resposta: %s\n", respuesta);

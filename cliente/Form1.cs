@@ -73,7 +73,7 @@ namespace Cliente
             bmenor.Enabled = false;
             bmayor.Enabled = false;
             bpasarturno.Enabled = false;
-            panel1.Visible = false;
+            // panel1.Visible = false;
         }
 
 
@@ -476,7 +476,7 @@ namespace Cliente
                         // Se o codigo for zero deixa visivel
                         if (String.Compare(trozos[2], "0") == 0)
                         {
-                            panel1.Visible = true;
+                            //panel1.Visible = true;
                             qtdCartas.Text = Convert.ToString(Global.carta);
 
                         }

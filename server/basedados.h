@@ -57,7 +57,6 @@ int existe_game(MYSQL *conn, unsigned int id_game);
 
 int finaliza_jogo(MYSQL *conn, unsigned int id_game, char jugador[]);
 
-
 int salva_jogo(MYSQL *conn, unsigned int id_game, char jugador[], int pontos);
 
 #endif

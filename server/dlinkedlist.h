@@ -8,7 +8,7 @@
 
 #ifndef DLINKEDLIST_H_
 #define DLINKEDLIST_H_
-
+#include "basedados.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -133,5 +133,10 @@ node * search_dono(hnode * cabeca, unsigned int idpartida);
 int isultima(hnode * cabeca, char jogador[MAXNOME]);
 
 void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]);
+
+// Retorna o vencedor
+node * finaliza_salva(hnode * cabeca, unsigned int idpartida,MYSQL *conn);
+
+
 
 #endif /* dlinkedlist_h */

@@ -33,7 +33,6 @@ int logado = 0;
 int main(int argc, char *argv[]){
 	
 	//maina(); // Testando lista
-	
 	MYSQL *conn;
 	conn=mysql_init(NULL);
 	

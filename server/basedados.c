@@ -394,7 +394,6 @@ int finaliza_jogo(MYSQL *conn, unsigned int id_game, char jugador[]){
 	// UPDATE Game Set Vencedor='juninho', Fim=NOW() WHERE ID=201;
 
 	int err;
-	unsigned int id_game=0;
 	char query[100];
 	char id_games[10];
 	// Cria Game
@@ -403,8 +402,8 @@ int finaliza_jogo(MYSQL *conn, unsigned int id_game, char jugador[]){
 	strcat(query,"', Fim=NOW() WHERE ID=");
 	sprintf(id_games, "%u", id_game);
 	strcat (query, id_games);
-	strcpy(query,";");
-	
+	strcat(query,";");
+	printf("query = %s\n", query);
 	err = mysql_query(conn, query);
 	
 	if (err!=0){
@@ -422,7 +421,6 @@ int salva_jogo(MYSQL *conn, unsigned int id_game, char jugador[], int pontos){
 	// UPDATE Relaciona Set Score=111 WHERE Game=201 AND Player='juninho';
 	
 	int err;
-	unsigned int id_game=0;
 	char query[100];
 	char id_games[10];
 	char scores[10];
@@ -430,13 +428,13 @@ int salva_jogo(MYSQL *conn, unsigned int id_game, char jugador[], int pontos){
 	strcpy(query, "UPDATE Relaciona Set Score=");
 	sprintf(scores, "%d", pontos);
 	strcat (query, scores);
-	strcpy(query," WHERE Game=");
+	strcat(query," WHERE Game=");
 	sprintf(id_games, "%u", id_game);
 	strcat (query, id_games);
-	strcpy(query," AND Player='");
+	strcat(query," AND Player='");
 	strcat(query,jugador);
-	strcpy(query,"';");
-	
+	strcat(query,"';");
+	printf("query = %s\n", query);
 	err = mysql_query(conn, query);
 	
 	if (err!=0){

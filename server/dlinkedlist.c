@@ -754,10 +754,58 @@ void sequencia_jogo(hnode * cabeca, char jogador[MAXNOME]){
 	}
 	
 }
+
+
+node * finaliza_salva(hnode * cabeca, unsigned int idpartida,MYSQL *conn){
+	
+	
+	// Vai salvar todos os pontos e depois o vencedor
+	
+	//salva_jogo(MYSQL *conn, unsigned int id_game, char jugador[], int pontos);
+	
+	int tam = qtd_conectados_partida(cabeca, idpartida);
+	int auxt = tam;
+	int valorRe = 0;
+	struct Node * atual = cabeca->first;
+	node * vencedor;
+	
+	while(atual && tam>0){
+		if(atual->partida == idpartida){
+			
+			// Se for a primeira o primeiro eh o maior
+			if(tam == auxt){//primeiro loop
+				vencedor = atual;
+			}else{
+				if(atual->pontos > vencedor->pontos){
+					
+					vencedor = atual;
+				}
+			}
+			
+			// Nesse mesmo loop posso conseguir o que tem mais pontos
+			valorRe = salva_jogo(conn, idpartida,atual->username,atual->pontos);
+			
+			//sprintf(sconectados, "%s/%s/%d",sconectados,atual->username,atual->pontos);
+			
+			tam-=1;
+		}
+		atual = atual->next;
+	}
 	
 
+	if(valorRe == 1){
+		
+		printf("Erro ao salvar os pontos\n");
+	}
+	// Coloca vencedor
+	finaliza_jogo(conn,idpartida,vencedor->username);
 	
-// Funcao para selecionar proximo
-
+	if(valorRe == 1){
+		
+		printf("Erro ao definir o vencedor\n");
+	}
+	
+	return vencedor;
+}
 
 	
