@@ -503,7 +503,25 @@ namespace Cliente
 
                         // 0    1     2  3   4   5   6     7   8   9 ...
                         string informacaoAnt = "";
-                        if(String.Compare(trozos[2], "1") == 0)
+
+                        int resultadoAposta = Convert.ToInt32(trozos[2]);
+
+                        if(resultadoAposta >= 10) // ultima partida
+                        {
+
+                            trozos[2] = Convert.ToString(resultadoAposta/10);
+                            label1.Text = "FIM DE JOGO, VENCEDOR = " + trozos[4];
+
+
+                        }
+
+
+                        if (String.Compare(trozos[2], "1") == 0)
+
+                        //vai conferir se eh maior que 10, dividir por 10 e se for muda o que faz
+                        if (String.Compare(trozos[2], "1") == 0)
+
+                            if (String.Compare(trozos[2], "1") == 0)
                         {
                             // 12/juninho/1/KS/jose/2/juninho/10/jose/15 ... -> Disse que era maior e eh maior (acertou)
                             informacaoAnt = trozos[1] + " gano 2 puntos, era mayor!";

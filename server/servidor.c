@@ -525,6 +525,18 @@ void *AtenderCliente (void *args_void){
 			//
 			
 			// Vai fazer o que tem que fazer na aposta
+			int confereUltima = isultima(lista,nombre); // Se for a ultima vai acabar e enviar vencedor junto
+			
+			node * vencedor;
+			
+			if(confereUltima == 1){ // Ultima Partida
+				
+				// no lugar do proximo tem o vencedor 
+				node * useratual = search_node(lista,nombre);
+				vencedor = finaliza_salva(lista, useratual->partida,conn);
+				despaposta*=10;
+			}
+			
 			// conferir se eh ultima partida e enviar a carta na ppsicao poscarta
 			// vai ser interessante colocar o ultimo a jogar e quem vai ser o proximo
 			// Para mostrar na tela
@@ -564,7 +576,17 @@ void *AtenderCliente (void *args_void){
 			// Junta com a posicao 1
 			int cartaatual = donod->poscarta;
 			// no lugar do nome ia ja pegar o proximo jogador // Na primeira o proximo eh o mesmo
-			sprintf(testestring, "12/%s/%d/%d%c/%s",donod->sequencia[jogAnterior],despaposta,donod->baralho[cartaatual].numero,donod->baralho[cartaatual].naipe,donod->sequencia[jogaatual]);         
+			
+			if(confereUltima != 1){
+			
+				sprintf(testestring, "12/%s/%d/%d%c/%s",donod->sequencia[jogAnterior],despaposta,donod->baralho[cartaatual].numero,donod->baralho[cartaatual].naipe,donod->sequencia[jogaatual]);         
+			}else{
+				sprintf(testestring, "12/%s/%d/%d%c/%s",donod->sequencia[jogAnterior],despaposta,donod->baralho[cartaatual].numero,donod->baralho[cartaatual].naipe,vencedor->username);         
+				
+			}
+			
+			
+			
 			sprintf(testestring, "%s/%s",testestring,string_conectados_partida_pontos(lista,idPartida));
 			// qtd-jog/Jog1/pont/Jog2/pont
 			

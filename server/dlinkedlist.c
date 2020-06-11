@@ -706,7 +706,7 @@ int isultima(hnode * cabeca, char jogador[MAXNOME]){
 	
 	node * dono = search_dono(cabeca,idpartida);
 	
-	// cartas de 0 ate 51
+	// cartas de 0 ate 51 
 	if(dono->poscarta == 51){
 		
 		return 1;
