@@ -87,7 +87,7 @@ namespace Cliente
            // IPAddress direc = IPAddress.Parse("10.211.55.9");
             // ########### ###########
 
-            IPEndPoint ipep = new IPEndPoint(direc, 50004);
+            IPEndPoint ipep = new IPEndPoint(direc, 50006);
 
 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
